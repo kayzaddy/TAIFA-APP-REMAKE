@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <!-- Gold gradient for the ring & mark -->
+    <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f4d03f"/>
+      <stop offset="50%" stop-color="#d4af37"/>
+      <stop offset="100%" stop-color="#8a6f1f"/>
+    </linearGradient>
+    <!-- Inner glow gradient -->
+    <radialGradient id="innerGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#d4af37" stop-opacity="0.35"/>
+      <stop offset="60%" stop-color="#0e5a44" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#062a20" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Subtle emerald background -->
+    <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0e5a44" stop-opacity="0.85"/>
+      <stop offset="70%" stop-color="#062a20" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#050505" stop-opacity="1"/>
+    </radialGradient>
+    <!-- Soft drop shadow -->
+    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
+      <feOffset dx="0" dy="4" result="offsetblur"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.4"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <!-- Gold glow filter -->
+    <filter id="goldGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Optional dark backdrop circle (transparent if removed) -->
+  <circle cx="200" cy="200" r="200" fill="url(#bgGlow)"/>
+
+  <!-- Outermost decorative dotted ring -->
+  <circle cx="200" cy="200" r="185" fill="none" stroke="url(#goldGrad)" stroke-width="0.5" stroke-dasharray="2 6" opacity="0.45"/>
+
+  <!-- Inner glow disc -->
+  <circle cx="200" cy="200" r="160" fill="url(#innerGlow)"/>
+
+  <!-- Outer primary ring -->
+  <circle cx="200" cy="200" r="165" fill="none" stroke="url(#goldGrad)" stroke-width="3" opacity="0.9" filter="url(#goldGlow)"/>
+
+  <!-- Mid ring -->
+  <circle cx="200" cy="200" r="140" fill="none" stroke="url(#goldGrad)" stroke-width="1" opacity="0.45"/>
+
+  <!-- Sunrise rays (subtle, behind T mark) -->
+  <g opacity="0.35">
+    <line x1="200" y1="65" x2="200" y2="85" stroke="url(#goldGrad)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="105" y1="105" x2="119" y2="119" stroke="url(#goldGrad)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="295" y1="105" x2="281" y2="119" stroke="url(#goldGrad)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="65" y1="200" x2="85" y2="200" stroke="url(#goldGrad)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="335" y1="200" x2="315" y2="200" stroke="url(#goldGrad)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="105" y1="295" x2="119" y2="281" stroke="url(#goldGrad)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="295" y1="295" x2="281" y2="281" stroke="url(#goldGrad)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="200" y1="335" x2="200" y2="315" stroke="url(#goldGrad)" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <!-- The T monogram — refined, asymmetric, balanced -->
+  <g filter="url(#goldGlow)">
+    <!-- Horizontal crossbar with tapered ends -->
+    <path d="M 116 144 L 284 144"
+          stroke="url(#goldGrad)" stroke-width="18" stroke-linecap="round" fill="none"/>
+    <!-- Vertical stem with broader base -->
+    <path d="M 200 144 L 200 268"
+          stroke="url(#goldGrad)" stroke-width="18" stroke-linecap="round" fill="none"/>
+    <!-- Decorative end caps (serif-like ornaments) -->
+    <circle cx="116" cy="144" r="4" fill="url(#goldGrad)"/>
+    <circle cx="284" cy="144" r="4" fill="url(#goldGrad)"/>
+    <!-- Base ornament (anchor) -->
+    <path d="M 178 268 L 222 268" stroke="url(#goldGrad)" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <!-- Center heart dot -->
+    <circle cx="200" cy="200" r="7" fill="#f4d03f"/>
+    <circle cx="200" cy="200" r="14" fill="none" stroke="url(#goldGrad)" stroke-width="0.8" opacity="0.6"/>
+  </g>
+
+  <!-- Wordmark below the icon -->
+  <g transform="translate(200 350)">
+    <text text-anchor="middle"
+          font-family="Playfair Display, Georgia, serif"
+          font-size="36" font-weight="900"
+          letter-spacing="6"
+          fill="url(#goldGrad)">TAIFA</text>
+  </g>
+</svg>

@@ -1,0 +1,284 @@
+# Prometheus / Alertmanager rules for TAIFA payment + platform SLIs.
+groups:
+  - name: taifa-ledger
+    rules:
+      - alert: TaifaLedgerReconciliationBroken
+        expr: taifa_ledger_reconciliation_ok == 0
+        for: 5m
+        labels:
+          severity: critical
+          team: payments
+        annotations:
+          summary: "TAIFA ledger reconciliation failed"
+          description: "Run `python manage.py reconcile_ledger --json`."
+          runbook: "docs/RUNBOOKS.md#ledger-mismatch"
+
+      - alert: TaifaLedgerUnbalancedEntries
+        expr: taifa_ledger_reconciliation_breaks{check="unbalanced_entry"} > 0
+        for: 2m
+        labels:
+          severity: critical
+          team: payments
+        annotations:
+          summary: "Unbalanced ledger entries detected"
+          runbook: "docs/RUNBOOKS.md#ledger-mismatch"
+
+      - alert: TaifaLedgerGlobalImbalance
+        expr: taifa_ledger_reconciliation_breaks{check="global_imbalance"} > 0
+        for: 2m
+        labels:
+          severity: critical
+          team: payments
+        annotations:
+          summary: "System-wide money conservation broken"
+          runbook: "docs/INCIDENT_RESPONSE.md#ledger-imbalance"
+
+      - alert: TaifaProviderSettlementExceptions
+        expr: sum(taifa_provider_reconciliation_exceptions) > 0
+        for: 15m
+        labels:
+          severity: critical
+          team: payments
+        annotations:
+          summary: "Provider settlement reconciliation has open exceptions"
+          runbook: "docs/RUNBOOKS.md#provider-reconciliation"
+
+  - name: taifa-payments-ops
+    rules:
+      - alert: TaifaWebhookBacklog
+        expr: taifa_pending_transactions_older_than_seconds{threshold_seconds="300"} > 50
+        for: 10m
+        labels:
+          severity: warning
+          team: payments
+        annotations:
+          summary: "STK/webhook pending backlog elevated"
+          runbook: "docs/RUNBOOKS.md#webhook-outage"
+
+      - alert: TaifaHighPaymentFailureRate
+        expr: |
+          (
+            taifa_transactions{status="failed"}
+            /
+            clamp_min(sum(taifa_transactions), 1)
+          ) > 0.15
+        for: 15m
+        labels:
+          severity: warning
+          team: payments
+        annotations:
+          summary: "Payment failure share > 15%"
+
+      - alert: TaifaWebhookFailures
+        expr: |
+          taifa_webhook_events{result="failed"}
+          + taifa_webhook_events{result="unmatched"}
+          > 20
+        for: 10m
+        labels:
+          severity: warning
+          team: payments
+        annotations:
+          summary: "Elevated webhook failure/unmatched count"
+
+      - alert: TaifaWebhookAuthFailures
+        expr: increase(taifa_webhook_auth_failures_total[5m]) > 10
+        for: 5m
+        labels:
+          severity: critical
+          team: security
+        annotations:
+          summary: "Webhook verification failures spiking"
+          runbook: "docs/INCIDENT_RESPONSE.md#security-breach"
+
+      - alert: TaifaQueueBacklog
+        expr: taifa_celery_queue_depth{queue="celery"} > 100
+        for: 10m
+        labels:
+          severity: warning
+          team: platform
+        annotations:
+          summary: "Celery queue depth elevated"
+          runbook: "docs/RUNBOOKS.md#queue-failure"
+
+      - alert: TaifaWorkerDown
+        expr: taifa_worker_heartbeat == 0
+        for: 5m
+        labels:
+          severity: critical
+          team: platform
+        annotations:
+          summary: "No Celery worker heartbeat"
+          runbook: "docs/RUNBOOKS.md#restart-workers"
+
+      - alert: TaifaRiskDenySpike
+        expr: increase(taifa_risk_decisions_total{decision="deny"}[10m]) > 50
+        for: 10m
+        labels:
+          severity: warning
+          team: risk
+        annotations:
+          summary: "Risk deny spike — possible fraud wave or bad config"
+
+      - alert: TaifaApiHighLatency
+        expr: |
+          histogram_quantile(0.95,
+            sum(rate(taifa_http_request_duration_seconds_bucket[5m])) by (le)
+          ) > 1.0
+        for: 10m
+        labels:
+          severity: warning
+          team: platform
+        annotations:
+          summary: "API p95 latency > 1s"
+
+  - name: taifa-infrastructure
+    rules:
+      - alert: TaifaHostCpuExhaustion
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 90
+        for: 10m
+        labels:
+          severity: critical
+          team: platform
+        annotations:
+          summary: "Host CPU > 90%"
+
+      - alert: TaifaHostMemoryExhaustion
+        expr: |
+          (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) > 0.9
+        for: 10m
+        labels:
+          severity: critical
+          team: platform
+        annotations:
+          summary: "Host memory > 90% used"
+
+      - alert: TaifaHostDiskExhaustion
+        expr: |
+          (1 - (node_filesystem_avail_bytes{fstype!~"tmpfs|overlay"} / node_filesystem_size_bytes{fstype!~"tmpfs|overlay"})) > 0.85
+        for: 15m
+        labels:
+          severity: critical
+          team: platform
+        annotations:
+          summary: "Disk > 85% used"
+
+      - alert: TaifaPostgresDown
+        expr: up{job="postgres"} == 0
+        for: 2m
+        labels:
+          severity: critical
+          team: platform
+        annotations:
+          summary: "Postgres exporter / DB unreachable"
+          runbook: "docs/DISASTER_RECOVERY.md#database-failure"
+
+      - alert: TaifaRedisDown
+        expr: up{job="redis"} == 0
+        for: 2m
+        labels:
+          severity: critical
+          team: platform
+        annotations:
+          summary: "Redis unreachable"
+          runbook: "docs/DISASTER_RECOVERY.md#redis-failure"
+
+      - alert: TaifaBackupMissing
+        expr: time() - taifa_backup_last_success_timestamp_seconds > 36 * 3600
+        for: 1h
+        labels:
+          severity: critical
+          team: platform
+        annotations:
+          summary: "No successful backup in 36h"
+          runbook: "docs/RUNBOOKS.md#recover-backups"
+
+  - name: taifa-mobility
+    rules:
+      - alert: TaifaMobilitySOSOpen
+        expr: sum(taifa_mobility_safety_incidents_open{severity=~"critical|high"}) > 0
+        for: 0m
+        labels:
+          severity: critical
+          team: mobility-safety
+        annotations:
+          summary: "Critical Taifa Mobility safety incident open"
+          description: "Open Operations Dashboard immediately and initiate the SOS runbook."
+          runbook: "docs/MOBILITY_RUNBOOKS.md#sos-or-panic-incident"
+
+      - alert: TaifaMobilityDispatchBacklog
+        expr: taifa_mobility_trips{status="searching"} > 100
+        for: 5m
+        labels:
+          severity: warning
+          team: mobility
+        annotations:
+          summary: "Mobility dispatch backlog elevated"
+          runbook: "docs/MOBILITY_RUNBOOKS.md#dispatch-backlog"
+
+      - alert: TaifaMobilityPaymentBacklog
+        expr: sum(taifa_mobility_payment_pending_trips) > 100
+        for: 15m
+        labels:
+          severity: critical
+          team: mobility-payments
+        annotations:
+          summary: "Completed trips awaiting payment confirmation"
+          description: "Do not synthesize payment. Check Taifa Payments and cash reconciliation."
+
+      - alert: TaifaMobilityNoAvailableDrivers
+        expr: sum(taifa_mobility_drivers{availability="available"}) == 0
+        for: 10m
+        labels:
+          severity: warning
+          team: mobility
+        annotations:
+          summary: "No available mobility drivers nationwide"
+
+      - alert: TaifaMobilityOutboxBacklog
+        expr: taifa_event_outbox_pending > 1000
+        for: 10m
+        labels:
+          severity: warning
+          team: platform
+        annotations:
+          summary: "Mobility/event outbox delivery backlog"
+
+      - alert: TaifaRegistryCriticalComplianceFinding
+        expr: taifa_mobility_registry_compliance_findings_open{severity="critical"} > 0
+        for: 0m
+        labels:
+          severity: critical
+          team: mobility-compliance
+        annotations:
+          summary: "Critical National Mobility Registry compliance finding"
+          runbook: "docs/MOBILITY_REGISTRY_OPERATIONS.md#critical-compliance-finding"
+
+      - alert: TaifaRegistryVerificationBacklog
+        expr: sum(taifa_mobility_registry_applications{status=~"submitted|pending_review"}) > 500
+        for: 30m
+        labels:
+          severity: warning
+          team: mobility-compliance
+        annotations:
+          summary: "National Mobility Registry verification backlog"
+          runbook: "docs/MOBILITY_REGISTRY_OPERATIONS.md#verification-backlog"
+
+      - alert: TaifaRegistryNotificationBacklog
+        expr: taifa_mobility_registry_notification_backlog > 1000
+        for: 10m
+        labels:
+          severity: warning
+          team: platform
+        annotations:
+          summary: "Registry notification publishing backlog"
+          runbook: "docs/MOBILITY_REGISTRY_OPERATIONS.md#notification-backlog"
+
+      - alert: TaifaRegistryMassDocumentExpiry
+        expr: taifa_mobility_registry_documents_expiring{horizon_days="7"} > 1000
+        for: 1h
+        labels:
+          severity: warning
+          team: mobility-compliance
+        annotations:
+          summary: "Large registry document expiry cohort within seven days"

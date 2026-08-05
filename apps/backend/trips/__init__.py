@@ -1,0 +1,1 @@
+# Trips Django app package.

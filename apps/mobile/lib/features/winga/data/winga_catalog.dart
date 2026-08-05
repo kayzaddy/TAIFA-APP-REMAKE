@@ -1,0 +1,283 @@
+import '../../wallet/domain/currency.dart';
+import '../../wallet/domain/money.dart';
+import '../domain/winga_models.dart';
+
+class WingaCatalog {
+  const WingaCatalog._();
+
+  static Money m(int major) => Money.major(major, Currency.tzs);
+
+  static const categories = <String>[
+    'Electronics',
+    'Fashion',
+    'Home',
+    'Grocery',
+    'Beauty',
+    'Building',
+    'Kids',
+    'Auto',
+  ];
+
+  static const serviceCategories = <String>[
+    'Electrician',
+    'Plumber',
+    'Mechanic',
+    'Doctor',
+    'Lawyer',
+    'Architect',
+    'Engineer',
+    'Tutor',
+    'Designer',
+    'Photographer',
+    'Accountant',
+    'Freelancer',
+  ];
+
+  static List<WingaStore> stores() => [
+    WingaStore(
+      id: 'st-kariakoo',
+      name: 'Kariakoo Digital Mart',
+      category: 'Grocery',
+      city: 'Dar es Salaam',
+      rating: 4.7,
+      verified: true,
+      tagline: 'Fresh · Fast · Trusted',
+    ),
+    WingaStore(
+      id: 'st-serengeti',
+      name: 'Serengeti Tech Hub',
+      category: 'Electronics',
+      city: 'Arusha',
+      rating: 4.8,
+      verified: true,
+      tagline: 'Gadgets for builders',
+    ),
+    WingaStore(
+      id: 'st-zanzibar',
+      name: 'Spice Coast Fashion',
+      category: 'Fashion',
+      city: 'Zanzibar',
+      rating: 4.6,
+      verified: true,
+      tagline: 'Coastal luxury wear',
+    ),
+    WingaStore(
+      id: 'st-ujenzi',
+      name: 'Ujenzi Supply Co.',
+      category: 'Building',
+      city: 'Dodoma',
+      rating: 4.5,
+      verified: true,
+      tagline: 'Cement · steel · timber',
+    ),
+    WingaStore(
+      id: 'st-mama',
+      name: 'Mama Care Beauty',
+      category: 'Beauty',
+      city: 'Mwanza',
+      rating: 4.9,
+      verified: false,
+      tagline: 'Natural African skincare',
+    ),
+  ];
+
+  static List<WingaProduct> products() => [
+    WingaProduct(
+      id: 'p-fridge',
+      storeId: 'st-serengeti',
+      name: 'Hisense 220L Fridge',
+      category: 'Electronics',
+      price: m(820000),
+      compareAt: m(980000),
+      rating: 4.6,
+      reviewCount: 128,
+      badge: "Today's Deal",
+      description:
+          'Energy-saving double door. Ideal for family homes in Dar heat.',
+    ),
+    WingaProduct(
+      id: 'p-phone',
+      storeId: 'st-serengeti',
+      name: 'Samsung A25 128GB',
+      category: 'Electronics',
+      price: m(545000),
+      compareAt: m(610000),
+      rating: 4.7,
+      reviewCount: 312,
+      badge: 'Trending',
+      description: 'AMOLED · 5G ready · dual SIM for M-Pesa + Airtel.',
+    ),
+    WingaProduct(
+      id: 'p-uniform',
+      storeId: 'st-zanzibar',
+      name: 'School uniform set (primary)',
+      category: 'Kids',
+      price: m(45000),
+      rating: 4.4,
+      reviewCount: 89,
+      badge: 'Recommended',
+      description: 'Shirt + skirt/shorts · sizes 6–14 · wash-durable.',
+    ),
+    WingaProduct(
+      id: 'p-cement',
+      storeId: 'st-ujenzi',
+      name: 'Twiga Cement 50kg',
+      category: 'Building',
+      price: m(18500),
+      rating: 4.8,
+      reviewCount: 540,
+      badge: 'Bulk ready',
+      description: 'OPC 42.5 · pallet delivery available via NEGOTIA.',
+    ),
+    WingaProduct(
+      id: 'p-kitenge',
+      storeId: 'st-zanzibar',
+      name: 'Premium Kitenge wrap',
+      category: 'Fashion',
+      price: m(35000),
+      compareAt: m(48000),
+      rating: 4.9,
+      reviewCount: 76,
+      badge: "Today's Deal",
+      description: 'Hand-picked coastal prints · soft cotton.',
+    ),
+    WingaProduct(
+      id: 'p-rice',
+      storeId: 'st-kariakoo',
+      name: 'Kyela rice 25kg',
+      category: 'Grocery',
+      price: m(78000),
+      rating: 4.5,
+      reviewCount: 210,
+      description: 'Premium aromatic · sealed bag.',
+    ),
+    WingaProduct(
+      id: 'p-oil',
+      storeId: 'st-mama',
+      name: 'Baobab body oil 200ml',
+      category: 'Beauty',
+      price: m(22000),
+      rating: 4.8,
+      reviewCount: 64,
+      badge: 'Nearby favorite',
+      description: 'Cold-pressed · no fragrance fillers.',
+    ),
+    WingaProduct(
+      id: 'p-fan',
+      storeId: 'st-serengeti',
+      name: 'Standing fan 18"',
+      category: 'Home',
+      price: m(95000),
+      compareAt: m(120000),
+      rating: 4.3,
+      reviewCount: 155,
+      badge: 'Trending',
+      description: '3-speed · quiet motor · remote.',
+    ),
+  ];
+
+  static List<WingaServiceOffer> services() => [
+    WingaServiceOffer(
+      id: 'svc-elec',
+      title: 'Licensed electrician',
+      category: 'Electrician',
+      provider: 'Umeme Safe Pros',
+      city: 'Dar es Salaam',
+      priceFrom: m(35000),
+      rating: 4.8,
+    ),
+    WingaServiceOffer(
+      id: 'svc-plumb',
+      title: 'Emergency plumber',
+      category: 'Plumber',
+      provider: 'Maji Fix TZ',
+      city: 'Dar es Salaam',
+      priceFrom: m(40000),
+      rating: 4.6,
+    ),
+    WingaServiceOffer(
+      id: 'svc-mech',
+      title: 'Mobile mechanic',
+      category: 'Mechanic',
+      provider: 'Garaji On-Call',
+      city: 'Arusha',
+      priceFrom: m(50000),
+      rating: 4.5,
+    ),
+    WingaServiceOffer(
+      id: 'svc-doc',
+      title: 'GP tele-consult',
+      category: 'Doctor',
+      provider: 'AfyaLink Clinic',
+      city: 'Online',
+      priceFrom: m(25000),
+      rating: 4.7,
+    ),
+    WingaServiceOffer(
+      id: 'svc-law',
+      title: 'Contract review',
+      category: 'Lawyer',
+      provider: 'Sheria Desk',
+      city: 'Dar es Salaam',
+      priceFrom: m(150000),
+      rating: 4.9,
+    ),
+    WingaServiceOffer(
+      id: 'svc-photo',
+      title: 'Wedding photographer',
+      category: 'Photographer',
+      provider: 'Lens of Africa',
+      city: 'Zanzibar',
+      priceFrom: m(450000),
+      rating: 4.9,
+    ),
+    WingaServiceOffer(
+      id: 'svc-tutor',
+      title: 'Form 4 maths tutor',
+      category: 'Tutor',
+      provider: 'Elimu Boost',
+      city: 'Dodoma',
+      priceFrom: m(20000),
+      rating: 4.4,
+    ),
+    WingaServiceOffer(
+      id: 'svc-arch',
+      title: 'House plan consultation',
+      category: 'Architect',
+      provider: 'Ujenzi Studio',
+      city: 'Mwanza',
+      priceFrom: m(200000),
+      rating: 4.6,
+    ),
+  ];
+
+  static const serviceSlots = <String>[
+    'Today · 3–5 pm',
+    'Tomorrow · 9–11 am',
+    'Saturday · 1–3 pm',
+  ];
+
+  static List<WingaMerchantOrder> merchantOrders() => [
+    WingaMerchantOrder(
+      id: 'mo-1',
+      customer: 'Amani K.',
+      total: m(820000),
+      statusLabel: 'Packing',
+      itemsSummary: 'Hisense Fridge ×1',
+    ),
+    WingaMerchantOrder(
+      id: 'mo-2',
+      customer: 'Neema J.',
+      total: m(90000),
+      statusLabel: 'New',
+      itemsSummary: 'Uniform set ×2',
+    ),
+    WingaMerchantOrder(
+      id: 'mo-3',
+      customer: 'Ujenzi Ltd',
+      total: m(925000),
+      statusLabel: 'Dispatched',
+      itemsSummary: 'Twiga Cement ×50',
+    ),
+  ];
+}

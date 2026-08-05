@@ -1,0 +1,44 @@
+name: IaC
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "infra/**"
+      - ".github/workflows/iac.yml"
+  pull_request:
+    paths:
+      - "infra/**"
+      - ".github/workflows/iac.yml"
+
+concurrency:
+  group: iac-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  terraform:
+    name: Terraform validate (${{ matrix.env }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        env: [dev, test, staging, prod]
+    defaults:
+      run:
+        working-directory: infra/envs/${{ matrix.env }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.6.6"
+
+      - name: Terraform fmt (recursive)
+        working-directory: infra
+        run: terraform fmt -check -recursive
+
+      - name: Terraform init (no backend)
+        run: terraform init -backend=false
+
+      - name: Terraform validate
+        run: terraform validate

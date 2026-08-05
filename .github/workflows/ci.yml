@@ -1,0 +1,116 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Backend (Django)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: apps/backend/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: System checks
+        run: python manage.py check
+
+      - name: Production payment gates (demo mint / webhook / risk)
+        env:
+          DJANGO_DEBUG: "false"
+          DJANGO_SECRET_KEY: "ci-production-gate-check-not-for-real-use-32"
+          DJANGO_ALLOWED_HOSTS: "localhost,testserver"
+          TAIFA_ALLOW_DEMO_WALLET_FUNDING: "false"
+          TAIFA_ALLOW_DEMO_STK: "false"
+          TAIFA_WITHDRAWAL_AUTO_APPROVE: "false"
+          MPESA_WEBHOOK_SHARED_SECRET: "ci-webhook-secret"
+          RISK_PER_TXN_LIMIT_MINOR: "500000000"
+          RISK_DAILY_DEBIT_LIMIT_MINOR: "2000000000"
+          RISK_ALLOW_UNLIMITED: "false"
+        run: python manage.py check
+
+      - name: Platform production runtime gates (expect failures without Postgres/Redis)
+        env:
+          DJANGO_DEBUG: "false"
+          DJANGO_SECRET_KEY: "ci-production-gate-check-not-for-real-use-32"
+          DJANGO_ALLOWED_HOSTS: "localhost,testserver"
+          TAIFA_ALLOW_DEMO_WALLET_FUNDING: "false"
+          TAIFA_ALLOW_DEMO_STK: "false"
+          TAIFA_WITHDRAWAL_AUTO_APPROVE: "false"
+          MPESA_WEBHOOK_SHARED_SECRET: "ci-webhook-secret"
+          RISK_PER_TXN_LIMIT_MINOR: "500000000"
+          RISK_DAILY_DEBIT_LIMIT_MINOR: "2000000000"
+          RISK_ALLOW_UNLIMITED: "false"
+          TAIFA_ALLOW_STUB_ADAPTERS: "false"
+          CELERY_TASK_ALWAYS_EAGER: "true"
+        run: |
+          set +e
+          out=$(python manage.py check 2>&1)
+          code=$?
+          echo "$out"
+          echo "$out" | grep -q "platform.E002" || (echo "expected platform.E002 (sqlite)"; exit 1)
+          echo "$out" | grep -q "platform.E003" || (echo "expected platform.E003 (eager celery)"; exit 1)
+          echo "$out" | grep -q "platform.E004" || (echo "expected platform.E004 (locmem cache)"; exit 1)
+          # check must not be silent-success when gates fire
+          test "$code" -ne 0
+
+      - name: Supply-chain — pip-audit
+        run: |
+          pip install pip-audit
+          pip-audit -r requirements.txt --desc on || true
+        # Non-blocking until baseline CVE backlog is cleared; still surfaces in logs.
+        continue-on-error: true
+
+      - name: Run tests
+        run: python manage.py test -v2
+
+      - name: Validate OpenAPI schema
+        run: python manage.py spectacular --fail-on-warn --file /tmp/taifa-openapi.yaml
+
+      - name: Ensure committed openapi.yaml is in sync
+        run: diff -u openapi.yaml /tmp/taifa-openapi.yaml
+
+      - name: Upload OpenAPI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: openapi
+          path: apps/backend/openapi.yaml
+
+  mobile:
+    name: Mobile (Flutter)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/mobile
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Fetch packages
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Test
+        run: flutter test

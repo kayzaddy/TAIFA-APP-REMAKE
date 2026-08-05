@@ -1,0 +1,24 @@
+# Event envelope JSON Schema (v1)
+
+**Status:** Blueprint — reference for [03_EVENT_PLATFORM.md](../03_EVENT_PLATFORM.md)  
+**ADR:** [0002](../../architecture/adr/0002-event-catalog-prefix-policy.md)
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TaifaEventEnvelope",
+  "type": "object",
+  "required": ["event_id", "event_type", "schema_version", "occurred_at", "correlation_id", "producer", "payload"],
+  "properties": {
+    "event_id": { "type": "string", "format": "uuid" },
+    "event_type": { "type": "string", "pattern": "^[a-z]+\\.[a-z0-9_]+\\.[a-z0-9_]+$" },
+    "schema_version": { "type": "string" },
+    "occurred_at": { "type": "string", "format": "date-time" },
+    "correlation_id": { "type": "string", "format": "uuid" },
+    "causation_id": { "type": ["string", "null"], "format": "uuid" },
+    "producer": { "type": "string" },
+    "market_code": { "type": "string", "default": "TZ" },
+    "payload": { "type": "object" }
+  }
+}
+```

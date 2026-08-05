@@ -1,0 +1,61 @@
+# === OS / editor ===
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+*.iml
+
+# === Flutter / Dart ===
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/build/
+**/.pub-cache/
+**/.pub/
+**/coverage/
+*.lock.bak
+
+# === Android ===
+**/android/.gradle/
+**/android/app/debug/
+**/android/app/profile/
+**/android/app/release/
+**/android/local.properties
+**/android/key.properties
+**/*.keystore
+**/*.jks
+
+# === iOS ===
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/*.xcworkspace/xcuserdata/
+
+# === Secrets / env ===
+.env
+.env.*
+!.env.example
+*.pem
+secrets/
+**/google-services.json
+**/GoogleService-Info.plist
+
+# === Backend ===
+__pycache__/
+*.pyc
+.venv/
+venv/
+staticfiles/
+apps/backend/var/backups/
+apps/backend/var/backup_last_success
+media/
+*.sqlite3
+db.sqlite3
+
+# === Terraform ===
+**/.terraform/
+*.tfstate
+*.tfstate.*
+infra/**/backend.tf

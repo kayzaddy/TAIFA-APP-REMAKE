@@ -1,0 +1,21 @@
+# CODEOWNERS — default review routing (update GitHub handles when available)
+# Syntax: path  @org/team-or-user
+
+*                          @taifa-platform
+
+/apps/backend/payments/    @taifa-payments @taifa-security
+/apps/backend/enterprise/  @taifa-payments @taifa-platform
+/apps/backend/trips/       @taifa-mobility
+/apps/backend/mobility_registry/ @taifa-mobility @taifa-security
+/apps/backend/ai_os/       @taifa-ai @taifa-security
+/apps/backend/continental/ @taifa-platform
+/apps/backend/ecosystem/   @taifa-platform
+/apps/backend/governance/  @taifa-platform @taifa-security
+/docs/adr/                 @taifa-platform
+/docs/governance/          @taifa-platform @taifa-security
+/docs/SECURITY.md          @taifa-security
+/.github/                  @taifa-platform
+/infra/                    @taifa-platform @taifa-security
+/apps/backend/taifa_kernel/   @taifa-platform
+/apps/backend/taifa_platform/ @taifa-platform @taifa-security
+/docs/platform/SPRINT_0_ENGINEERING_PLAN.md @taifa-platform

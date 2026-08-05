@@ -1,0 +1,76 @@
+# Alertmanager routing for TAIFA — Slack, Teams, email, PagerDuty, SMS gateway.
+# Substitute secrets via envsubst or your secret manager before deploy.
+global:
+  resolve_timeout: 5m
+  smtp_smarthost: "${SMTP_SMARTHOST:-localhost:587}"
+  smtp_from: "alertmanager@taifa.example"
+  smtp_auth_username: "${SMTP_USERNAME:-}"
+  smtp_auth_password: "${SMTP_PASSWORD:-}"
+
+route:
+  receiver: slack-payments
+  group_by: ["alertname", "severity"]
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 2h
+  routes:
+    - matchers:
+        - severity = critical
+      receiver: pagerduty-payments
+      continue: true
+    - matchers:
+        - severity = critical
+      receiver: slack-payments
+      continue: true
+    - matchers:
+        - severity = critical
+      receiver: teams-payments
+      continue: true
+    - matchers:
+        - severity = critical
+      receiver: email-payments
+      continue: true
+    - matchers:
+        - severity = critical
+      receiver: sms-payments
+    - matchers:
+        - severity = warning
+      receiver: slack-payments
+
+inhibit_rules:
+  - source_matchers: [severity = critical]
+    target_matchers: [severity = warning]
+    equal: [alertname]
+
+receivers:
+  - name: slack-payments
+    slack_configs:
+      - api_url: "${SLACK_WEBHOOK_URL}"
+        channel: "#taifa-payments-alerts"
+        send_resolved: true
+        title: '{{ .Status | toUpper }}: {{ .CommonAnnotations.summary }}'
+        text: '{{ .CommonAnnotations.description }}'
+
+  - name: teams-payments
+    webhook_configs:
+      - url: "${TEAMS_WEBHOOK_URL}"
+        send_resolved: true
+
+  - name: pagerduty-payments
+    pagerduty_configs:
+      - routing_key: "${PAGERDUTY_ROUTING_KEY}"
+        severity: critical
+        description: '{{ .CommonAnnotations.summary }}'
+
+  - name: email-payments
+    email_configs:
+      - to: "payments-oncall@taifa.example"
+        send_resolved: true
+        headers:
+          Subject: '[TAIFA] {{ .Status | toUpper }} {{ .CommonAnnotations.summary }}'
+
+  - name: sms-payments
+    # Wire to Twilio / Africa's Talking / AWS SNS gateway webhook.
+    webhook_configs:
+      - url: "${SMS_GATEWAY_WEBHOOK_URL}"
+        send_resolved: false
