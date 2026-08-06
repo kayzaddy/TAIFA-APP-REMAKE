@@ -61,6 +61,18 @@ Each milestone includes: objective, deliverables, dependencies, acceptance crite
 
 ---
 
+### MS-P1 — TNPI Phase 1: Merchant Platform
+
+| Field | Content |
+| --- | --- |
+| **Objective** | First TNPI production product — merchant digital identity |
+| **Deliverables** | `docs/payments/merchant/*`, OpenAPI, service implementation (post-gate) |
+| **Dependencies** | MS-S0, MS-S1 Identity, MS-S3 Events |
+| **Out of scope** | Orchestration, wallet link, SoftPOS pay, QR pay |
+| **Gate** | [PHASE1_GATE_PACKAGE.md](../payments/merchant/PHASE1_GATE_PACKAGE.md) |
+
+---
+
 ### MS-S0 — Sprint 0: Platform bootstrap
 
 | Field | Content |

@@ -1,5 +1,7 @@
 # TAIFA Payment Architecture
 
+> **Enterprise program:** [Taifa National Payment Infrastructure (TNPI)](payments/README.md) — acceptance & orchestration layer (not a consumer wallet). This document describes the **current implementation** ledger and provider abstraction evolving under TNPI.
+
 The payment domain is the highest-value and highest-risk part of TAIFA. This
 document describes the contract that lets any mobile-money operator, aggregator,
 bank or card scheme plug in **without changing business logic** — and the ledger

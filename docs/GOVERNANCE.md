@@ -11,9 +11,41 @@ Governance is platform infrastructure. New features follow these standards; they
 → Implementation gate: [`platform/earb/07_IMPLEMENTATION_READINESS_REPORT.md`](platform/earb/07_IMPLEMENTATION_READINESS_REPORT.md)  
 → **Taifa Core execution:** [`platform/14_PLATFORM_IMPLEMENTATION_GUIDE.md`](platform/14_PLATFORM_IMPLEMENTATION_GUIDE.md) · [`platform/00_PLATFORM_OVERVIEW.md`](platform/00_PLATFORM_OVERVIEW.md)
 
+**Taifa National Payment Infrastructure (TNPI)**  
+→ [`payments/README.md`](payments/README.md)  
+→ Program charter: [`payments/00_PAYMENT_PROGRAM.md`](payments/00_PAYMENT_PROGRAM.md)  
+→ Phase 1 Merchant: [`payments/merchant/00_INDEX.md`](payments/merchant/00_INDEX.md)  
+→ Phase 2 Payment Sources: [`payments/payment-sources/00_INDEX.md`](payments/payment-sources/00_INDEX.md)  
+→ Phase 3 Orchestration: [`payments/orchestration/00_INDEX.md`](payments/orchestration/00_INDEX.md)  
+→ Phase 4 Merchant Acceptance: [`payments/merchant-acceptance/00_INDEX.md`](payments/merchant-acceptance/00_INDEX.md)  
+→ Phase 5 Settlement: [`payments/settlement/00_INDEX.md`](payments/settlement/00_INDEX.md)  
+→ Phase 6 Reconciliation: [`payments/reconciliation/00_INDEX.md`](payments/reconciliation/00_INDEX.md)  
+→ Phase 7 Fraud & Risk: [`payments/fraud-risk/00_INDEX.md`](payments/fraud-risk/00_INDEX.md)  
+→ Phase 8 Developer Platform: [`payments/developer-platform/00_INDEX.md`](payments/developer-platform/00_INDEX.md)  
+→ Transport Payments Platform: [`transport/00_PLATFORM_OVERVIEW.md`](transport/00_PLATFORM_OVERVIEW.md)  
+→ National Mobility Platform (TNMP): [`mobility/00_PLATFORM_OVERVIEW.md`](mobility/00_PLATFORM_OVERVIEW.md)  
+→ Government Digital Services (GDSP): [`government/00_PLATFORM_OVERVIEW.md`](government/00_PLATFORM_OVERVIEW.md)  
+→ Taifa Integration Platform (TIP): [`integration/00_PLATFORM_OVERVIEW.md`](integration/00_PLATFORM_OVERVIEW.md)  
+→ **Taifa Merchant** (flagship business app): [`taifa-merchant/00_INDEX.md`](taifa-merchant/00_INDEX.md)  
+→ Implementation: [`payments/12_IMPLEMENTATION_PLAN.md`](payments/12_IMPLEMENTATION_PLAN.md)
+
 **Taifa Architecture Constitution (technical law)**  
 → [`architecture/README.md`](architecture/README.md)  
 → [`architecture/00_ARCHITECTURE_CONSTITUTION.md`](architecture/00_ARCHITECTURE_CONSTITUTION.md)
+
+**Master execution plan (portfolio & delivery)**  
+→ [`TAIFA_PRODUCT_PORTFOLIO_AND_DELIVERY_ROADMAP.md`](TAIFA_PRODUCT_PORTFOLIO_AND_DELIVERY_ROADMAP.md) · [`portfolio/00_INDEX.md`](portfolio/00_INDEX.md)
+
+**Product Engineering (mandatory operating framework)**  
+→ [`tpos/00_TPOS_CHARTER.md`](tpos/00_TPOS_CHARTER.md) — **TPOS** (architecture phase complete; all products follow TPOS from idea → production)
+
+**Engineering Operating System (mandatory delivery framework)**  
+→ [`teos/00_TEOS_CHARTER.md`](teos/00_TEOS_CHARTER.md) — **TEOS** (how all teams design, build, test, secure, release, and operate software; complements TPOS)
+
+**Enterprise monorepository (`taifa-platform`)**  
+→ [`../taifa-platform/README.md`](../taifa-platform/README.md)  
+→ Gate G0: [`../taifa-platform/MONOREPO_GATE_PACKAGE.md`](../taifa-platform/MONOREPO_GATE_PACKAGE.md)  
+→ Tree & standards: [`../taifa-platform/docs/engineering/REPOSITORY_TREE.md`](../taifa-platform/docs/engineering/REPOSITORY_TREE.md)
 
 **Taifa Platform Launch, Certification & Lifecycle Governance Framework**  
 → [`platform_governance/00_INDEX.md`](platform_governance/00_INDEX.md)  
@@ -29,6 +61,8 @@ Every platform follows Stages 0–9 and Gates G0–G8. Domain ops handbooks (Win
 → Executive summary: [`program_closure/14_EXECUTIVE_SUMMARY.md`](program_closure/14_EXECUTIVE_SUMMARY.md)
 
 Design is closed. Execution (pilots, validation, certification, controlled launch) is open. No ad hoc redesign.
+
+**Product Engineering phase:** All products follow **[TPOS](tpos/00_TPOS_CHARTER.md)** (Taifa Product Operating System).
 
 ## Index
 
@@ -52,6 +86,7 @@ Design is closed. Execution (pilots, validation, certification, controlled launc
 | 16 | Scorecard | [`governance/SCORECARD.md`](governance/SCORECARD.md) |
 | 17 | Engineering Culture | [`governance/ENGINEERING_CULTURE.md`](governance/ENGINEERING_CULTURE.md) |
 | — | ADRs | [`adr/README.md`](adr/README.md) |
+| — | **TNPI (Payments)** | [`payments/README.md`](payments/README.md) |
 | — | Technical Debt | [`governance/TECHNICAL_DEBT.md`](governance/TECHNICAL_DEBT.md) |
 
 ## Live scorecard API

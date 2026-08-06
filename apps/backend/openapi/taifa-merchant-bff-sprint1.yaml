@@ -1,0 +1,74 @@
+openapi: 3.0.3
+info:
+  title: Taifa Merchant BFF — Sprint 1
+  version: 1.0.0
+  description: Foundation APIs only (no payment acceptance).
+servers:
+  - url: /api/v1/merchant-app
+security:
+  - MerchantJWT: []
+paths:
+  /auth/signup:
+    post:
+      security: []
+      summary: Sign up (dev Identity stub; production uses Taifa Identity)
+  /auth/login:
+    post:
+      security: []
+      summary: Login
+  /auth/logout:
+    post:
+      summary: Logout
+  /auth/session:
+    get:
+      summary: Current session
+  /merchants/register:
+    post:
+      summary: Register business
+  /merchants/me:
+    get:
+      summary: Merchant profile
+    patch:
+      summary: Update merchant profile
+  /branches:
+    get:
+      summary: List branches
+    post:
+      summary: Create branch
+  /branches/{branch_id}:
+    get:
+      summary: Get branch
+    patch:
+      summary: Update branch
+    delete:
+      summary: Deactivate branch
+  /employees:
+    get:
+      summary: List employees
+    post:
+      summary: Invite employee
+  /employees/{employee_id}:
+    patch:
+      summary: Update role
+    delete:
+      summary: Deactivate employee
+  /devices:
+    get:
+      summary: List devices
+    post:
+      summary: Register device
+  /devices/{device_id}/activate:
+    post:
+      summary: Activate device
+  /devices/{device_id}/deactivate:
+    post:
+      summary: Deactivate device
+  /dashboard:
+    get:
+      summary: Merchant dashboard aggregate
+components:
+  securitySchemes:
+    MerchantJWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

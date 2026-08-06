@@ -2,6 +2,7 @@
 
 **Status:** Foundation (2026-07-19)  
 **Nature:** Interaction layer — **not** a payment engine  
+**TNPI:** Channel specs roll into [payments/merchant-acceptance/02_SOFTPOS.md](../payments/merchant-acceptance/02_SOFTPOS.md) and [payments/merchant-acceptance/03_QR_PAYMENTS.md](../payments/merchant-acceptance/03_QR_PAYMENTS.md) (Phase 4 MAP).
 
 Tap. Authenticate. Done.  
 All money movement: MAP `pay_intent` → `capture_merchant_payment` → ledger.

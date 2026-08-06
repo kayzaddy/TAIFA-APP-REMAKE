@@ -83,4 +83,5 @@ urlpatterns = [
     path("api/v1/map/", include("acceptance.urls")),
     path("api/v1/express/", include("express.urls")),
     path("api/v1/mobility-channels/", include("mobility_channels.urls")),
+    path("api/v1/merchant-app/", include("taifa_merchant.urls")),
 ]

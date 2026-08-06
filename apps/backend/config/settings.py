@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     "acceptance.apps.AcceptanceConfig",
     "express.apps.ExpressConfig",
     "mobility_channels.apps.MobilityChannelsConfig",
+    "taifa_merchant.apps.TaifaMerchantConfig",
 ]
 
 MIDDLEWARE = [
@@ -521,3 +522,11 @@ CARD_ACQUIRER = {
     "MERCHANT_ID": os.environ.get("CARD_ACQUIRER_MERCHANT_ID", ""),
     "TIMEOUT_SECONDS": int(os.environ.get("CARD_ACQUIRER_TIMEOUT_SECONDS", "30") or 30),
 }
+
+# === Taifa Merchant App (BFF) ===
+MERCHANT_JWT_SECRET = os.environ.get("MERCHANT_JWT_SECRET", SECRET_KEY)
+MERCHANT_JWT_ISSUER = os.environ.get("MERCHANT_JWT_ISSUER", "taifa-identity")
+MERCHANT_JWT_AUDIENCE = os.environ.get("MERCHANT_JWT_AUDIENCE", "taifa-merchant")
+MERCHANT_JWT_TTL_SECONDS = int(os.environ.get("MERCHANT_JWT_TTL_SECONDS", "3600"))
+MERCHANT_AUTH_PEPPER = os.environ.get("MERCHANT_AUTH_PEPPER", "change-me-merchant-pepper")
+TAIFA_IDENTITY_JWKS_URL = os.environ.get("TAIFA_IDENTITY_JWKS_URL", "")

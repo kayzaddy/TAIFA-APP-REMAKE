@@ -1,7 +1,8 @@
 # 02 — API Gateway Platform
 
 **Bounded context:** `platform.gateway`  
-**Phase 1:** Unified edge for routing, auth, limits, tracing
+**Phase 1:** Unified edge for routing, auth, limits, tracing  
+**National backbone:** Evolves into [Taifa Integration Platform (TIP)](../integration/00_PLATFORM_OVERVIEW.md) — enterprise & partner gateways, event bus, webhooks.
 
 ---
 
