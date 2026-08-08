@@ -6,6 +6,7 @@ import '../../../app/theme/taifa_colors.dart';
 import '../../../app/theme/taifa_dimens.dart';
 import '../application/mos_providers.dart';
 import 'widgets/commerce_kit.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Role gateway for Taifa Commerce MOS experiences.
 class CommerceMosHubScreen extends ConsumerWidget {
@@ -44,7 +45,7 @@ class CommerceMosHubScreen extends ConsumerWidget {
                         context.go('/home');
                       }
                     },
-                    icon: const Icon(Icons.arrow_back),
+                    icon: const Icon(LucideIcons.arrowLeft),
                   ),
                   const Spacer(),
                   TextButton(onPressed: () => context.push('/wallet'), child: const Text('Wallet')),
@@ -72,12 +73,12 @@ class CommerceMosHubScreen extends ConsumerWidget {
                   onAction: () => context.push('/commerce/onboarding'),
                 ),
               const SizedBox(height: TaifaSpacing.xl),
-              _role(context, 'Merchant Desk', 'Owner · today\'s health · Winga', Icons.dashboard_customize_outlined, TaifaColors.emerald600, '/commerce/desk'),
-              _role(context, 'Point of Sale', 'Cashier · scan · charge · close shift', Icons.point_of_sale, TaifaColors.ocean500, '/commerce/pos'),
-              _role(context, 'Warehouse', 'Receive · pick · pack · count', Icons.warehouse_outlined, TaifaColors.gold500, '/commerce/warehouse'),
-              _role(context, 'Procurement', 'Suppliers · POs · vendor performance', Icons.local_shipping_outlined, TaifaColors.emerald700, '/commerce/procurement'),
-              _role(context, 'Customer Shop', 'Browse · cart · pay · track', Icons.storefront_outlined, TaifaColors.ocean500, '/commerce/shop'),
-              _role(context, 'Management', 'Revenue · inventory · growth', Icons.insights_outlined, TaifaColors.emerald600, '/commerce/management'),
+              _role(context, 'Merchant Desk', 'Owner · today\'s health · Winga', LucideIcons.layoutGrid, TaifaColors.emerald600, '/commerce/desk'),
+              _role(context, 'Point of Sale', 'Cashier · scan · charge · close shift', LucideIcons.store, TaifaColors.ocean500, '/commerce/pos'),
+              _role(context, 'Warehouse', 'Receive · pick · pack · count', LucideIcons.warehouse, TaifaColors.gold500, '/commerce/warehouse'),
+              _role(context, 'Procurement', 'Suppliers · POs · vendor performance', LucideIcons.truck, TaifaColors.emerald700, '/commerce/procurement'),
+              _role(context, 'Customer Shop', 'Browse · cart · pay · track', LucideIcons.store, TaifaColors.ocean500, '/commerce/shop'),
+              _role(context, 'Management', 'Revenue · inventory · growth', LucideIcons.chartLine, TaifaColors.emerald600, '/commerce/management'),
               const SizedBox(height: TaifaSpacing.xl),
               TextButton(onPressed: () => context.push('/map'), child: const Text('Accept payments (MAP)')),
               TextButton(onPressed: () => context.push('/merchant'), child: const Text('Legacy kitchen queue')),
@@ -119,7 +120,7 @@ class CommerceMosHubScreen extends ConsumerWidget {
             ),
             title: Text(title, style: const TextStyle(fontWeight: FontWeight.w800)),
             subtitle: Text(subtitle),
-            trailing: const Icon(Icons.arrow_forward_ios, size: 14),
+            trailing: const Icon(LucideIcons.chevronRight, size: 14),
           ),
         ),
       ),

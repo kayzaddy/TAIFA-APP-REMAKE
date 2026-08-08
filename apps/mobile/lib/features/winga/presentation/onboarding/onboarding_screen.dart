@@ -8,6 +8,7 @@ import '../../application/brokerage_providers.dart';
 import '../../application/experience_providers.dart';
 import '../../domain/brokerage_models.dart';
 import '../widgets/experience_kit.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// First-success onboarding — value → role → wallet → first action.
 class WingaOnboardingScreen extends ConsumerStatefulWidget {
@@ -30,7 +31,7 @@ class _WingaOnboardingScreenState extends ConsumerState<WingaOnboardingScreen> {
       appBar: AppBar(
         title: const Text('Get started'),
         leading: IconButton(
-          icon: const Icon(Icons.close),
+          icon: const Icon(LucideIcons.x),
           onPressed: () => context.pop(),
         ),
       ),
@@ -104,7 +105,7 @@ class _WingaOnboardingScreenState extends ConsumerState<WingaOnboardingScreen> {
             _roleTile(
               'I need products or services',
               'Customer',
-              Icons.travel_explore,
+              LucideIcons.globe,
               TaifaColors.ocean500,
               () {
                 ref.read(wingaActorRoleProvider.notifier).setRole(
@@ -116,7 +117,7 @@ class _WingaOnboardingScreenState extends ConsumerState<WingaOnboardingScreen> {
             _roleTile(
               'I connect buyers with providers',
               'Winga',
-              Icons.handshake_outlined,
+              LucideIcons.handshake,
               TaifaColors.emerald600,
               () {
                 ref.read(wingaActorRoleProvider.notifier).setRole(
@@ -128,7 +129,7 @@ class _WingaOnboardingScreenState extends ConsumerState<WingaOnboardingScreen> {
             _roleTile(
               'I offer products or services',
               'Provider',
-              Icons.storefront_outlined,
+              LucideIcons.store,
               TaifaColors.gold500,
               () {
                 ref.read(wingaActorRoleProvider.notifier).setRole(
@@ -148,7 +149,7 @@ class _WingaOnboardingScreenState extends ConsumerState<WingaOnboardingScreen> {
             ),
             const SizedBox(height: TaifaSpacing.xl),
             ListTile(
-              leading: const Icon(Icons.account_balance_wallet_outlined),
+              leading: const Icon(LucideIcons.wallet),
               title: const Text('Connect Wallet'),
               subtitle: const Text('Already part of your Taifa account'),
               trailing: TextButton(
@@ -157,7 +158,7 @@ class _WingaOnboardingScreenState extends ConsumerState<WingaOnboardingScreen> {
               ),
             ),
             const ListTile(
-              leading: Icon(Icons.verified_outlined),
+              leading: Icon(LucideIcons.badgeCheck),
               title: Text('Verification'),
               subtitle: Text('KYC / KYB when you earn or sell'),
             ),
@@ -182,7 +183,7 @@ class _WingaOnboardingScreenState extends ConsumerState<WingaOnboardingScreen> {
     return switch (role) {
       WingaActorRole.broker => [
           ListTile(
-            leading: const Icon(Icons.campaign_outlined),
+            leading: const Icon(LucideIcons.megaphone),
             title: const Text('Browse opportunities'),
             subtitle: const Text('Campaigns with clear commissions'),
             onTap: () {
@@ -191,7 +192,7 @@ class _WingaOnboardingScreenState extends ConsumerState<WingaOnboardingScreen> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.filter_alt_outlined),
+            leading: const Icon(LucideIcons.funnel),
             title: const Text('Open Winga Desk'),
             onTap: () {
               ref.read(experiencePrefsProvider.notifier).completeOnboarding();
@@ -201,7 +202,7 @@ class _WingaOnboardingScreenState extends ConsumerState<WingaOnboardingScreen> {
         ],
       WingaActorRole.provider => [
           ListTile(
-            leading: const Icon(Icons.storefront_outlined),
+            leading: const Icon(LucideIcons.store),
             title: const Text('Open Provider Hub'),
             onTap: () {
               ref.read(experiencePrefsProvider.notifier).completeOnboarding();
@@ -211,7 +212,7 @@ class _WingaOnboardingScreenState extends ConsumerState<WingaOnboardingScreen> {
         ],
       _ => [
           ListTile(
-            leading: const Icon(Icons.explore_outlined),
+            leading: const Icon(LucideIcons.compass),
             title: const Text('Discover offerings'),
             subtitle: const Text('Hotels, insurance, property, and more'),
             onTap: () {
@@ -241,7 +242,7 @@ class _WingaOnboardingScreenState extends ConsumerState<WingaOnboardingScreen> {
         leading: Icon(icon, color: color),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.w800)),
         subtitle: Text(subtitle),
-        trailing: const Icon(Icons.chevron_right),
+        trailing: const Icon(LucideIcons.chevronRight),
       ),
     );
   }

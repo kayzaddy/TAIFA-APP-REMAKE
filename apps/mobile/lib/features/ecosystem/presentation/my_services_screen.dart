@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../application/ecosystem_modules_provider.dart';
 import '../domain/super_app_module_registry.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Enable / disable Super App modules — one identity, optional services.
 class MyServicesScreen extends ConsumerWidget {
@@ -23,7 +24,7 @@ class MyServicesScreen extends ConsumerWidget {
         actions: [
           IconButton(
             onPressed: state.isLoading ? null : ctrl.load,
-            icon: const Icon(Icons.refresh_rounded),
+            icon: const Icon(LucideIcons.refreshCw),
           ),
         ],
       ),

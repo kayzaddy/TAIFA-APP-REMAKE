@@ -6,6 +6,7 @@ import '../../application/merchant_auth_controller.dart';
 import '../../application/merchant_workspace_providers.dart';
 import '../../data/models/merchant_workspace_models.dart';
 import '../widgets/merchant_section_header.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class MerchantDashboardScreen extends ConsumerWidget {
   const MerchantDashboardScreen({super.key});
@@ -19,11 +20,11 @@ class MerchantDashboardScreen extends ConsumerWidget {
         title: const Text('Merchant workspace'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.devices),
+            icon: const Icon(LucideIcons.monitorSmartphone),
             onPressed: () => context.push('/taifa-merchant/devices'),
           ),
           IconButton(
-            icon: const Icon(Icons.logout),
+            icon: const Icon(LucideIcons.logOut),
             onPressed: () async {
               await ref.read(merchantAuthControllerProvider.notifier).logout();
               if (context.mounted) context.go('/taifa-merchant/login');
@@ -98,7 +99,7 @@ class MerchantDashboardScreen extends ConsumerWidget {
                 else
                   ...snapshot.notifications.take(3).map(
                         (n) => ListTile(
-                          leading: Icon(n.isRead ? Icons.mark_email_read : Icons.mark_email_unread),
+                          leading: Icon(n.isRead ? LucideIcons.mailOpen : LucideIcons.mail),
                           title: Text(n.title),
                           subtitle: Text(n.body),
                         ),
@@ -118,13 +119,13 @@ class MerchantDashboardScreen extends ConsumerWidget {
                 const SizedBox(height: 16),
                 const MerchantSectionHeader(title: 'Payments'),
                 ListTile(
-                  leading: const Icon(Icons.payments),
+                  leading: const Icon(LucideIcons.banknote),
                   title: const Text('Accept payments'),
                   subtitle: const Text('SoftPOS, QR, links — via TNPI'),
                   onTap: () => context.push('/taifa-merchant/payments'),
                 ),
                 ListTile(
-                  leading: const Icon(Icons.insights),
+                  leading: const Icon(LucideIcons.chartLine),
                   title: const Text('Today\'s sales'),
                   onTap: () => context.push('/taifa-merchant/payments/analytics'),
                 ),
@@ -133,7 +134,7 @@ class MerchantDashboardScreen extends ConsumerWidget {
                   const MerchantSectionHeader(title: 'Pending tasks'),
                   ...snapshot.pendingTasks.map(
                     (t) => ListTile(
-                      leading: const Icon(Icons.pending_actions),
+                      leading: const Icon(LucideIcons.hourglass),
                       title: Text(t['title']?.toString() ?? ''),
                     ),
                   ),

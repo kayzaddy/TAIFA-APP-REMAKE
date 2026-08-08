@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class MerchantWorkspaceShell extends StatelessWidget {
   const MerchantWorkspaceShell({super.key, required this.child});
@@ -35,10 +36,10 @@ class MerchantWorkspaceShell extends StatelessWidget {
           }
         },
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.dashboard_outlined), label: 'Home'),
-          NavigationDestination(icon: Icon(Icons.storefront_outlined), label: 'Profile'),
-          NavigationDestination(icon: Icon(Icons.tune), label: 'Settings'),
-          NavigationDestination(icon: Icon(Icons.notifications_outlined), label: 'Alerts'),
+          NavigationDestination(icon: Icon(LucideIcons.layoutGrid), label: 'Home'),
+          NavigationDestination(icon: Icon(LucideIcons.store), label: 'Profile'),
+          NavigationDestination(icon: Icon(LucideIcons.slidersHorizontal), label: 'Settings'),
+          NavigationDestination(icon: Icon(LucideIcons.bell), label: 'Alerts'),
         ],
       ),
     );

@@ -6,6 +6,7 @@ import '../../../../app/theme/taifa_colors.dart';
 import '../../../../app/theme/taifa_dimens.dart';
 import '../../application/mos_providers.dart';
 import '../widgets/commerce_kit.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Customer commerce experience — browse, cart, pay, track.
 class CommerceCustomerApp extends ConsumerStatefulWidget {
@@ -34,7 +35,7 @@ class _CommerceCustomerAppState extends ConsumerState<CommerceCustomerApp> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Shop'),
-        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => context.pop()),
+        leading: IconButton(icon: const Icon(LucideIcons.arrowLeft), onPressed: () => context.pop()),
       ),
       body: IndexedStack(
         index: _tab,
@@ -44,7 +45,7 @@ class _CommerceCustomerAppState extends ConsumerState<CommerceCustomerApp> {
             children: [
               TextField(
                 decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.search),
+                  prefixIcon: Icon(LucideIcons.search),
                   hintText: 'Search products',
                   border: OutlineInputBorder(),
                 ),
@@ -63,7 +64,7 @@ class _CommerceCustomerAppState extends ConsumerState<CommerceCustomerApp> {
                     children: [
                       IconButton(
                         icon: Icon(
-                          _wishlist.contains(p.id) ? Icons.favorite : Icons.favorite_border,
+                          _wishlist.contains(p.id) ? LucideIcons.heart : LucideIcons.heart,
                           color: TaifaColors.gold500,
                         ),
                         onPressed: () => setState(() {
@@ -71,7 +72,7 @@ class _CommerceCustomerAppState extends ConsumerState<CommerceCustomerApp> {
                         }),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.add_shopping_cart),
+                        icon: const Icon(LucideIcons.shoppingCart),
                         onPressed: () => ctrl.addToCart(p),
                       ),
                     ],
@@ -87,16 +88,16 @@ class _CommerceCustomerAppState extends ConsumerState<CommerceCustomerApp> {
         selectedIndex: _tab,
         onDestinationSelected: (i) => setState(() => _tab = i),
         destinations: [
-          const NavigationDestination(icon: Icon(Icons.storefront_outlined), label: 'Browse'),
+          const NavigationDestination(icon: Icon(LucideIcons.store), label: 'Browse'),
           NavigationDestination(
             icon: Badge(
               isLabelVisible: state.cart.isNotEmpty,
               label: Text('${state.cart.length}'),
-              child: const Icon(Icons.shopping_bag_outlined),
+              child: const Icon(LucideIcons.shoppingBag),
             ),
             label: 'Cart',
           ),
-          const NavigationDestination(icon: Icon(Icons.local_shipping_outlined), label: 'Orders'),
+          const NavigationDestination(icon: Icon(LucideIcons.truck), label: 'Orders'),
         ],
       ),
     );

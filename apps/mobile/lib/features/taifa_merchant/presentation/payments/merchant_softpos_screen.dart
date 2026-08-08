@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../core/merchant_api_client.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class MerchantSoftposScreen extends HookConsumerWidget {
   const MerchantSoftposScreen({super.key});
@@ -61,7 +62,7 @@ class MerchantSoftposScreen extends HookConsumerWidget {
                           busy.value = false;
                         }
                       },
-                icon: const Icon(Icons.nfc),
+                icon: const Icon(LucideIcons.wifi),
                 label: const Text('Tap to Pay (emulated NFC)'),
               ),
             if (status.value != null) ...[

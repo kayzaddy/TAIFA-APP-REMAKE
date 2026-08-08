@@ -6,6 +6,7 @@ import '../../../app/theme/taifa_colors.dart';
 import '../../../app/theme/taifa_dimens.dart';
 import '../application/express_providers.dart';
 import '../domain/express_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Review matched list items before one-tap checkout.
 class BasketReviewScreen extends ConsumerStatefulWidget {
@@ -55,7 +56,7 @@ class _BasketReviewScreenState extends ConsumerState<BasketReviewScreen> {
       appBar: AppBar(
         title: const Text('Basket Review'),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () {
             if (context.canPop()) {
               context.pop();
@@ -109,7 +110,7 @@ class _BasketReviewScreenState extends ConsumerState<BasketReviewScreen> {
             ...state.unknown.map(
               (u) => ListTile(
                 contentPadding: EdgeInsets.zero,
-                leading: Icon(Icons.help_outline, color: scheme.error),
+                leading: Icon(LucideIcons.circleHelp, color: scheme.error),
                 title: Text(u.name),
                 subtitle: const Text('Try another name or remove'),
               ),
@@ -197,7 +198,7 @@ class _BasketTile extends StatelessWidget {
     final text = Theme.of(context).textTheme;
     return ListTile(
       contentPadding: EdgeInsets.zero,
-      leading: const Icon(Icons.check_circle, color: TaifaColors.emerald600),
+      leading: const Icon(LucideIcons.circleCheckBig, color: TaifaColors.emerald600),
       title: Text(
         item.unit.isEmpty ? item.name : '${item.name} (${item.unit})',
         style: text.titleSmall?.copyWith(fontWeight: FontWeight.w700),
@@ -215,20 +216,20 @@ class _BasketTile extends StatelessWidget {
             visualDensity: VisualDensity.compact,
             constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
             onPressed: onMinus,
-            icon: const Icon(Icons.remove_circle_outline, size: 20),
+            icon: const Icon(LucideIcons.circleMinus, size: 20),
           ),
           Text('×${item.qty}', style: text.titleSmall),
           IconButton(
             visualDensity: VisualDensity.compact,
             constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
             onPressed: onPlus,
-            icon: const Icon(Icons.add_circle_outline, size: 20),
+            icon: const Icon(LucideIcons.circlePlus, size: 20),
           ),
           IconButton(
             visualDensity: VisualDensity.compact,
             constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
             onPressed: onDelete,
-            icon: const Icon(Icons.delete_outline, size: 20),
+            icon: const Icon(LucideIcons.trash2, size: 20),
           ),
         ],
       ),

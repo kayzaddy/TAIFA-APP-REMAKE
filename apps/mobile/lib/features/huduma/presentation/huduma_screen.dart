@@ -9,6 +9,7 @@ import '../../../app/theme/taifa_typography.dart';
 import '../../../shared/widgets/taifa_logo.dart';
 import '../application/huduma_providers.dart';
 import '../data/huduma_catalog.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class HudumaScreen extends ConsumerStatefulWidget {
   const HudumaScreen({super.key});
@@ -61,7 +62,7 @@ class _HudumaScreenState extends ConsumerState<HudumaScreen> {
                       }
                     },
                     icon: Icon(
-                      Icons.arrow_back_rounded,
+                      LucideIcons.arrowLeft,
                       color: palette.textPrimary,
                     ),
                   ),
@@ -87,7 +88,7 @@ class _HudumaScreenState extends ConsumerState<HudumaScreen> {
                   IconButton(
                     onPressed: ctrl.openHistory,
                     icon: Icon(
-                      Icons.receipt_long_rounded,
+                      LucideIcons.receipt,
                       color: palette.textMuted,
                     ),
                   ),
@@ -224,11 +225,11 @@ class _HudumaScreenState extends ConsumerState<HudumaScreen> {
                                 ),
                                 trailing: state.slotLabel == slot
                                     ? Icon(
-                                        Icons.check_circle_rounded,
+                                        LucideIcons.circleCheckBig,
                                         color: TaifaColors.emerald500,
                                       )
                                     : Icon(
-                                        Icons.circle_outlined,
+                                        LucideIcons.circle,
                                         color: palette.textMuted,
                                       ),
                               ),

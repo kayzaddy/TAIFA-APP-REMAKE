@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../core/merchant_api_client.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class MerchantBranchesScreen extends HookConsumerWidget {
   const MerchantBranchesScreen({super.key});
@@ -21,7 +22,7 @@ class MerchantBranchesScreen extends HookConsumerWidget {
           await api.createBranch({'name': name.text, 'code': code.text, 'city': 'Dar es Salaam'});
           if (context.mounted) Navigator.pop(context);
         },
-        child: const Icon(Icons.add),
+        child: const Icon(LucideIcons.plus),
       ),
       body: Column(
         children: [

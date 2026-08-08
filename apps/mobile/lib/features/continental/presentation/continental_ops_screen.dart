@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../wallet/application/wallet_providers.dart' show apiClientProvider;
 import '../../../data/continental/continental_client.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 final continentalClientProvider = Provider<ContinentalClient>(
   (ref) => ContinentalClient(ref.watch(apiClientProvider)),
@@ -60,7 +61,7 @@ class _ContinentalOpsScreenState extends ConsumerState<ContinentalOpsScreen> {
         actions: [
           IconButton(
             onPressed: _loading ? null : _load,
-            icon: const Icon(Icons.refresh_rounded),
+            icon: const Icon(LucideIcons.refreshCw),
           ),
         ],
       ),

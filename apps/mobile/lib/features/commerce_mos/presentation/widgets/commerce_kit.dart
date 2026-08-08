@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../../../../app/theme/taifa_colors.dart';
 import '../../../../app/theme/taifa_dimens.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Taifa Commerce design system primitives for MOS journeys.
 class MosMoneyText extends StatelessWidget {
@@ -265,7 +266,7 @@ class MosPaymentSummary extends StatelessWidget {
 }
 
 class MosEmpty extends StatelessWidget {
-  const MosEmpty(this.message, {super.key, this.icon = Icons.inbox_outlined});
+  const MosEmpty(this.message, {super.key, this.icon = LucideIcons.inbox});
   final String message;
   final IconData icon;
 

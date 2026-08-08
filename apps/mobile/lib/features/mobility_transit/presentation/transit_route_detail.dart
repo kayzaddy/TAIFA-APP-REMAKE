@@ -4,6 +4,7 @@ import '../../../app/theme/taifa_colors.dart';
 import '../../../app/theme/taifa_dimens.dart';
 import '../../../app/theme/taifa_theme.dart';
 import '../domain/transit_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class TransitRouteDetailSheet extends StatelessWidget {
   const TransitRouteDetailSheet({
@@ -85,7 +86,7 @@ class TransitRouteDetailSheet extends StatelessWidget {
               ),
               IconButton(
                 onPressed: onClose,
-                icon: Icon(Icons.close_rounded, color: palette.textMuted),
+                icon: Icon(LucideIcons.x, color: palette.textMuted),
               ),
             ],
           ),

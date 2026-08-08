@@ -4,13 +4,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/theme/taifa_colors.dart';
 import '../../../../app/theme/taifa_dimens.dart';
+import '../../../../app/theme/taifa_icons.dart';
 import '../../../../app/theme/taifa_theme.dart';
 import '../../../../data/dto/social_dto.dart';
 import '../../application/social_providers.dart';
 import '../../application/wallet_providers.dart';
 import '../../domain/currency.dart';
 import '../../domain/money.dart';
+import '../../../../shared/widgets/taifa_skeleton.dart';
+import '../../../../shared/widgets/taifa_stagger.dart';
 import 'social_widgets.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class MoneyRequestsScreen extends ConsumerStatefulWidget {
   const MoneyRequestsScreen({super.key});
@@ -42,7 +46,7 @@ class _MoneyRequestsScreenState extends ConsumerState<MoneyRequestsScreen> with 
               SocialScreenHeader(
                 title: 'Money Requests',
                 trailing: IconButton(
-                  icon: const Icon(Icons.add_circle_rounded),
+                  icon: const Icon(LucideIcons.circlePlus),
                   onPressed: () => _createRequest(context),
                 ),
               ),
@@ -57,7 +61,7 @@ class _MoneyRequestsScreenState extends ConsumerState<MoneyRequestsScreen> with 
               const SizedBox(height: TaifaSpacing.sm),
               Expanded(
                 child: requestsAsync.when(
-                  loading: () => const Center(child: CircularProgressIndicator()),
+                  loading: () => const TaifaSkeletonList(),
                   error: (e, _) => Center(child: Text('Could not load requests.\n$e', textAlign: TextAlign.center)),
                   data: (data) => TabBarView(
                     controller: _tabs,
@@ -96,14 +100,21 @@ class _RequestList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     if (requests.isEmpty) {
       return SocialEmptyState(
-        icon: Icons.request_page_rounded,
-        message: isReceived ? 'No one has requested money from you.' : 'You have not requested money from anyone.',
+        icon: TaifaIcons.moneyRequest,
+        title: isReceived ? 'Nothing to pay' : 'No requests sent',
+        message: isReceived
+            ? 'When someone asks you for money, it lands here.'
+            : 'Ask a friend to settle up — they get a notification and can '
+                  'pay in one tap.',
       );
     }
     return ListView.separated(
       itemCount: requests.length,
       separatorBuilder: (_, _) => const SizedBox(height: TaifaSpacing.sm),
-      itemBuilder: (_, i) => _RequestTile(request: requests[i], isReceived: isReceived),
+      itemBuilder: (_, i) => TaifaStaggerIn(
+        index: i,
+        child: _RequestTile(request: requests[i], isReceived: isReceived),
+      ),
     );
   }
 }

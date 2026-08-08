@@ -6,6 +6,7 @@ import '../../../app/theme/taifa_colors.dart';
 import '../../../app/theme/taifa_dimens.dart';
 import '../../../app/theme/taifa_theme.dart';
 import '../application/transit_providers.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class TransitStationScreen extends ConsumerStatefulWidget {
   const TransitStationScreen({super.key, required this.stopCode});
@@ -67,7 +68,7 @@ class _TransitStationScreenState extends ConsumerState<TransitStationScreen> {
                       final label = time.length >= 5 ? time.substring(0, 5) : time;
                       return Card(
                         child: ListTile(
-                          leading: const Icon(Icons.directions_bus_filled_rounded, color: TaifaColors.emerald500),
+                          leading: const Icon(LucideIcons.bus, color: TaifaColors.emerald500),
                           title: Text('${u['route_name'] ?? ''}', style: TextStyle(color: palette.textPrimary)),
                           subtitle: Text('${u['route_code'] ?? ''}', style: TextStyle(color: palette.textMuted, fontSize: 12)),
                           trailing: Text(label, style: TextStyle(color: palette.textPrimary, fontWeight: FontWeight.w700)),

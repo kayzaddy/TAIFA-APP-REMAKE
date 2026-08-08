@@ -14,6 +14,7 @@ import '../data/dar_places.dart';
 import '../domain/place.dart';
 import '../domain/ride_product.dart';
 import '../domain/trip.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Mobility — Demo Complete passenger ride experience (mock gateways).
 /// Map rendering goes through [MapsProvider] so Google/Mapbox can swap in later.
@@ -67,12 +68,12 @@ class _MobilityScreenState extends ConsumerState<MobilityScreen> {
                     ),
                   ),
                   _ChipButton(
-                    icon: Icons.sos_rounded,
+                    icon: LucideIcons.siren,
                     onTap: ctrl.triggerSos,
                   ),
                   const SizedBox(width: TaifaSpacing.sm),
                   _ChipButton(
-                    icon: Icons.history_rounded,
+                    icon: LucideIcons.history,
                     onTap: ctrl.openHistory,
                   ),
                 ],
@@ -208,14 +209,14 @@ class _HomeSheet extends StatelessWidget {
           ),
           const SizedBox(height: TaifaSpacing.md),
           _FieldTap(
-            icon: Icons.my_location_rounded,
+            icon: LucideIcons.locateFixed,
             label: state.pickup?.name ?? 'Current location',
             subtitle: state.pickup?.subtitle ?? 'Detecting…',
             onTap: ctrl.openPlacePicker,
           ),
           const SizedBox(height: TaifaSpacing.sm),
           _FieldTap(
-            icon: Icons.search_rounded,
+            icon: LucideIcons.search,
             label: state.dropoff?.name ?? 'Destination',
             subtitle: state.dropoff?.subtitle ?? 'Airport, mall, home…',
             accent: true,
@@ -298,7 +299,7 @@ class _PlaceSheetState extends ConsumerState<_PlaceSheet> {
               IconButton(
                 onPressed: ctrl.backToHome,
                 icon: Icon(
-                  Icons.arrow_back_rounded,
+                  LucideIcons.arrowLeft,
                   color: palette.textPrimary,
                 ),
               ),
@@ -334,7 +335,7 @@ class _PlaceSheetState extends ConsumerState<_PlaceSheet> {
               hintStyle: TextStyle(color: palette.textMuted),
               filled: true,
               fillColor: palette.surfaceAlt,
-              prefixIcon: Icon(Icons.search, color: palette.textMuted),
+              prefixIcon: Icon(LucideIcons.search, color: palette.textMuted),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
                 borderSide: BorderSide.none,
@@ -351,10 +352,10 @@ class _PlaceSheetState extends ConsumerState<_PlaceSheet> {
                   contentPadding: EdgeInsets.zero,
                   leading: Icon(
                     p.kind == PlaceKind.airport
-                        ? Icons.flight_takeoff_rounded
+                        ? LucideIcons.planeTakeoff
                         : p.kind == PlaceKind.home
-                        ? Icons.home_rounded
-                        : Icons.place_rounded,
+                        ? LucideIcons.house
+                        : LucideIcons.mapPin,
                     color: TaifaColors.gold400,
                   ),
                   title: Text(
@@ -468,7 +469,7 @@ class _QuoteSheet extends ConsumerWidget {
               IconButton(
                 onPressed: ctrl.openPlacePicker,
                 icon: Icon(
-                  Icons.arrow_back_rounded,
+                  LucideIcons.arrowLeft,
                   color: palette.textPrimary,
                 ),
               ),
@@ -633,10 +634,10 @@ class _ProductTile extends StatelessWidget {
   }
 
   IconData _iconFor(String key) => switch (key) {
-    'boda' => Icons.two_wheeler_rounded,
-    'xl' => Icons.airport_shuttle_rounded,
-    'comfort' => Icons.airline_seat_recline_extra_rounded,
-    _ => Icons.directions_car_filled_rounded,
+    'boda' => LucideIcons.bike,
+    'xl' => LucideIcons.truck,
+    'comfort' => LucideIcons.armchair,
+    _ => LucideIcons.car,
   };
 }
 
@@ -689,7 +690,7 @@ class _SearchingSheet extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.sms_rounded, color: TaifaColors.gold400, size: 18),
+                      Icon(LucideIcons.messageSquareText, color: TaifaColors.gold400, size: 18),
                       const SizedBox(width: 6),
                       Text(
                         'SMS sent to ${state.smsDriverName.isEmpty ? 'rider' : state.smsDriverName}',
@@ -727,7 +728,7 @@ class _SearchingSheet extends StatelessWidget {
               height: 44,
               child: FilledButton.icon(
                 onPressed: ctrl.simulateFeaturePhoneAccept,
-                icon: const Icon(Icons.check_circle_outline_rounded, size: 18),
+                icon: const Icon(LucideIcons.circleCheck, size: 18),
                 label: const Text('Simulate driver replies YES'),
                 style: FilledButton.styleFrom(
                   backgroundColor: TaifaColors.emerald700,
@@ -931,7 +932,7 @@ class _CompletedSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
-            Icons.check_circle_rounded,
+            LucideIcons.circleCheckBig,
             color: TaifaColors.emerald500,
             size: 52,
           ),
@@ -1077,7 +1078,7 @@ class _HistorySheet extends StatelessWidget {
             children: [
               IconButton(
                 onPressed: ctrl.backToHome,
-                icon: Icon(Icons.close_rounded, color: palette.textPrimary),
+                icon: Icon(LucideIcons.x, color: palette.textPrimary),
               ),
               Text(
                 'Ride history',
@@ -1190,7 +1191,7 @@ class _FieldTap extends StatelessWidget {
                 ],
               ),
             ),
-            Icon(Icons.chevron_right_rounded, color: palette.textMuted),
+            Icon(LucideIcons.chevronRight, color: palette.textMuted),
           ],
         ),
       ),
@@ -1223,7 +1224,7 @@ class _TransitPromoCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Icon(
-                  Icons.directions_bus_filled_rounded,
+                  LucideIcons.bus,
                   color: TaifaColors.gold400,
                 ),
               ),
@@ -1251,7 +1252,7 @@ class _TransitPromoCard extends StatelessWidget {
                 ),
               ),
               const Icon(
-                Icons.chevron_right_rounded,
+                LucideIcons.chevronRight,
                 color: TaifaColors.gold400,
               ),
             ],

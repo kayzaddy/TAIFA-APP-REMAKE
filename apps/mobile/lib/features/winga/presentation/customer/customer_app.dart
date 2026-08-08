@@ -9,6 +9,7 @@ import '../../application/brokerage_providers.dart';
 import '../../domain/brokerage_models.dart';
 import '../widgets/experience_kit.dart';
 import '../widgets/winga_ui.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Customer journey app — discover → compare → deal → pay → review.
 class WingaCustomerApp extends ConsumerStatefulWidget {
@@ -66,18 +67,18 @@ class _WingaCustomerAppState extends ConsumerState<WingaCustomerApp> {
       appBar: AppBar(
         title: const Text('Find & book'),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.pop(),
         ),
         actions: [
           IconButton(
             tooltip: 'Help',
             onPressed: () => _showHelp(context),
-            icon: const Icon(Icons.help_outline),
+            icon: const Icon(LucideIcons.circleHelp),
           ),
           IconButton(
             onPressed: () => context.push('/wallet'),
-            icon: const Icon(Icons.account_balance_wallet_outlined),
+            icon: const Icon(LucideIcons.wallet),
           ),
         ],
       ),
@@ -160,19 +161,19 @@ class _WingaCustomerAppState extends ConsumerState<WingaCustomerApp> {
         onDestinationSelected: (i) => setState(() => _tab = i),
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.explore_outlined),
+            icon: Icon(LucideIcons.compass),
             label: 'Discover',
           ),
           NavigationDestination(
-            icon: Icon(Icons.compare_arrows),
+            icon: Icon(LucideIcons.arrowLeftRight),
             label: 'Compare',
           ),
           NavigationDestination(
-            icon: Icon(Icons.receipt_long_outlined),
+            icon: Icon(LucideIcons.receipt),
             label: 'Deals',
           ),
           NavigationDestination(
-            icon: Icon(Icons.auto_awesome_outlined),
+            icon: Icon(LucideIcons.sparkles),
             label: 'Assist',
           ),
         ],
@@ -258,7 +259,7 @@ class _Discover extends StatelessWidget {
           controller: search,
           decoration: const InputDecoration(
             hintText: 'Try “hotel Dar” or “motor insurance”',
-            prefixIcon: Icon(Icons.search),
+            prefixIcon: Icon(LucideIcons.search),
             border: OutlineInputBorder(),
           ),
           onSubmitted: onSearch,
@@ -349,7 +350,7 @@ class _Compare extends StatelessWidget {
     if (offering == null) {
       return const WingaEmptyState(
         message: 'Select an offering to compare and request a quote',
-        icon: Icons.compare_arrows,
+        icon: LucideIcons.arrowLeftRight,
       );
     }
     final o = offering!;
@@ -372,7 +373,7 @@ class _Compare extends StatelessWidget {
         if (winga != null)
           Card(
             child: ListTile(
-              leading: const Icon(Icons.handshake_outlined),
+              leading: const Icon(LucideIcons.handshake),
               title: Text(winga.displayName),
               subtitle: Text(winga.bio),
               trailing: WingaTrustBadge(
@@ -465,7 +466,7 @@ class _Assist extends StatelessWidget {
           ...state.assistTips.map(
             (t) => Card(
               child: ListTile(
-                leading: const Icon(Icons.lightbulb_outline),
+                leading: const Icon(LucideIcons.lightbulb),
                 title: Text(t),
               ),
             ),

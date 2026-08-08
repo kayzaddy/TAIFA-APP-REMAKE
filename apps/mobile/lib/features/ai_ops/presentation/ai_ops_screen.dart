@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../wallet/application/wallet_providers.dart' show apiClientProvider;
 import '../../../data/ai_os/ai_os_client.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 final aiOsClientProvider = Provider<AiOsClient>(
   (ref) => AiOsClient(ref.watch(apiClientProvider)),
@@ -71,7 +72,7 @@ class _AiOpsScreenState extends ConsumerState<AiOpsScreen> {
         actions: [
           IconButton(
             onPressed: _loading ? null : _load,
-            icon: const Icon(Icons.refresh_rounded),
+            icon: const Icon(LucideIcons.refreshCw),
           ),
         ],
       ),

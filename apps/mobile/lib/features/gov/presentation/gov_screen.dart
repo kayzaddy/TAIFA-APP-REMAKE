@@ -9,6 +9,7 @@ import '../../../app/theme/taifa_typography.dart';
 import '../../../shared/widgets/taifa_logo.dart';
 import '../application/gov_providers.dart';
 import '../domain/gov_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class GovScreen extends ConsumerStatefulWidget {
   const GovScreen({super.key});
@@ -129,7 +130,7 @@ class _GovScreenState extends ConsumerState<GovScreen> {
         children: [
           IconButton(
             onPressed: onBack,
-            icon: Icon(Icons.arrow_back_rounded, color: palette.textPrimary),
+            icon: Icon(LucideIcons.arrowLeft, color: palette.textPrimary),
           ),
           const TaifaLogo(variant: TaifaLogoVariant.mark, size: 32),
           const SizedBox(width: 8),
@@ -145,7 +146,7 @@ class _GovScreenState extends ConsumerState<GovScreen> {
           ),
           IconButton(
             onPressed: onHistory,
-            icon: Icon(Icons.history_rounded, color: palette.textMuted),
+            icon: Icon(LucideIcons.history, color: palette.textMuted),
           ),
         ],
       ),
@@ -168,7 +169,7 @@ class _Home extends StatelessWidget {
           onChanged: ctrl.search,
           decoration: InputDecoration(
             hintText: 'Search NIDA, TRA, passport…',
-            prefixIcon: Icon(Icons.search_rounded, color: palette.textMuted),
+            prefixIcon: Icon(LucideIcons.search, color: palette.textMuted),
             filled: true,
             fillColor: palette.surface,
             border: OutlineInputBorder(
@@ -206,7 +207,7 @@ class _Home extends StatelessWidget {
                   style: TextStyle(color: palette.textMuted, fontSize: 12),
                 ),
                 trailing: Icon(
-                  Icons.chevron_right_rounded,
+                  LucideIcons.chevronRight,
                   color: palette.textMuted,
                 ),
               ),
@@ -331,7 +332,7 @@ class _Track extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Icon(
-            Icons.hourglass_top_rounded,
+            LucideIcons.hourglass,
             color: TaifaColors.gold400,
             size: 44,
           ),

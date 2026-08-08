@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../app/theme/taifa_colors.dart';
 import '../../../app/theme/taifa_dimens.dart';
 import '../application/express_providers.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Taifa Express hub — Smart Shopping List first.
 class ExpressHubScreen extends ConsumerStatefulWidget {
@@ -33,7 +34,7 @@ class _ExpressHubScreenState extends ConsumerState<ExpressHubScreen> {
       appBar: AppBar(
         title: const Text('Taifa Express'),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () {
             if (context.canPop()) {
               context.pop();
@@ -58,7 +59,7 @@ class _ExpressHubScreenState extends ConsumerState<ExpressHubScreen> {
           const SizedBox(height: TaifaSpacing.xl),
           FilledButton.icon(
             onPressed: () => context.push('/express/list'),
-            icon: const Icon(Icons.edit_note),
+            icon: const Icon(LucideIcons.squarePen),
             label: const Text('Write Shopping List'),
           ),
           const SizedBox(height: TaifaSpacing.sm),
@@ -66,7 +67,7 @@ class _ExpressHubScreenState extends ConsumerState<ExpressHubScreen> {
             onPressed: state.basket.isEmpty
                 ? null
                 : () => context.push('/express/basket'),
-            icon: const Icon(Icons.shopping_basket_outlined),
+            icon: const Icon(LucideIcons.shoppingBasket),
             label: Text(
               state.basket.isEmpty
                   ? 'Basket Review'
@@ -87,7 +88,7 @@ class _ExpressHubScreenState extends ConsumerState<ExpressHubScreen> {
               subtitle: Text(
                 '${state.lastOrder!.status} · ${state.lastOrder!.storeName}',
               ),
-              trailing: const Icon(Icons.chevron_right),
+              trailing: const Icon(LucideIcons.chevronRight),
               onTap: () => context.push('/express/track/${state.lastOrder!.id}'),
             ),
           ],
@@ -97,7 +98,7 @@ class _ExpressHubScreenState extends ConsumerState<ExpressHubScreen> {
             ...state.orders.take(5).map(
               (o) => ListTile(
                 contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.local_shipping_outlined, color: TaifaColors.emerald600),
+                leading: const Icon(LucideIcons.truck, color: TaifaColors.emerald600),
                 title: Text(o.publicCode),
                 subtitle: Text('${o.status} · ${o.totalMinor} ${o.currency}'),
                 onTap: () => context.push('/express/track/${o.id}'),

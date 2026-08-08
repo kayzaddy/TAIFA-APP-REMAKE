@@ -9,6 +9,7 @@ import '../../../app/theme/taifa_typography.dart';
 import '../../../shared/widgets/taifa_logo.dart';
 import '../application/health_providers.dart';
 import '../domain/health_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class HealthScreen extends ConsumerStatefulWidget {
   const HealthScreen({super.key});
@@ -90,7 +91,7 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
                       }
                     },
                     icon: Icon(
-                      Icons.arrow_back_rounded,
+                      LucideIcons.arrowLeft,
                       color: palette.textPrimary,
                     ),
                   ),
@@ -116,7 +117,7 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
                   IconButton(
                     onPressed: ctrl.openHistory,
                     icon: Icon(
-                      Icons.event_note_rounded,
+                      LucideIcons.calendar,
                       color: palette.textMuted,
                     ),
                   ),
@@ -136,7 +137,7 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
                         decoration: InputDecoration(
                           hintText: 'Search hospitals & specialties…',
                           prefixIcon: Icon(
-                            Icons.search_rounded,
+                            LucideIcons.search,
                             color: palette.textMuted,
                           ),
                           filled: true,
@@ -286,7 +287,7 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Icon(
-                          Icons.check_circle_rounded,
+                          LucideIcons.circleCheckBig,
                           color: TaifaColors.emerald500,
                           size: 48,
                         ),

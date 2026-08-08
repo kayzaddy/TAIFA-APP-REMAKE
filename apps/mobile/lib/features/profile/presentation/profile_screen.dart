@@ -7,6 +7,7 @@ import '../../../app/theme/taifa_theme.dart';
 import '../../../app/theme/taifa_typography.dart';
 import '../../../shared/widgets/taifa_logo.dart';
 import '../application/profile_providers.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -65,7 +66,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     }
                   },
                   icon: Icon(
-                    Icons.arrow_back_rounded,
+                    LucideIcons.arrowLeft,
                     color: palette.textPrimary,
                   ),
                 ),

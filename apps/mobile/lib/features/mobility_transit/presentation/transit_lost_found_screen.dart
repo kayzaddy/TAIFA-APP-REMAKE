@@ -7,6 +7,7 @@ import '../../../app/theme/taifa_dimens.dart';
 import '../../../app/theme/taifa_theme.dart';
 import '../application/transit_providers.dart';
 import '../domain/transit_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class TransitLostFoundScreen extends ConsumerStatefulWidget {
   const TransitLostFoundScreen({super.key});
@@ -68,13 +69,13 @@ class _TransitLostFoundScreenState extends ConsumerState<TransitLostFoundScreen>
               PopupMenuItem(value: 'found', child: Text('Found only')),
               PopupMenuItem(value: 'lost', child: Text('Lost only')),
             ],
-            icon: const Icon(Icons.filter_list_rounded),
+            icon: const Icon(LucideIcons.funnel),
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: state.isBusy ? null : () => _showReportSheet(context, ctrl),
-        icon: const Icon(Icons.add_rounded),
+        icon: const Icon(LucideIcons.plus),
         label: const Text('Report'),
       ),
       body: state.isBusy && bundle == null
@@ -257,7 +258,7 @@ class _TransitLostFoundScreenState extends ConsumerState<TransitLostFoundScreen>
                       });
                     }
                   },
-                  icon: const Icon(Icons.photo_camera_outlined, size: 18),
+                  icon: const Icon(LucideIcons.camera, size: 18),
                   label: Text(photoName.isEmpty ? 'Add photo' : photoName),
                 ),
                 const SizedBox(height: 12),
@@ -429,7 +430,7 @@ class _LostFoundCard extends StatelessWidget {
             const SizedBox(height: 6),
             Row(
               children: [
-                Icon(Icons.place_rounded, size: 14, color: palette.textMuted),
+                Icon(LucideIcons.mapPin, size: 14, color: palette.textMuted),
                 const SizedBox(width: 4),
                 Text(
                   item.stopCode,

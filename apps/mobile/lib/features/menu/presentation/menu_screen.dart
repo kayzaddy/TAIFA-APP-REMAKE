@@ -7,6 +7,7 @@ import '../../../app/theme/taifa_theme.dart';
 import '../../../app/theme/taifa_typography.dart';
 import '../../../shared/widgets/taifa_logo.dart';
 import '../../ecosystem/application/ecosystem_modules_provider.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Super-app directory — shows enabled modules from My Services.
 class MenuScreen extends ConsumerWidget {
@@ -45,7 +46,7 @@ class MenuScreen extends ConsumerWidget {
             _MenuTile(
               label: 'My Services',
               subtitle: 'Enable or disable modules',
-              icon: Icons.apps_rounded,
+              icon: LucideIcons.layoutGrid,
               route: '/my-services',
               tint: TaifaColors.ocean400,
             ),
@@ -118,7 +119,7 @@ class _MenuTile extends StatelessWidget {
               subtitle,
               style: TextStyle(color: palette.textMuted, fontSize: 12),
             ),
-            trailing: Icon(Icons.chevron_right_rounded, color: palette.textMuted),
+            trailing: Icon(LucideIcons.chevronRight, color: palette.textMuted),
           ),
         ),
       ),

@@ -9,6 +9,7 @@ import '../../../app/theme/taifa_typography.dart';
 import '../../../shared/widgets/taifa_logo.dart';
 import '../application/stay_providers.dart';
 import '../domain/hotel_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Hotels — Demo Complete stay booking (mock catalog + wallet pay).
 class HotelsScreen extends ConsumerStatefulWidget {
@@ -121,7 +122,7 @@ class _TopBar extends StatelessWidget {
         children: [
           IconButton(
             onPressed: onBack,
-            icon: Icon(Icons.arrow_back_rounded, color: palette.textPrimary),
+            icon: Icon(LucideIcons.arrowLeft, color: palette.textPrimary),
           ),
           const TaifaLogo(variant: TaifaLogoVariant.mark, size: 32),
           const SizedBox(width: 8),
@@ -137,7 +138,7 @@ class _TopBar extends StatelessWidget {
           ),
           IconButton(
             onPressed: onHistory,
-            icon: Icon(Icons.receipt_long_rounded, color: palette.textMuted),
+            icon: Icon(LucideIcons.receipt, color: palette.textMuted),
             tooltip: 'Bookings',
           ),
         ],
@@ -180,7 +181,7 @@ class _Home extends StatelessWidget {
           onChanged: ctrl.search,
           decoration: InputDecoration(
             hintText: 'Search Dar, Zanzibar, Arusha…',
-            prefixIcon: Icon(Icons.search_rounded, color: palette.textMuted),
+            prefixIcon: Icon(LucideIcons.search, color: palette.textMuted),
             filled: true,
             fillColor: palette.surface,
             border: OutlineInputBorder(
@@ -255,7 +256,7 @@ class _HotelTile extends StatelessWidget {
                     ],
                   ),
                 ),
-                child: const Icon(Icons.hotel_rounded, color: Colors.white70),
+                child: const Icon(LucideIcons.bed, color: Colors.white70),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -395,7 +396,7 @@ class _Detail extends StatelessWidget {
             const Spacer(),
             IconButton(
               onPressed: () => ctrl.setGuests(state.guests - 1),
-              icon: Icon(Icons.remove_circle_outline, color: palette.textMuted),
+              icon: Icon(LucideIcons.circleMinus, color: palette.textMuted),
             ),
             Text(
               '${state.guests}',
@@ -406,7 +407,7 @@ class _Detail extends StatelessWidget {
             ),
             IconButton(
               onPressed: () => ctrl.setGuests(state.guests + 1),
-              icon: Icon(Icons.add_circle_outline, color: palette.textMuted),
+              icon: Icon(LucideIcons.circlePlus, color: palette.textMuted),
             ),
           ],
         ),
@@ -675,7 +676,7 @@ class _Confirmed extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Icon(
-            Icons.check_circle_rounded,
+            LucideIcons.circleCheckBig,
             color: TaifaColors.emerald500,
             size: 48,
           ),

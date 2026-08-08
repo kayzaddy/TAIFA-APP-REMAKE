@@ -7,6 +7,7 @@ import '../../application/experience_providers.dart';
 import '../../domain/opportunity_models.dart';
 import '../widgets/experience_kit.dart';
 import '../widgets/winga_ui.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Opportunity marketplace — campaigns Wingas can apply to.
 class WingaOpportunityFeedScreen extends ConsumerStatefulWidget {
@@ -48,7 +49,7 @@ class _WingaOpportunityFeedScreenState
       appBar: AppBar(
         title: const Text('Opportunities'),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.pop(),
         ),
         actions: [
@@ -63,7 +64,7 @@ class _WingaOpportunityFeedScreenState
                 ),
               );
             },
-            icon: const Icon(Icons.auto_awesome),
+            icon: const Icon(LucideIcons.sparkles),
           ),
         ],
       ),
@@ -79,7 +80,7 @@ class _WingaOpportunityFeedScreenState
             controller: _search,
             decoration: const InputDecoration(
               hintText: 'Search industry, city, or campaign…',
-              prefixIcon: Icon(Icons.search),
+              prefixIcon: Icon(LucideIcons.search),
               border: OutlineInputBorder(),
             ),
             onSubmitted: (v) => setState(() => _query = v),
@@ -108,7 +109,7 @@ class _WingaOpportunityFeedScreenState
           if (feed.isEmpty)
             const WingaEmptyState(
               message: 'No campaigns match — try clearing filters',
-              icon: Icons.campaign_outlined,
+              icon: LucideIcons.megaphone,
             )
           else
             ...feed.map((o) {

@@ -3,9 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/theme/taifa_colors.dart';
 import '../../../../app/theme/taifa_dimens.dart';
+import '../../../../app/theme/taifa_icons.dart';
 import '../../../../app/theme/taifa_theme.dart';
 import '../../../../data/dto/social_dto.dart';
 import '../../application/social_providers.dart';
+import '../../../../shared/widgets/taifa_skeleton.dart';
+import '../../../../shared/widgets/taifa_stagger.dart';
 import 'social_widgets.dart';
 
 /// The wallet/payments notification inbox — deliberately named
@@ -28,16 +31,25 @@ class PaymentNotificationsScreen extends ConsumerWidget {
               const SizedBox(height: TaifaSpacing.lg),
               Expanded(
                 child: asyncData.when(
-                  loading: () => const Center(child: CircularProgressIndicator()),
+                  loading: () => const TaifaSkeletonList(),
                   error: (e, _) => Center(child: Text('Could not load notifications.\n$e', textAlign: TextAlign.center)),
                   data: (data) => data.notifications.isEmpty
-                      ? const SocialEmptyState(icon: Icons.notifications_none_rounded, message: 'No notifications yet.')
+                      ? const SocialEmptyState(
+                          icon: TaifaIcons.notifications,
+                          title: 'All caught up',
+                          message:
+                              'Money requests, bill shares and link payments '
+                              'will show up here.',
+                        )
                       : RefreshIndicator(
                           onRefresh: () async => ref.invalidate(notificationsProvider),
                           child: ListView.separated(
                             itemCount: data.notifications.length,
                             separatorBuilder: (_, _) => const SizedBox(height: TaifaSpacing.sm),
-                            itemBuilder: (_, i) => _NotificationTile(notification: data.notifications[i]),
+                            itemBuilder: (_, i) => TaifaStaggerIn(
+                              index: i,
+                              child: _NotificationTile(notification: data.notifications[i]),
+                            ),
                           ),
                         ),
                 ),

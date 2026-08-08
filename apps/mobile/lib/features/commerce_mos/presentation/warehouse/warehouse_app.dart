@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../app/theme/taifa_dimens.dart';
 import '../../application/mos_providers.dart';
 import '../widgets/commerce_kit.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Warehouse staff — receive, count, low-stock focus.
 class CommerceWarehouseApp extends ConsumerStatefulWidget {
@@ -31,7 +32,7 @@ class _CommerceWarehouseAppState extends ConsumerState<CommerceWarehouseApp> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Warehouse'),
-        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => context.pop()),
+        leading: IconButton(icon: const Icon(LucideIcons.arrowLeft), onPressed: () => context.pop()),
       ),
       body: ListView(
         padding: const EdgeInsets.all(TaifaSpacing.screenH),
@@ -45,7 +46,7 @@ class _CommerceWarehouseAppState extends ConsumerState<CommerceWarehouseApp> {
             onAction: () => ctrl.runAssist('inventory_forecast'),
           ),
           const SizedBox(height: TaifaSpacing.lg),
-          ...state.assistTips.map((t) => ListTile(leading: const Icon(Icons.tips_and_updates_outlined), title: Text(t))),
+          ...state.assistTips.map((t) => ListTile(leading: const Icon(LucideIcons.lightbulb), title: Text(t))),
           const SizedBox(height: TaifaSpacing.md),
           Text('Inventory', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
           for (final p in state.products)
@@ -91,7 +92,7 @@ class _CommerceWarehouseAppState extends ConsumerState<CommerceWarehouseApp> {
                 ),
               ),
           if (state.orders.where((o) => o.paid && o.status != 'fulfilled').isEmpty)
-            const MosEmpty('No paid orders waiting for pick/pack', icon: Icons.local_shipping_outlined),
+            const MosEmpty('No paid orders waiting for pick/pack', icon: LucideIcons.truck),
         ],
       ),
     );

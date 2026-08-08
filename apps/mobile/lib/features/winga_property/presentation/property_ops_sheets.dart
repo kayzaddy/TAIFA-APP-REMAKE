@@ -4,6 +4,7 @@ import '../../../app/theme/taifa_colors.dart';
 import '../../../app/theme/taifa_dimens.dart';
 import '../../../app/theme/taifa_theme.dart';
 import '../domain/property_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class PropertyOpsSheet extends StatelessWidget {
   const PropertyOpsSheet({
@@ -35,14 +36,14 @@ class PropertyOpsSheet extends StatelessWidget {
         children: [
           Row(
             children: [
-              IconButton(onPressed: onClose, icon: const Icon(Icons.close_rounded)),
+              IconButton(onPressed: onClose, icon: const Icon(LucideIcons.x)),
               Expanded(
                 child: Text(
                   'Property Ops',
                   style: TextStyle(color: palette.textPrimary, fontWeight: FontWeight.w700),
                 ),
               ),
-              IconButton(onPressed: onRefresh, icon: const Icon(Icons.refresh_rounded)),
+              IconButton(onPressed: onRefresh, icon: const Icon(LucideIcons.refreshCw)),
             ],
           ),
           Expanded(
@@ -75,7 +76,7 @@ class PropertyOpsSheet extends StatelessWidget {
                     (r) => ListTile(
                       dense: true,
                       contentPadding: EdgeInsets.zero,
-                      leading: const Icon(Icons.flag_rounded, color: TaifaColors.gold400, size: 20),
+                      leading: const Icon(LucideIcons.flag, color: TaifaColors.gold400, size: 20),
                       title: Text(r.listingTitle, style: const TextStyle(fontSize: 13)),
                       subtitle: Text('${r.reason} · ${r.status}', style: const TextStyle(fontSize: 11)),
                     ),
@@ -90,7 +91,7 @@ class PropertyOpsSheet extends StatelessWidget {
                     (d) => ListTile(
                       dense: true,
                       contentPadding: EdgeInsets.zero,
-                      leading: const Icon(Icons.gavel_rounded, color: TaifaColors.gold400, size: 20),
+                      leading: const Icon(LucideIcons.gavel, color: TaifaColors.gold400, size: 20),
                       title: Text(d.reason, style: const TextStyle(fontSize: 13)),
                       subtitle: Text('${d.subjectType} · ${d.status}', style: const TextStyle(fontSize: 11)),
                     ),
@@ -164,7 +165,7 @@ class PropertyReportSheet extends StatelessWidget {
                   Expanded(
                     child: Text('Report listing', style: TextStyle(color: palette.textPrimary, fontWeight: FontWeight.w700)),
                   ),
-                  IconButton(onPressed: onClose, icon: const Icon(Icons.close_rounded)),
+                  IconButton(onPressed: onClose, icon: const Icon(LucideIcons.x)),
                 ],
               ),
               DropdownButtonFormField<String>(

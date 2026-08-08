@@ -9,6 +9,7 @@ import '../../../app/theme/taifa_typography.dart';
 import '../../../shared/widgets/taifa_logo.dart';
 import '../application/merchant_providers.dart';
 import '../domain/merchant_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class MerchantScreen extends ConsumerStatefulWidget {
   const MerchantScreen({super.key});
@@ -52,7 +53,7 @@ class _MerchantScreenState extends ConsumerState<MerchantScreen> {
                       }
                     },
                     icon: Icon(
-                      Icons.arrow_back_rounded,
+                      LucideIcons.arrowLeft,
                       color: palette.textPrimary,
                     ),
                   ),

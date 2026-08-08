@@ -6,6 +6,7 @@ import '../../../app/theme/taifa_colors.dart';
 import '../../../app/theme/taifa_dimens.dart';
 import '../application/super_app_providers.dart';
 import '../domain/ecosystem_catalog.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class UniversalSearchScreen extends ConsumerStatefulWidget {
   const UniversalSearchScreen({super.key, this.initialQuery});
@@ -36,15 +37,15 @@ class _UniversalSearchScreenState extends ConsumerState<UniversalSearchScreen> {
 
   IconData _iconFor(EcosystemEntry e) {
     return switch (e.category) {
-      'Pay' => Icons.payments_rounded,
-      'Mobility' => Icons.local_taxi_rounded,
-      'Commerce' => Icons.storefront_rounded,
-      'Winga' => Icons.shopping_bag_rounded,
-      'Bookings' => Icons.event_available_rounded,
-      'Services' => Icons.apps_rounded,
-      'Assist' => Icons.auto_awesome_rounded,
-      'Account' => Icons.person_rounded,
-      _ => Icons.chevron_right_rounded,
+      'Pay' => LucideIcons.banknote,
+      'Mobility' => LucideIcons.carTaxiFront,
+      'Commerce' => LucideIcons.store,
+      'Winga' => LucideIcons.shoppingBag,
+      'Bookings' => LucideIcons.calendarCheck,
+      'Services' => LucideIcons.layoutGrid,
+      'Assist' => LucideIcons.sparkles,
+      'Account' => LucideIcons.user,
+      _ => LucideIcons.chevronRight,
     };
   }
 
@@ -58,7 +59,7 @@ class _UniversalSearchScreenState extends ConsumerState<UniversalSearchScreen> {
       appBar: AppBar(
         title: const Text('Search Taifa'),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () {
             if (context.canPop()) {
               context.pop();
@@ -78,11 +79,11 @@ class _UniversalSearchScreenState extends ConsumerState<UniversalSearchScreen> {
               textInputAction: TextInputAction.search,
               decoration: InputDecoration(
                 hintText: 'Search products, rides, hotels, pay, Winga…',
-                prefixIcon: const Icon(Icons.search_rounded),
+                prefixIcon: const Icon(LucideIcons.search),
                 suffixIcon: _controller.text.isEmpty
                     ? null
                     : IconButton(
-                        icon: const Icon(Icons.clear),
+                        icon: const Icon(LucideIcons.x),
                         onPressed: () {
                           _controller.clear();
                           ref.read(searchQueryProvider.notifier).clear();
@@ -131,7 +132,7 @@ class _UniversalSearchScreenState extends ConsumerState<UniversalSearchScreen> {
                   ),
                   title: Text(e.title, style: text.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
                   subtitle: Text('${e.category} · ${e.subtitle}'),
-                  trailing: const Icon(Icons.chevron_right),
+                  trailing: const Icon(LucideIcons.chevronRight),
                   onTap: () => context.push(e.route),
                 );
               },

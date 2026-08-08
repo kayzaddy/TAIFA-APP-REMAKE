@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/theme/taifa_dimens.dart';
 import '../application/tap_providers.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class TapFundingScreen extends ConsumerStatefulWidget {
   const TapFundingScreen({super.key});
@@ -30,7 +31,7 @@ class _TapFundingScreenState extends ConsumerState<TapFundingScreen> {
       appBar: AppBar(
         title: const Text('Payment priority'),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.pop(),
         ),
       ),
@@ -58,7 +59,7 @@ class _TapFundingScreenState extends ConsumerState<TapFundingScreen> {
                 title: Text(s.label),
                 subtitle: Text('${s.kind} · ${s.ref}'),
                 trailing: Icon(
-                  s.enabled ? Icons.check_circle : Icons.block,
+                  s.enabled ? LucideIcons.circleCheckBig : LucideIcons.ban,
                 ),
               );
             }),

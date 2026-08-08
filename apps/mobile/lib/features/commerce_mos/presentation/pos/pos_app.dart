@@ -6,6 +6,7 @@ import '../../../../app/theme/taifa_colors.dart';
 import '../../../../app/theme/taifa_dimens.dart';
 import '../../application/mos_providers.dart';
 import '../widgets/commerce_kit.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Cashier POS — fast search, favorites, cart, ledger pay.
 class CommercePosApp extends ConsumerStatefulWidget {
@@ -46,7 +47,7 @@ class _CommercePosAppState extends ConsumerState<CommercePosApp> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Point of Sale'),
-        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => context.pop()),
+        leading: IconButton(icon: const Icon(LucideIcons.arrowLeft), onPressed: () => context.pop()),
         actions: [
           MosStatusChip(
             state.posSession?.isOpen == true ? 'Shift open' : 'Shift closed',
@@ -62,7 +63,7 @@ class _CommercePosAppState extends ConsumerState<CommercePosApp> {
             child: TextField(
               controller: _search,
               decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.qr_code_scanner),
+                prefixIcon: Icon(LucideIcons.scanLine),
                 hintText: 'Search SKU, name, or scan barcode',
                 border: OutlineInputBorder(),
               ),
@@ -107,7 +108,7 @@ class _CommercePosAppState extends ConsumerState<CommercePosApp> {
                   stockLabel: 'Avail ${p.stockAvailable}',
                   onTap: () => ctrl.addToCart(p),
                   trailing: IconButton(
-                    icon: const Icon(Icons.add_shopping_cart),
+                    icon: const Icon(LucideIcons.shoppingCart),
                     onPressed: () => ctrl.addToCart(p),
                   ),
                 );

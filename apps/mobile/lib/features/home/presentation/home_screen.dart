@@ -15,6 +15,7 @@ import '../../super_app/application/super_app_providers.dart';
 import '../../super_app/presentation/widgets/home_journey_rail.dart';
 import '../../super_app/presentation/widgets/super_search_bar.dart';
 import '../application/home_providers.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// TAIFA Home — the living dashboard. Screen 01 in the design spec.
 class HomeScreen extends ConsumerWidget {
@@ -180,7 +181,7 @@ class _Header extends StatelessWidget {
           onPressed: onNotifications,
           visualDensity: VisualDensity.compact,
           icon: Icon(
-            Icons.notifications_none_rounded,
+            LucideIcons.bell,
             size: 22,
             color: palette.textMuted,
           ),
@@ -189,7 +190,7 @@ class _Header extends StatelessWidget {
           onPressed: onToggleTheme,
           visualDensity: VisualDensity.compact,
           icon: Icon(
-            isDark ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
+            isDark ? LucideIcons.sun : LucideIcons.moon,
             size: 20,
             color: palette.textMuted,
           ),
@@ -252,7 +253,7 @@ class _SectionHeader extends StatelessWidget {
               ),
               const SizedBox(width: 2),
               Icon(
-                Icons.arrow_forward_rounded,
+                LucideIcons.arrowRight,
                 size: 12,
                 color: palette.accent,
               ),

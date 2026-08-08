@@ -9,6 +9,7 @@ import '../../../app/theme/taifa_typography.dart';
 import '../../../shared/widgets/taifa_logo.dart';
 import '../application/nfc_providers.dart';
 import '../domain/nfc_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// NFC Tap-to-Translate — Demo Complete mock (no hardware).
 class NfcScreen extends ConsumerWidget {
@@ -42,7 +43,7 @@ class NfcScreen extends ConsumerWidget {
                       }
                     },
                     icon: Icon(
-                      Icons.arrow_back_rounded,
+                      LucideIcons.arrowLeft,
                       color: palette.textPrimary,
                     ),
                   ),
@@ -121,7 +122,7 @@ class _Home extends StatelessWidget {
                       alpha: 0.2,
                     ),
                     child: const Icon(
-                      Icons.nfc_rounded,
+                      LucideIcons.wifi,
                       color: TaifaColors.ocean400,
                     ),
                   ),
@@ -137,7 +138,7 @@ class _Home extends StatelessWidget {
                     style: TextStyle(color: palette.textMuted),
                   ),
                   trailing: Icon(
-                    Icons.contactless_rounded,
+                    LucideIcons.wifi,
                     color: palette.textMuted,
                   ),
                 ),

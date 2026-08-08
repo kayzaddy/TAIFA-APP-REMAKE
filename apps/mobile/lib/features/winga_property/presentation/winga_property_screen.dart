@@ -15,6 +15,7 @@ import 'property_winga_sheets.dart';
 import 'property_transaction_sheets.dart';
 import 'property_ops_sheets.dart';
 import 'property_map_view.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class WingaPropertyScreen extends ConsumerStatefulWidget {
   const WingaPropertyScreen({super.key});
@@ -81,20 +82,20 @@ class _WingaPropertyScreenState extends ConsumerState<WingaPropertyScreen> {
                   IconButton(
                     onPressed: ctrl.toggleAdvancedFilters,
                     icon: Icon(
-                      Icons.tune_rounded,
+                      LucideIcons.slidersHorizontal,
                       color: state.showAdvancedFilters ? TaifaColors.gold400 : palette.textMuted,
                     ),
                   ),
                   IconButton(
                     onPressed: ctrl.toggleMap,
                     icon: Icon(
-                      state.showMap ? Icons.list_rounded : Icons.map_rounded,
+                      state.showMap ? LucideIcons.menu : LucideIcons.map,
                       color: TaifaColors.gold400,
                     ),
                   ),
                   IconButton(
                     onPressed: () => context.push('/winga-property/ops'),
-                    icon: Icon(Icons.dashboard_customize_rounded, color: palette.textMuted),
+                    icon: Icon(LucideIcons.layoutGrid, color: palette.textMuted),
                     tooltip: 'Ops console',
                   ),
                 ],
@@ -118,7 +119,7 @@ class _WingaPropertyScreenState extends ConsumerState<WingaPropertyScreen> {
                             ? 'Ask AI: 2-bed near Masaki with good safety…'
                             : 'Search area, beds, neighborhood…',
                         prefixIcon: Icon(
-                          state.useAiSearch ? Icons.auto_awesome_rounded : Icons.search_rounded,
+                          state.useAiSearch ? LucideIcons.sparkles : LucideIcons.search,
                         ),
                         filled: true,
                         fillColor: palette.surfaceAlt,
@@ -134,7 +135,7 @@ class _WingaPropertyScreenState extends ConsumerState<WingaPropertyScreen> {
                     onPressed: ctrl.toggleAiSearch,
                     tooltip: 'AI search',
                     icon: Icon(
-                      Icons.psychology_rounded,
+                      LucideIcons.brain,
                       color: state.useAiSearch ? TaifaColors.gold400 : palette.textMuted,
                     ),
                   ),
@@ -509,7 +510,7 @@ class _ListingList extends StatelessWidget {
                       errorBuilder: (_, _, _) => Container(
                         height: 160,
                         color: palette.border,
-                        child: const Icon(Icons.home_work_rounded, size: 48),
+                        child: const Icon(LucideIcons.building2, size: 48),
                       ),
                     ),
                   ),
@@ -557,7 +558,7 @@ class _ListingList extends StatelessWidget {
                       IconButton(
                         onPressed: () => onCompare(l.id),
                         icon: Icon(
-                          isInCompare(l.id) ? Icons.compare_arrows : Icons.compare_arrows_outlined,
+                          isInCompare(l.id) ? LucideIcons.arrowLeftRight : LucideIcons.arrowLeftRight,
                           color: TaifaColors.gold400,
                           size: 20,
                         ),
@@ -565,7 +566,7 @@ class _ListingList extends StatelessWidget {
                       IconButton(
                         onPressed: () => onFavorite(l),
                         icon: Icon(
-                          isFavorite(l.id) ? Icons.favorite : Icons.favorite_border,
+                          isFavorite(l.id) ? LucideIcons.heart : LucideIcons.heart,
                           color: TaifaColors.gold400,
                         ),
                       ),

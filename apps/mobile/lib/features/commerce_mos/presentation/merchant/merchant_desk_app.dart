@@ -6,6 +6,7 @@ import '../../../../app/theme/taifa_colors.dart';
 import '../../../../app/theme/taifa_dimens.dart';
 import '../../application/mos_providers.dart';
 import '../widgets/commerce_kit.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Merchant Owner / Manager desk — today's business health.
 class CommerceMerchantDeskApp extends ConsumerStatefulWidget {
@@ -34,16 +35,16 @@ class _CommerceMerchantDeskAppState extends ConsumerState<CommerceMerchantDeskAp
     return Scaffold(
       appBar: AppBar(
         title: const Text('Merchant Desk'),
-        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => context.pop()),
+        leading: IconButton(icon: const Icon(LucideIcons.arrowLeft), onPressed: () => context.pop()),
         actions: [
           IconButton(
             tooltip: 'AI briefing',
             onPressed: () => ref.read(mosControllerProvider.notifier).runAssist('briefing'),
-            icon: const Icon(Icons.psychology_alt_outlined),
+            icon: const Icon(LucideIcons.brain),
           ),
           IconButton(
             onPressed: () => context.push('/wallet'),
-            icon: const Icon(Icons.account_balance_wallet_outlined),
+            icon: const Icon(LucideIcons.wallet),
           ),
         ],
       ),
@@ -88,7 +89,7 @@ class _CommerceMerchantDeskAppState extends ConsumerState<CommerceMerchantDeskAp
               ),
               const SizedBox(height: TaifaSpacing.xl),
               Text('AI copilot', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
-              ...state.assistTips.map((t) => ListTile(leading: const Icon(Icons.auto_awesome), title: Text(t))),
+              ...state.assistTips.map((t) => ListTile(leading: const Icon(LucideIcons.sparkles), title: Text(t))),
               if (state.error != null)
                 Text(state.error!, style: TextStyle(color: Colors.red.shade700)),
             ],
@@ -101,9 +102,9 @@ class _CommerceMerchantDeskAppState extends ConsumerState<CommerceMerchantDeskAp
         selectedIndex: _tab,
         onDestinationSelected: (i) => setState(() => _tab = i),
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.dashboard_outlined), label: 'Home'),
-          NavigationDestination(icon: Icon(Icons.receipt_long_outlined), label: 'Orders'),
-          NavigationDestination(icon: Icon(Icons.inventory_2_outlined), label: 'Catalog'),
+          NavigationDestination(icon: Icon(LucideIcons.layoutGrid), label: 'Home'),
+          NavigationDestination(icon: Icon(LucideIcons.receipt), label: 'Orders'),
+          NavigationDestination(icon: Icon(LucideIcons.package), label: 'Catalog'),
         ],
       ),
     );

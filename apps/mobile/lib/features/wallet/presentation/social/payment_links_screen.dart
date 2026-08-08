@@ -4,13 +4,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/theme/taifa_colors.dart';
 import '../../../../app/theme/taifa_dimens.dart';
+import '../../../../app/theme/taifa_icons.dart';
 import '../../../../app/theme/taifa_theme.dart';
 import '../../../../data/dto/social_dto.dart';
 import '../../application/social_providers.dart';
 import '../../application/wallet_providers.dart';
 import '../../domain/currency.dart';
 import '../../domain/money.dart';
+import '../../../../shared/widgets/taifa_skeleton.dart';
+import '../../../../shared/widgets/taifa_stagger.dart';
 import 'social_widgets.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class PaymentLinksScreen extends ConsumerWidget {
   const PaymentLinksScreen({super.key});
@@ -28,26 +32,32 @@ class PaymentLinksScreen extends ConsumerWidget {
               SocialScreenHeader(
                 title: 'Payment Links',
                 trailing: IconButton(
-                  icon: const Icon(Icons.add_circle_rounded),
+                  icon: const Icon(LucideIcons.circlePlus),
                   onPressed: () => _createLink(context, ref),
                 ),
               ),
               const SizedBox(height: TaifaSpacing.lg),
               Expanded(
                 child: linksAsync.when(
-                  loading: () => const Center(child: CircularProgressIndicator()),
+                  loading: () => const TaifaSkeletonList(),
                   error: (e, _) => Center(child: Text('Could not load links.\n$e', textAlign: TextAlign.center)),
                   data: (links) => links.isEmpty
-                      ? const SocialEmptyState(
-                          icon: Icons.link_rounded,
-                          message: 'No payment links yet.\nCreate one to start collecting money.',
+                      ? SocialEmptyState(
+                          icon: TaifaIcons.paymentLink,
+                          title: 'No payment links yet',
+                          message:
+                              'Create a link, share it anywhere, and get paid — '
+                              'no app install needed on their side.',
+                          actionLabel: 'Create your first link',
+                          onAction: () => _createLink(context, ref),
                         )
                       : RefreshIndicator(
                           onRefresh: () async => ref.invalidate(paymentLinksProvider),
                           child: ListView.separated(
                             itemCount: links.length,
                             separatorBuilder: (_, _) => const SizedBox(height: TaifaSpacing.sm),
-                            itemBuilder: (_, i) => _LinkTile(link: links[i]),
+                            itemBuilder: (_, i) =>
+                                TaifaStaggerIn(index: i, child: _LinkTile(link: links[i])),
                           ),
                         ),
                 ),
@@ -122,7 +132,7 @@ class _LinkTile extends ConsumerWidget {
                   child: Text(paused ? 'Resume' : 'Pause', style: TextStyle(fontSize: 11, color: palette.accent)),
                 ),
               IconButton(
-                icon: const Icon(Icons.copy_rounded, size: 16),
+                icon: const Icon(LucideIcons.copy, size: 16),
                 tooltip: 'Copy link',
                 onPressed: () {
                   Clipboard.setData(ClipboardData(text: 'taifa.app/pay/${link.slug}'));

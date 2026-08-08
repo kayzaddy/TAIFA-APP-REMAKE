@@ -13,6 +13,7 @@ import '../../mobility/domain/route_plan.dart';
 import '../../mobility/presentation/widgets/mock_map_view.dart';
 import '../application/express_providers.dart';
 import '../domain/express_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Live fulfillment timeline + delivery map (MapsProvider mock canvas).
 class ExpressTrackScreen extends ConsumerStatefulWidget {
@@ -142,7 +143,7 @@ class _ExpressTrackScreenState extends ConsumerState<ExpressTrackScreen> {
       appBar: AppBar(
         title: Text(order.publicCode),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.go('/express'),
         ),
       ),
@@ -193,8 +194,8 @@ class _ExpressTrackScreenState extends ConsumerState<ExpressTrackScreen> {
                     contentPadding: EdgeInsets.zero,
                     leading: Icon(
                       done
-                          ? Icons.check_circle
-                          : (live ? Icons.radio_button_checked : Icons.radio_button_unchecked),
+                          ? LucideIcons.circleCheckBig
+                          : (live ? LucideIcons.circleDot : LucideIcons.circle),
                       color: done || live ? TaifaColors.emerald600 : scheme.outline,
                     ),
                     title: Text(label),

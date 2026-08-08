@@ -6,6 +6,7 @@ import '../../../../app/theme/taifa_colors.dart';
 import '../../../../app/theme/taifa_dimens.dart';
 import '../../application/mos_providers.dart';
 import '../widgets/commerce_kit.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Role onboarding — first success in minutes.
 class CommerceOnboardingScreen extends ConsumerStatefulWidget {
@@ -20,11 +21,11 @@ class _CommerceOnboardingScreenState extends ConsumerState<CommerceOnboardingScr
   String? _role;
 
   static const _roles = [
-    ('Owner', 'merchant', Icons.storefront, '/commerce/desk'),
-    ('Cashier', 'pos', Icons.point_of_sale, '/commerce/pos'),
-    ('Warehouse', 'warehouse', Icons.warehouse_outlined, '/commerce/warehouse'),
-    ('Procurement', 'procurement', Icons.local_shipping_outlined, '/commerce/procurement'),
-    ('Manager', 'management', Icons.insights_outlined, '/commerce/management'),
+    ('Owner', 'merchant', LucideIcons.store, '/commerce/desk'),
+    ('Cashier', 'pos', LucideIcons.store, '/commerce/pos'),
+    ('Warehouse', 'warehouse', LucideIcons.warehouse, '/commerce/warehouse'),
+    ('Procurement', 'procurement', LucideIcons.truck, '/commerce/procurement'),
+    ('Manager', 'management', LucideIcons.chartLine, '/commerce/management'),
   ];
 
   @override
@@ -32,7 +33,7 @@ class _CommerceOnboardingScreenState extends ConsumerState<CommerceOnboardingScr
     return Scaffold(
       appBar: AppBar(
         title: const Text('Get started'),
-        leading: IconButton(icon: const Icon(Icons.close), onPressed: () => context.pop()),
+        leading: IconButton(icon: const Icon(LucideIcons.x), onPressed: () => context.pop()),
       ),
       body: Padding(
         padding: const EdgeInsets.all(TaifaSpacing.screenH),
@@ -97,7 +98,7 @@ class _CommerceOnboardingScreenState extends ConsumerState<CommerceOnboardingScr
               title: Text(title),
               selected: _role == id,
               onTap: () => setState(() => _role = id),
-              trailing: _role == id ? const Icon(Icons.check_circle, color: TaifaColors.emerald600) : null,
+              trailing: _role == id ? const Icon(LucideIcons.circleCheckBig, color: TaifaColors.emerald600) : null,
             ),
         ],
       );

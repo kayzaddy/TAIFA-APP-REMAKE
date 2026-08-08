@@ -9,6 +9,7 @@ import '../../../app/theme/taifa_typography.dart';
 import '../../../shared/widgets/taifa_logo.dart';
 import '../application/food_providers.dart';
 import '../domain/food_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Food — Demo Complete delivery experience (mock catalog, cart, dispatch).
 class FoodScreen extends ConsumerStatefulWidget {
@@ -131,7 +132,7 @@ class _TopBar extends StatelessWidget {
         children: [
           IconButton(
             onPressed: onBack,
-            icon: Icon(Icons.arrow_back_rounded, color: palette.textPrimary),
+            icon: Icon(LucideIcons.arrowLeft, color: palette.textPrimary),
           ),
           const TaifaLogo(variant: TaifaLogoVariant.mark, size: 32),
           const SizedBox(width: 8),
@@ -147,7 +148,7 @@ class _TopBar extends StatelessWidget {
           ),
           IconButton(
             onPressed: onHistory,
-            icon: Icon(Icons.receipt_long_rounded, color: palette.textMuted),
+            icon: Icon(LucideIcons.receipt, color: palette.textMuted),
           ),
           if (onCart != null)
             Stack(
@@ -155,7 +156,7 @@ class _TopBar extends StatelessWidget {
                 IconButton(
                   onPressed: onCart,
                   icon: Icon(
-                    Icons.shopping_bag_outlined,
+                    LucideIcons.shoppingBag,
                     color: palette.textPrimary,
                   ),
                 ),
@@ -243,7 +244,7 @@ class _HomeView extends StatelessWidget {
           decoration: InputDecoration(
             hintText: 'Search restaurants or cuisine',
             hintStyle: TextStyle(color: palette.textMuted),
-            prefixIcon: Icon(Icons.search, color: palette.textMuted),
+            prefixIcon: Icon(LucideIcons.search, color: palette.textMuted),
             filled: true,
             fillColor: palette.surfaceAlt,
             border: OutlineInputBorder(
@@ -526,7 +527,7 @@ class _CartView extends StatelessWidget {
                               line.quantity - 1,
                             ),
                             icon: Icon(
-                              Icons.remove_circle_outline,
+                              LucideIcons.circleMinus,
                               color: palette.textMuted,
                             ),
                           ),
@@ -543,7 +544,7 @@ class _CartView extends StatelessWidget {
                               line.quantity + 1,
                             ),
                             icon: const Icon(
-                              Icons.add_circle_outline,
+                              LucideIcons.circlePlus,
                               color: TaifaColors.gold400,
                             ),
                           ),
@@ -727,7 +728,7 @@ class _StatusSteps extends StatelessWidget {
           ListTile(
             dense: true,
             leading: Icon(
-              i <= idx ? Icons.check_circle : Icons.radio_button_unchecked,
+              i <= idx ? LucideIcons.circleCheckBig : LucideIcons.circle,
               color: i <= idx ? TaifaColors.gold400 : context.taifa.border,
             ),
             title: Text(
@@ -757,7 +758,7 @@ class _DeliveredView extends StatelessWidget {
       child: Column(
         children: [
           const Icon(
-            Icons.check_circle_rounded,
+            LucideIcons.circleCheckBig,
             color: TaifaColors.emerald500,
             size: 64,
           ),

@@ -8,6 +8,7 @@ import '../../../app/theme/taifa_typography.dart';
 import '../../../shared/widgets/taifa_logo.dart';
 import '../application/ai_providers.dart';
 import '../domain/ai_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// TAIFA AI — Demo Complete chat on a mock LLM gateway.
 class AiAssistantScreen extends ConsumerStatefulWidget {
@@ -68,7 +69,7 @@ class _AiAssistantScreenState extends ConsumerState<AiAssistantScreen> {
                   IconButton(
                     tooltip: 'New chat',
                     onPressed: ctrl.clearChat,
-                    icon: Icon(Icons.refresh_rounded, color: palette.textMuted),
+                    icon: Icon(LucideIcons.refreshCw, color: palette.textMuted),
                   ),
                 ],
               ),
@@ -199,7 +200,7 @@ class _AiAssistantScreenState extends ConsumerState<AiAssistantScreen> {
                     style: IconButton.styleFrom(
                       backgroundColor: TaifaColors.emerald700,
                     ),
-                    icon: const Icon(Icons.send_rounded),
+                    icon: const Icon(LucideIcons.send),
                   ),
                 ],
               ),

@@ -4,6 +4,7 @@ import '../../../app/theme/taifa_colors.dart';
 import '../../../app/theme/taifa_dimens.dart';
 import '../../../app/theme/taifa_theme.dart';
 import '../domain/property_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class PropertyApplySheet extends StatelessWidget {
   const PropertyApplySheet({
@@ -62,7 +63,7 @@ class PropertyApplySheet extends StatelessWidget {
         children: [
           Row(
             children: [
-              IconButton(onPressed: onClose, icon: const Icon(Icons.close_rounded)),
+              IconButton(onPressed: onClose, icon: const Icon(LucideIcons.x)),
               Expanded(
                 child: Text(
                   'Apply & lease',
@@ -231,7 +232,7 @@ class _VerificationRow extends StatelessWidget {
       dense: true,
       contentPadding: EdgeInsets.zero,
       leading: Icon(
-        verified ? Icons.verified_rounded : Icons.pending_outlined,
+        verified ? LucideIcons.badgeCheck : LucideIcons.hourglass,
         color: verified ? TaifaColors.emerald700 : TaifaColors.gold400,
         size: 20,
       ),

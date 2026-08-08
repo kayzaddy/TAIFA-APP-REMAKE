@@ -6,6 +6,7 @@ import '../../../app/theme/taifa_theme.dart';
 import '../../wallet/domain/currency.dart';
 import '../../wallet/domain/money.dart';
 import '../domain/property_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class PropertyExperienceSheet extends StatelessWidget {
   const PropertyExperienceSheet({
@@ -30,7 +31,7 @@ class PropertyExperienceSheet extends StatelessWidget {
         children: [
           Row(
             children: [
-              IconButton(onPressed: onClose, icon: const Icon(Icons.close_rounded)),
+              IconButton(onPressed: onClose, icon: const Icon(LucideIcons.x)),
               Expanded(
                 child: Text(
                   'Virtual property tour',
@@ -53,7 +54,7 @@ class PropertyExperienceSheet extends StatelessWidget {
                   const SizedBox(height: 8),
                   ...experience.videoTours.map(
                     (v) => ListTile(
-                      leading: const Icon(Icons.play_circle_fill_rounded, color: TaifaColors.gold400),
+                      leading: const Icon(LucideIcons.circlePlay, color: TaifaColors.gold400),
                       title: Text(v.caption.isEmpty ? 'Property video tour' : v.caption),
                     ),
                   ),
@@ -96,7 +97,7 @@ class _RoomCard extends StatelessWidget {
       color: palette.surfaceAlt,
       child: ListTile(
         leading: photo == null
-            ? const Icon(Icons.meeting_room_outlined)
+            ? const Icon(LucideIcons.doorOpen)
             : ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.network(photo.url, width: 56, height: 56, fit: BoxFit.cover),
@@ -137,7 +138,7 @@ class PropertyViewingPassSheet extends StatelessWidget {
         children: [
           Row(
             children: [
-              IconButton(onPressed: onClose, icon: const Icon(Icons.close_rounded)),
+              IconButton(onPressed: onClose, icon: const Icon(LucideIcons.x)),
               Expanded(
                 child: Text(
                   'Viewing Pass',
@@ -151,7 +152,7 @@ class PropertyViewingPassSheet extends StatelessWidget {
               padding: EdgeInsets.only(bottom: 12),
               child: Row(
                 children: [
-                  Icon(Icons.lock_open_rounded, color: TaifaColors.emerald700),
+                  Icon(LucideIcons.lockOpen, color: TaifaColors.emerald700),
                   SizedBox(width: 8),
                   Text('Address, navigation & contact unlocked', style: TextStyle(color: TaifaColors.emerald700)),
                 ],
@@ -212,7 +213,7 @@ class PropertyLiveSessionSheet extends StatelessWidget {
         children: [
           Row(
             children: [
-              IconButton(onPressed: onClose, icon: const Icon(Icons.close_rounded)),
+              IconButton(onPressed: onClose, icon: const Icon(LucideIcons.x)),
               Expanded(
                 child: Text(
                   'Live property mode',
@@ -244,7 +245,7 @@ class PropertyLiveSessionSheet extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
-                  ended ? Icons.video_library_rounded : Icons.videocam_rounded,
+                  ended ? LucideIcons.film : LucideIcons.video,
                   size: 48,
                   color: TaifaColors.gold400,
                 ),

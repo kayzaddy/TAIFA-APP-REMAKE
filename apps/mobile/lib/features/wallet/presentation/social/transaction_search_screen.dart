@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/theme/taifa_dimens.dart';
+import '../../../../app/theme/taifa_icons.dart';
 import '../../../../app/theme/taifa_theme.dart';
 import '../../application/social_providers.dart';
 import '../widgets/transaction_tile.dart';
 import 'social_widgets.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class TransactionSearchScreen extends ConsumerStatefulWidget {
   const TransactionSearchScreen({super.key});
@@ -51,7 +53,7 @@ class _TransactionSearchScreenState extends ConsumerState<TransactionSearchScree
                 style: TextStyle(color: palette.textPrimary, fontSize: 12),
                 decoration: const InputDecoration(
                   hintText: 'Search by counterparty or note',
-                  prefixIcon: Icon(Icons.search_rounded, size: 18),
+                  prefixIcon: Icon(LucideIcons.search, size: 18),
                   isDense: true,
                 ),
                 onSubmitted: (_) => setState(() => _page = 1),
@@ -94,7 +96,11 @@ class _TransactionSearchScreenState extends ConsumerState<TransactionSearchScree
                     }
                     final result = snapshot.data!;
                     if (result.results.isEmpty) {
-                      return const SocialEmptyState(icon: Icons.receipt_rounded, message: 'No transactions match.');
+                      return const SocialEmptyState(
+                        icon: TaifaIcons.search,
+                        title: 'No matches',
+                        message: 'Try a different search term or clear the filters.',
+                      );
                     }
                     return Column(
                       children: [
@@ -112,12 +118,12 @@ class _TransactionSearchScreenState extends ConsumerState<TransactionSearchScree
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 IconButton(
-                                  icon: const Icon(Icons.chevron_left_rounded),
+                                  icon: const Icon(LucideIcons.chevronLeft),
                                   onPressed: _page > 1 ? () => setState(() => _page--) : null,
                                 ),
                                 Text('Page $_page of ${result.numPages}', style: TextStyle(fontSize: 11, color: palette.textMuted)),
                                 IconButton(
-                                  icon: const Icon(Icons.chevron_right_rounded),
+                                  icon: const Icon(LucideIcons.chevronRight),
                                   onPressed: _page < result.numPages ? () => setState(() => _page++) : null,
                                 ),
                               ],

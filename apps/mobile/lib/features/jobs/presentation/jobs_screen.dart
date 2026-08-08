@@ -9,6 +9,7 @@ import '../../../app/theme/taifa_typography.dart';
 import '../../../shared/widgets/taifa_logo.dart';
 import '../application/jobs_providers.dart';
 import '../domain/jobs_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class JobsScreen extends ConsumerStatefulWidget {
   const JobsScreen({super.key});
@@ -57,7 +58,7 @@ class _JobsScreenState extends ConsumerState<JobsScreen> {
                       }
                     },
                     icon: Icon(
-                      Icons.arrow_back_rounded,
+                      LucideIcons.arrowLeft,
                       color: palette.textPrimary,
                     ),
                   ),
@@ -79,7 +80,7 @@ class _JobsScreenState extends ConsumerState<JobsScreen> {
                   ),
                   IconButton(
                     onPressed: ctrl.openHistory,
-                    icon: Icon(Icons.history_rounded, color: palette.textMuted),
+                    icon: Icon(LucideIcons.history, color: palette.textMuted),
                   ),
                 ],
               ),
@@ -97,7 +98,7 @@ class _JobsScreenState extends ConsumerState<JobsScreen> {
                         decoration: InputDecoration(
                           hintText: 'Search gigs & parcel runs…',
                           prefixIcon: Icon(
-                            Icons.search_rounded,
+                            LucideIcons.search,
                             color: palette.textMuted,
                           ),
                           filled: true,
@@ -119,8 +120,8 @@ class _JobsScreenState extends ConsumerState<JobsScreen> {
                               onTap: () => ctrl.open(j),
                               leading: Icon(
                                 j.kind == JobKind.logistics
-                                    ? Icons.local_shipping_rounded
-                                    : Icons.handyman_rounded,
+                                    ? LucideIcons.truck
+                                    : LucideIcons.wrench,
                                 color: TaifaColors.ocean400,
                               ),
                               title: Text(

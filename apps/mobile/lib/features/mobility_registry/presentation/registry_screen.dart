@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../application/registry_providers.dart';
 import '../domain/registry_application.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class RegistryScreen extends ConsumerStatefulWidget {
   const RegistryScreen({super.key});
@@ -39,10 +40,10 @@ class _RegistryScreenState extends ConsumerState<RegistryScreen> {
           title: const Text('National Mobility Registry'),
           bottom: const TabBar(
             tabs: [
-              Tab(text: 'Register', icon: Icon(Icons.app_registration_rounded)),
+              Tab(text: 'Register', icon: Icon(LucideIcons.clipboardList)),
               Tab(
                 text: 'Applications',
-                icon: Icon(Icons.verified_user_rounded),
+                icon: Icon(LucideIcons.shieldCheck),
               ),
             ],
           ),
@@ -50,7 +51,7 @@ class _RegistryScreenState extends ConsumerState<RegistryScreen> {
             if (state.pendingOffline > 0)
               TextButton.icon(
                 onPressed: state.loading ? null : controller.synchronize,
-                icon: const Icon(Icons.sync_rounded),
+                icon: const Icon(LucideIcons.refreshCw),
                 label: Text('${state.pendingOffline} pending'),
               ),
           ],
@@ -133,7 +134,7 @@ class _RegistryScreenState extends ConsumerState<RegistryScreen> {
                 DefaultTabController.of(context).animateTo(1);
               }
             },
-            icon: const Icon(Icons.lock_rounded),
+            icon: const Icon(LucideIcons.lock),
             label: const Text('Save registration securely'),
           ),
           const SizedBox(height: 10),
@@ -152,7 +153,7 @@ class _RegistryScreenState extends ConsumerState<RegistryScreen> {
       return ListView(
         children: const [
           SizedBox(height: 100),
-          Icon(Icons.badge_outlined, size: 64),
+          Icon(LucideIcons.idCard, size: 64),
           SizedBox(height: 12),
           Center(child: Text('No registry applications yet')),
         ],
@@ -170,7 +171,7 @@ class _RegistryScreenState extends ConsumerState<RegistryScreen> {
                   ? Colors.green
                   : Colors.orange,
               child: Icon(
-                application.mayOperate ? Icons.verified : Icons.hourglass_top,
+                application.mayOperate ? LucideIcons.badgeCheck : LucideIcons.hourglass,
                 color: Colors.white,
               ),
             ),
@@ -188,7 +189,7 @@ class _RegistryScreenState extends ConsumerState<RegistryScreen> {
                 PopupMenuItem(
                   value: 'document',
                   child: ListTile(
-                    leading: Icon(Icons.upload_file_rounded),
+                    leading: Icon(LucideIcons.upload),
                     title: Text('Upload document'),
                   ),
                 ),

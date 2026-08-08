@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/theme/taifa_colors.dart';
 import '../../../app/theme/taifa_dimens.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Universal Pay hub — deep-links into Wallet + MAP. No new payment engine.
 class UniversalPayHubScreen extends StatelessWidget {
@@ -17,7 +18,7 @@ class UniversalPayHubScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Pay'),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () {
             if (context.canPop()) {
               context.pop();
@@ -40,14 +41,14 @@ class UniversalPayHubScreen extends StatelessWidget {
             style: text.bodyMedium?.copyWith(color: scheme.onSurfaceVariant),
           ),
           const SizedBox(height: TaifaSpacing.xl),
-          _tile(context, Icons.qr_code_scanner_rounded, 'Scan QR', 'Merchant · invoice · ride', '/scan', TaifaColors.ocean500),
-          _tile(context, Icons.contactless, 'Tap & Pay', 'NFC · SoftPOS · biometric', '/tap', TaifaColors.emerald600),
-          _tile(context, Icons.link_rounded, 'Pay with code / link', 'MAP customer pay', '/map/pay', TaifaColors.emerald600),
-          _tile(context, Icons.north_east_rounded, 'Send money', 'P2P transfer', '/wallet/send', TaifaColors.gold500),
-          _tile(context, Icons.add_rounded, 'Top up', 'Mobile money STK', '/wallet/topup', TaifaColors.ocean400),
-          _tile(context, Icons.account_balance_wallet_rounded, 'Wallet & history', 'Balances · receipts', '/wallet', TaifaColors.emerald700),
-          _tile(context, Icons.storefront_outlined, 'Merchant accept', 'Issue QR · invoices', '/map/merchant', TaifaColors.ocean500),
-          _tile(context, Icons.account_balance_rounded, 'Government payments', 'Huduma requests', '/gov', TaifaColors.violetSoft),
+          _tile(context, LucideIcons.scanLine, 'Scan QR', 'Merchant · invoice · ride', '/scan', TaifaColors.ocean500),
+          _tile(context, LucideIcons.wifi, 'Tap & Pay', 'NFC · SoftPOS · biometric', '/tap', TaifaColors.emerald600),
+          _tile(context, LucideIcons.link, 'Pay with code / link', 'MAP customer pay', '/map/pay', TaifaColors.emerald600),
+          _tile(context, LucideIcons.arrowUpRight, 'Send money', 'P2P transfer', '/wallet/send', TaifaColors.gold500),
+          _tile(context, LucideIcons.plus, 'Top up', 'Mobile money STK', '/wallet/topup', TaifaColors.ocean400),
+          _tile(context, LucideIcons.wallet, 'Wallet & history', 'Balances · receipts', '/wallet', TaifaColors.emerald700),
+          _tile(context, LucideIcons.store, 'Merchant accept', 'Issue QR · invoices', '/map/merchant', TaifaColors.ocean500),
+          _tile(context, LucideIcons.landmark, 'Government payments', 'Huduma requests', '/gov', TaifaColors.violetSoft),
           const SizedBox(height: TaifaSpacing.lg),
           Text(
             'AI never authorizes payments. You always approve.',
@@ -74,7 +75,7 @@ class UniversalPayHubScreen extends StatelessWidget {
         leading: Icon(icon, color: color),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.w700)),
         subtitle: Text(subtitle),
-        trailing: const Icon(Icons.chevron_right),
+        trailing: const Icon(LucideIcons.chevronRight),
         onTap: () => context.push(route),
       ),
     );

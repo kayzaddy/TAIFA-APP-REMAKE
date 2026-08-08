@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../application/registry_providers.dart';
 import '../domain/registry_application.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class RegistryAdminScreen extends ConsumerWidget {
   const RegistryAdminScreen({super.key});
@@ -29,7 +30,7 @@ class RegistryAdminScreen extends ConsumerWidget {
         actions: [
           IconButton(
             onPressed: state.loading ? null : controller.load,
-            icon: const Icon(Icons.refresh_rounded),
+            icon: const Icon(LucideIcons.refreshCw),
           ),
         ],
       ),
@@ -99,7 +100,7 @@ class RegistryAdminScreen extends ConsumerWidget {
                       return Card(
                         child: ListTile(
                           leading: const CircleAvatar(
-                            child: Icon(Icons.fact_check_rounded),
+                            child: Icon(LucideIcons.clipboardList),
                           ),
                           title: Text(application.number),
                           subtitle: Text(

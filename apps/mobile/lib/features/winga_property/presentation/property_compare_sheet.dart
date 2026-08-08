@@ -4,6 +4,7 @@ import '../../../app/theme/taifa_colors.dart';
 import '../../../app/theme/taifa_dimens.dart';
 import '../../../app/theme/taifa_theme.dart';
 import '../domain/property_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class PropertyCompareSheet extends StatelessWidget {
   const PropertyCompareSheet({
@@ -32,7 +33,7 @@ class PropertyCompareSheet extends StatelessWidget {
         children: [
           Row(
             children: [
-              IconButton(onPressed: onClose, icon: const Icon(Icons.close_rounded)),
+              IconButton(onPressed: onClose, icon: const Icon(LucideIcons.x)),
               Expanded(
                 child: Text(
                   'Compare properties',
@@ -106,7 +107,7 @@ class _CompareCard extends StatelessWidget {
             children: List.generate(
               5,
               (i) => Icon(
-                i < row.visitStars ? Icons.star_rounded : Icons.star_border_rounded,
+                i < row.visitStars ? LucideIcons.star : LucideIcons.star,
                 color: TaifaColors.gold400,
                 size: 16,
               ),

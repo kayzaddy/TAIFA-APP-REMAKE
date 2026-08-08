@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../core/merchant_api_client.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class MerchantEmployeesScreen extends HookConsumerWidget {
   const MerchantEmployeesScreen({super.key});
@@ -46,7 +47,7 @@ class MerchantEmployeesScreen extends HookConsumerWidget {
                         subtitle: Text('${e['role']} · ${e['status']}'),
                         trailing: e['status'] == 'active'
                             ? IconButton(
-                                icon: const Icon(Icons.pause_circle_outline),
+                                icon: const Icon(LucideIcons.circlePause),
                                 onPressed: () async {
                                   await api.suspendEmployee(e['id'].toString());
                                 },

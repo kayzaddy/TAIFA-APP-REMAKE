@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/theme/taifa_dimens.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Compact search entry used on Home — opens universal search.
 class SuperSearchBar extends StatelessWidget {
@@ -23,7 +24,7 @@ class SuperSearchBar extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Icon(Icons.search_rounded, color: scheme.onSurfaceVariant),
+              Icon(LucideIcons.search, color: scheme.onSurfaceVariant),
               const SizedBox(width: TaifaSpacing.sm),
               Expanded(
                 child: Text(
@@ -33,7 +34,7 @@ class SuperSearchBar extends StatelessWidget {
                       ),
                 ),
               ),
-              Icon(Icons.mic_none_rounded, color: scheme.onSurfaceVariant.withValues(alpha: 0.5)),
+              Icon(LucideIcons.mic, color: scheme.onSurfaceVariant.withValues(alpha: 0.5)),
             ],
           ),
         ),

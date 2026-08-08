@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../../../../app/theme/taifa_colors.dart';
 import '../../../../app/theme/taifa_dimens.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Shared Winga brokerage UI primitives on top of Taifa design tokens.
 class WingaMoneyText extends StatelessWidget {
@@ -229,7 +230,7 @@ class WingaOfferingTile extends StatelessWidget {
                 IconButton(
                   onPressed: onFavorite,
                   icon: Icon(
-                    favorited ? Icons.favorite : Icons.favorite_border,
+                    favorited ? LucideIcons.heart : LucideIcons.heart,
                     color:
                         favorited ? TaifaColors.danger : scheme.onSurfaceVariant,
                   ),
@@ -282,7 +283,7 @@ class WingaEmptyState extends StatelessWidget {
   const WingaEmptyState({
     super.key,
     required this.message,
-    this.icon = Icons.inbox_outlined,
+    this.icon = LucideIcons.inbox,
   });
 
   final String message;

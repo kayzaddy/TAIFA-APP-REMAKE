@@ -7,6 +7,7 @@ import '../../../app/theme/taifa_theme.dart';
 import '../../../app/theme/taifa_typography.dart';
 import '../../../app/theme/theme_mode_provider.dart';
 import '../../../shared/widgets/taifa_logo.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -34,7 +35,7 @@ class SettingsScreen extends ConsumerWidget {
                     }
                   },
                   icon: Icon(
-                    Icons.arrow_back_rounded,
+                    LucideIcons.arrowLeft,
                     color: palette.textPrimary,
                   ),
                 ),
@@ -81,13 +82,13 @@ class SettingsScreen extends ConsumerWidget {
             ),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              leading: Icon(Icons.person_rounded, color: palette.textMuted),
+              leading: Icon(LucideIcons.user, color: palette.textMuted),
               title: Text(
                 'Profile',
                 style: TextStyle(color: palette.textPrimary),
               ),
               trailing: Icon(
-                Icons.chevron_right_rounded,
+                LucideIcons.chevronRight,
                 color: palette.textMuted,
               ),
               onTap: () => context.go('/profile'),
@@ -95,7 +96,7 @@ class SettingsScreen extends ConsumerWidget {
             ListTile(
               contentPadding: EdgeInsets.zero,
               leading: Icon(
-                Icons.notifications_rounded,
+                LucideIcons.bell,
                 color: palette.textMuted,
               ),
               title: Text(
@@ -103,20 +104,20 @@ class SettingsScreen extends ConsumerWidget {
                 style: TextStyle(color: palette.textPrimary),
               ),
               trailing: Icon(
-                Icons.chevron_right_rounded,
+                LucideIcons.chevronRight,
                 color: palette.textMuted,
               ),
               onTap: () => context.go('/notifications'),
             ),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              leading: Icon(Icons.nfc_rounded, color: palette.textMuted),
+              leading: Icon(LucideIcons.wifi, color: palette.textMuted),
               title: Text(
                 'NFC Tap-to-Translate',
                 style: TextStyle(color: palette.textPrimary),
               ),
               trailing: Icon(
-                Icons.chevron_right_rounded,
+                LucideIcons.chevronRight,
                 color: palette.textMuted,
               ),
               onTap: () => context.go('/nfc'),

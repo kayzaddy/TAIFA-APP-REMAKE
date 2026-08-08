@@ -9,6 +9,7 @@ import '../../../app/theme/taifa_typography.dart';
 import '../../../shared/widgets/taifa_logo.dart';
 import '../application/education_providers.dart';
 import '../domain/education_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class EducationScreen extends ConsumerStatefulWidget {
   const EducationScreen({super.key});
@@ -69,7 +70,7 @@ class _EducationScreenState extends ConsumerState<EducationScreen> {
                       }
                     },
                     icon: Icon(
-                      Icons.arrow_back_rounded,
+                      LucideIcons.arrowLeft,
                       color: palette.textPrimary,
                     ),
                   ),
@@ -96,7 +97,7 @@ class _EducationScreenState extends ConsumerState<EducationScreen> {
                   IconButton(
                     onPressed: ctrl.openHistory,
                     icon: Icon(
-                      Icons.receipt_long_rounded,
+                      LucideIcons.receipt,
                       color: palette.textMuted,
                     ),
                   ),
@@ -116,7 +117,7 @@ class _EducationScreenState extends ConsumerState<EducationScreen> {
                         decoration: InputDecoration(
                           hintText: 'Search schools & courses…',
                           prefixIcon: Icon(
-                            Icons.search_rounded,
+                            LucideIcons.search,
                             color: palette.textMuted,
                           ),
                           filled: true,

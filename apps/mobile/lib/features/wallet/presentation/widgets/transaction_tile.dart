@@ -4,6 +4,7 @@ import '../../../../app/theme/taifa_colors.dart';
 import '../../../../app/theme/taifa_dimens.dart';
 import '../../../../app/theme/taifa_theme.dart';
 import '../../domain/transaction.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// A single row in the recent-transactions list. Matches the mockup's txn rows:
 /// tinted status icon, counterparty + context, signed amount.
@@ -94,18 +95,18 @@ class TransactionTile extends StatelessWidget {
   }
 
   (IconData, Color) _visual(WalletTransaction t) {
-    if (t.isCredit) return (Icons.south_west_rounded, TaifaColors.emerald500);
+    if (t.isCredit) return (LucideIcons.arrowDownLeft, TaifaColors.emerald500);
     return switch (t.type) {
       TransactionType.rideFare => (
-        Icons.local_taxi_rounded,
+        LucideIcons.carTaxiFront,
         TaifaColors.dangerSoft,
       ),
-      TransactionType.billPayment => (Icons.bolt_rounded, TaifaColors.gold400),
+      TransactionType.billPayment => (LucideIcons.zap, TaifaColors.gold400),
       TransactionType.sendMoney => (
-        Icons.north_east_rounded,
+        LucideIcons.arrowUpRight,
         TaifaColors.gold400,
       ),
-      _ => (Icons.north_east_rounded, TaifaColors.ocean400),
+      _ => (LucideIcons.arrowUpRight, TaifaColors.ocean400),
     };
   }
 

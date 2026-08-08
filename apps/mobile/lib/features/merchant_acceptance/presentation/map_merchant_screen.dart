@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../app/theme/taifa_colors.dart';
 import '../../../app/theme/taifa_dimens.dart';
 import '../application/map_providers.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class MapMerchantScreen extends ConsumerStatefulWidget {
   const MapMerchantScreen({super.key});
@@ -46,7 +47,7 @@ class _MapMerchantScreenState extends ConsumerState<MapMerchantScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('MAP Merchant'),
-        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => context.pop()),
+        leading: IconButton(icon: const Icon(LucideIcons.arrowLeft), onPressed: () => context.pop()),
       ),
       body: ListView(
         padding: const EdgeInsets.all(TaifaSpacing.screenH),

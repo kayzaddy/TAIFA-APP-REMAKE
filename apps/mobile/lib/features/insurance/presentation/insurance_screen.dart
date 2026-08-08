@@ -9,6 +9,7 @@ import '../../../app/theme/taifa_typography.dart';
 import '../../../shared/widgets/taifa_logo.dart';
 import '../application/insurance_providers.dart';
 import '../domain/insurance_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class InsuranceScreen extends ConsumerStatefulWidget {
   const InsuranceScreen({super.key});
@@ -61,7 +62,7 @@ class _InsuranceScreenState extends ConsumerState<InsuranceScreen> {
                       }
                     },
                     icon: Icon(
-                      Icons.arrow_back_rounded,
+                      LucideIcons.arrowLeft,
                       color: palette.textPrimary,
                     ),
                   ),
@@ -86,7 +87,7 @@ class _InsuranceScreenState extends ConsumerState<InsuranceScreen> {
                   IconButton(
                     onPressed: ctrl.openHistory,
                     icon: Icon(
-                      Icons.receipt_long_rounded,
+                      LucideIcons.receipt,
                       color: palette.textMuted,
                     ),
                   ),
@@ -187,7 +188,7 @@ class _InsuranceScreenState extends ConsumerState<InsuranceScreen> {
                             child: Row(
                               children: [
                                 Icon(
-                                  Icons.check_circle_rounded,
+                                  LucideIcons.circleCheckBig,
                                   size: 18,
                                   color: TaifaColors.emerald500,
                                 ),

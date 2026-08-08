@@ -8,6 +8,7 @@ import '../application/brokerage_providers.dart';
 import '../application/experience_providers.dart';
 import '../domain/brokerage_models.dart';
 import 'widgets/experience_kit.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Role gateway — Customer / Winga / Provider apps share one entry.
 class WingaHubScreen extends ConsumerWidget {
@@ -44,7 +45,7 @@ class WingaHubScreen extends ConsumerWidget {
                           context.go('/home');
                         }
                       },
-                      icon: const Icon(Icons.arrow_back),
+                      icon: const Icon(LucideIcons.arrowLeft),
                     ),
                     const Spacer(),
                     TextButton(
@@ -91,7 +92,7 @@ class WingaHubScreen extends ConsumerWidget {
                 _RoleCard(
                   title: 'Customer',
                   subtitle: 'Discover · quote · pay · review',
-                  icon: Icons.travel_explore,
+                  icon: LucideIcons.globe,
                   color: TaifaColors.ocean500,
                   onTap: () {
                     ref.read(wingaActorRoleProvider.notifier).setRole(
@@ -104,7 +105,7 @@ class WingaHubScreen extends ConsumerWidget {
                 _RoleCard(
                   title: 'Winga',
                   subtitle: 'CRM · pipeline · commissions · AI coach',
-                  icon: Icons.handshake_outlined,
+                  icon: LucideIcons.handshake,
                   color: TaifaColors.emerald600,
                   featured: true,
                   onTap: () {
@@ -118,7 +119,7 @@ class WingaHubScreen extends ConsumerWidget {
                 _RoleCard(
                   title: 'Provider',
                   subtitle: 'Offerings · campaigns · settlements',
-                  icon: Icons.storefront_outlined,
+                  icon: LucideIcons.store,
                   color: TaifaColors.gold500,
                   onTap: () {
                     ref.read(wingaActorRoleProvider.notifier).setRole(
@@ -192,7 +193,7 @@ class _RoleCard extends StatelessWidget {
                   ],
                 ),
               ),
-              const Icon(Icons.arrow_forward_ios, size: 16),
+              const Icon(LucideIcons.chevronRight, size: 16),
             ],
           ),
         ),

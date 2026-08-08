@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../station_ops/application/station_ops_providers.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class FleetOpsScreen extends ConsumerStatefulWidget {
   const FleetOpsScreen({super.key});
@@ -82,7 +83,7 @@ class _FleetOpsScreenState extends ConsumerState<FleetOpsScreen> {
         actions: [
           IconButton(
             onPressed: _loading ? null : _load,
-            icon: const Icon(Icons.refresh_rounded),
+            icon: const Icon(LucideIcons.refreshCw),
           ),
         ],
       ),

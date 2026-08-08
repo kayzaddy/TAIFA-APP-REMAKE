@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class MerchantPlaceholderCard extends StatelessWidget {
   const MerchantPlaceholderCard({super.key, required this.title, required this.subtitle});
@@ -14,7 +15,7 @@ class MerchantPlaceholderCard extends StatelessWidget {
         enabled: false,
         title: Text(title),
         subtitle: Text(subtitle),
-        trailing: const Icon(Icons.lock_clock),
+        trailing: const Icon(LucideIcons.lockKeyhole),
       ),
     );
   }

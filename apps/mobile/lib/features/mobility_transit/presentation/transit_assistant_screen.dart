@@ -7,6 +7,7 @@ import '../../../app/theme/taifa_dimens.dart';
 import '../../../app/theme/taifa_theme.dart';
 import '../application/transit_providers.dart';
 import '../domain/transit_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class TransitAssistantScreen extends ConsumerStatefulWidget {
   const TransitAssistantScreen({super.key});
@@ -151,7 +152,7 @@ class _TransitAssistantScreenState extends ConsumerState<TransitAssistantScreen>
                             height: 18,
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
-                        : const Icon(Icons.send_rounded),
+                        : const Icon(LucideIcons.send),
                   ),
                 ],
               ),

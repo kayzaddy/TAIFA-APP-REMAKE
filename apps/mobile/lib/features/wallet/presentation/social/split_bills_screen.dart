@@ -5,15 +5,25 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../app/theme/taifa_colors.dart';
 import '../../../../app/theme/taifa_dimens.dart';
+import '../../../../app/theme/taifa_icons.dart';
 import '../../../../app/theme/taifa_theme.dart';
 import '../../../../data/dto/social_dto.dart';
 import '../../application/social_providers.dart';
 import '../../domain/currency.dart';
 import '../../domain/money.dart';
+import '../../../../shared/widgets/taifa_skeleton.dart';
 import 'social_widgets.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class SplitBillsScreen extends ConsumerWidget {
   const SplitBillsScreen({super.key});
+
+  Future<void> _createBill(BuildContext context, WidgetRef ref) async {
+    final created = await Navigator.of(context).push<bool>(
+      MaterialPageRoute(builder: (_) => const _CreateBillScreen()),
+    );
+    if (created == true) ref.invalidate(billsProvider);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,24 +38,28 @@ class SplitBillsScreen extends ConsumerWidget {
               SocialScreenHeader(
                 title: 'Split Bills',
                 trailing: IconButton(
-                  icon: const Icon(Icons.add_circle_rounded),
-                  onPressed: () async {
-                    final created = await Navigator.of(context).push<bool>(
-                      MaterialPageRoute(builder: (_) => const _CreateBillScreen()),
-                    );
-                    if (created == true) ref.invalidate(billsProvider);
-                  },
+                  tooltip: 'Split a bill',
+                  icon: const Icon(TaifaIcons.addCircle, size: TaifaIconSize.md),
+                  onPressed: () => _createBill(context, ref),
                 ),
               ),
               const SizedBox(height: TaifaSpacing.lg),
               Expanded(
                 child: billsAsync.when(
-                  loading: () => const Center(child: CircularProgressIndicator()),
+                  loading: () => const TaifaSkeletonList(),
                   error: (e, _) => Center(child: Text('Could not load bills.\n$e', textAlign: TextAlign.center)),
                   data: (data) {
                     final all = [...data.organized, ...data.owing];
                     if (all.isEmpty) {
-                      return const SocialEmptyState(icon: Icons.receipt_long_rounded, message: 'No split bills yet.');
+                      return SocialEmptyState(
+                        icon: TaifaIcons.splitBill,
+                        title: 'No split bills yet',
+                        message:
+                            'Paid for the table? Split it evenly or by amount '
+                            'and everyone gets their share to settle.',
+                        actionLabel: 'Split a bill',
+                        onAction: () => _createBill(context, ref),
+                      );
                     }
                     return RefreshIndicator(
                       onRefresh: () async => ref.invalidate(billsProvider),
@@ -302,7 +316,7 @@ class _CreateBillScreenState extends ConsumerState<_CreateBillScreen> {
                             labelText: 'Phone number',
                             suffixIcon: _phoneControllers.length > 1
                                 ? IconButton(
-                                    icon: const Icon(Icons.close_rounded, size: 16),
+                                    icon: const Icon(LucideIcons.x, size: 16),
                                     onPressed: () => setState(() => _phoneControllers.removeAt(i).dispose()),
                                   )
                                 : null,
@@ -311,7 +325,7 @@ class _CreateBillScreenState extends ConsumerState<_CreateBillScreen> {
                       ),
                     TextButton.icon(
                       onPressed: () => setState(() => _phoneControllers.add(TextEditingController())),
-                      icon: const Icon(Icons.add_rounded, size: 16),
+                      icon: const Icon(LucideIcons.plus, size: 16),
                       label: const Text('Add participant'),
                     ),
                   ],

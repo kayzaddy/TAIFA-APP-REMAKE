@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/theme/taifa_colors.dart';
 import '../../../app/theme/taifa_dimens.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// MAP entry — Accept Everywhere · Process Once · Settle Once.
 class MapHubScreen extends ConsumerWidget {
@@ -33,7 +34,7 @@ class MapHubScreen extends ConsumerWidget {
             children: [
               Row(
                 children: [
-                  IconButton(onPressed: () => context.pop(), icon: const Icon(Icons.arrow_back)),
+                  IconButton(onPressed: () => context.pop(), icon: const Icon(LucideIcons.arrowLeft)),
                   const Spacer(),
                   TextButton(onPressed: () => context.push('/wallet'), child: const Text('Wallet')),
                 ],
@@ -60,7 +61,7 @@ class MapHubScreen extends ConsumerWidget {
                 context,
                 title: 'Merchant console',
                 subtitle: 'Issue QR · links · invoices · analytics',
-                icon: Icons.storefront_outlined,
+                icon: LucideIcons.store,
                 color: TaifaColors.ocean500,
                 path: '/map/merchant',
               ),
@@ -68,7 +69,7 @@ class MapHubScreen extends ConsumerWidget {
                 context,
                 title: 'Customer pay',
                 subtitle: 'Open link or intent · pay · receipt',
-                icon: Icons.qr_code_scanner,
+                icon: LucideIcons.scanLine,
                 color: TaifaColors.emerald600,
                 path: '/map/pay',
               ),
@@ -119,7 +120,7 @@ class MapHubScreen extends ConsumerWidget {
                     ],
                   ),
                 ),
-                const Icon(Icons.chevron_right),
+                const Icon(LucideIcons.chevronRight),
               ],
             ),
           ),

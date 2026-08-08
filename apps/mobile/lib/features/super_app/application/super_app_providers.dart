@@ -6,6 +6,7 @@ import '../../ecosystem/application/ecosystem_modules_provider.dart';
 import '../domain/ecosystem_catalog.dart';
 import '../domain/feature_flags.dart';
 import '../domain/qr_resolver.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 final superAppFlagsProvider = Provider<SuperAppFlags>((ref) => SuperAppFlags.current);
 
@@ -52,49 +53,49 @@ final homeJourneyProvider = Provider<List<JourneyShortcut>>((ref) {
       title: 'Scan & pay',
       subtitle: 'Universal QR',
       route: '/scan',
-      icon: Icons.qr_code_scanner_rounded,
+      icon: LucideIcons.scanLine,
       tint: TaifaColors.ocean500,
     ),
     JourneyShortcut(
       title: 'Tap & Pay',
       subtitle: 'NFC contactless',
       route: '/tap',
-      icon: Icons.contactless,
+      icon: LucideIcons.wifi,
       tint: TaifaColors.emerald600,
     ),
     JourneyShortcut(
       title: 'Book a ride',
       subtitle: 'Mobility',
       route: '/mobility',
-      icon: Icons.local_taxi_rounded,
+      icon: LucideIcons.carTaxiFront,
       tint: TaifaColors.gold400,
     ),
     JourneyShortcut(
       title: 'Winga deals',
       subtitle: 'Marketplace',
       route: '/winga',
-      icon: Icons.shopping_bag_rounded,
+      icon: LucideIcons.shoppingBag,
       tint: TaifaColors.emerald500,
     ),
     JourneyShortcut(
       title: 'Pay merchant',
       subtitle: 'MAP',
       route: '/map/pay',
-      icon: Icons.storefront_outlined,
+      icon: LucideIcons.store,
       tint: TaifaColors.ocean400,
     ),
     JourneyShortcut(
       title: 'Ask AI',
       subtitle: 'Assist only',
       route: '/ai',
-      icon: Icons.auto_awesome_rounded,
+      icon: LucideIcons.sparkles,
       tint: TaifaColors.violetSoft,
     ),
     JourneyShortcut(
       title: 'Orders & food',
       subtitle: 'Commerce',
       route: '/food',
-      icon: Icons.restaurant_rounded,
+      icon: LucideIcons.utensils,
       tint: TaifaColors.dangerSoft,
     ),
   ];

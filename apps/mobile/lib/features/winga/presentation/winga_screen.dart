@@ -10,6 +10,7 @@ import '../../../shared/widgets/taifa_logo.dart';
 import '../application/winga_providers.dart';
 import '../data/winga_catalog.dart';
 import '../domain/winga_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class WingaScreen extends ConsumerStatefulWidget {
   const WingaScreen({super.key});
@@ -224,7 +225,7 @@ class _Header extends StatelessWidget {
         children: [
           IconButton(
             onPressed: onLeave,
-            icon: Icon(Icons.arrow_back_rounded, color: palette.textPrimary),
+            icon: Icon(LucideIcons.arrowLeft, color: palette.textPrimary),
           ),
           const TaifaLogo(variant: TaifaLogoVariant.mark, size: 32),
           const SizedBox(width: 8),
@@ -243,7 +244,7 @@ class _Header extends StatelessWidget {
             IconButton(
               onPressed: ctrl.openWishlist,
               icon: Icon(
-                Icons.favorite_border_rounded,
+                LucideIcons.heart,
                 color: palette.textMuted,
               ),
             ),
@@ -253,7 +254,7 @@ class _Header extends StatelessWidget {
               child: IconButton(
                 onPressed: ctrl.openCart,
                 icon: Icon(
-                  Icons.shopping_bag_outlined,
+                  LucideIcons.shoppingBag,
                   color: palette.textMuted,
                 ),
               ),
@@ -454,7 +455,7 @@ class _Marketplace extends StatelessWidget {
           onChanged: ctrl.setQuery,
           decoration: InputDecoration(
             hintText: 'Search products',
-            prefixIcon: Icon(Icons.search_rounded, color: palette.textMuted),
+            prefixIcon: Icon(LucideIcons.search, color: palette.textMuted),
             filled: true,
             fillColor: palette.surface,
             border: OutlineInputBorder(
@@ -555,7 +556,7 @@ class _ProductDetail extends StatelessWidget {
             IconButton.filledTonal(
               onPressed: () => ctrl.toggleWishlist(p.id),
               icon: Icon(
-                wished ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+                wished ? LucideIcons.heart : LucideIcons.heart,
               ),
             ),
           ],
@@ -611,12 +612,12 @@ class _Cart extends StatelessWidget {
                 children: [
                   IconButton(
                     onPressed: () => ctrl.setQty(l.product.id, l.quantity - 1),
-                    icon: const Icon(Icons.remove),
+                    icon: const Icon(LucideIcons.minus),
                   ),
                   Text('${l.quantity}'),
                   IconButton(
                     onPressed: () => ctrl.setQty(l.product.id, l.quantity + 1),
-                    icon: const Icon(Icons.add),
+                    icon: const Icon(LucideIcons.plus),
                   ),
                 ],
               ),
@@ -768,7 +769,7 @@ class _Tracking extends StatelessWidget {
           final done = s.index <= o.status.index;
           return ListTile(
             leading: Icon(
-              done ? Icons.check_circle_rounded : Icons.circle_outlined,
+              done ? LucideIcons.circleCheckBig : LucideIcons.circle,
               color: done ? TaifaColors.emerald500 : palette.textMuted,
             ),
             title: Text(
@@ -903,8 +904,8 @@ class _ServiceBook extends StatelessWidget {
                   ),
                   trailing: Icon(
                     state.serviceSlot == slot
-                        ? Icons.check_circle_rounded
-                        : Icons.circle_outlined,
+                        ? LucideIcons.circleCheckBig
+                        : LucideIcons.circle,
                     color: state.serviceSlot == slot
                         ? TaifaColors.emerald500
                         : palette.textMuted,
@@ -1286,7 +1287,7 @@ class _AiChat extends StatelessWidget {
                 style: IconButton.styleFrom(
                   backgroundColor: TaifaColors.emerald700,
                 ),
-                icon: const Icon(Icons.send_rounded),
+                icon: const Icon(LucideIcons.send),
               ),
             ],
           ),
@@ -1415,7 +1416,7 @@ class _Negotia extends StatelessWidget {
                 style: IconButton.styleFrom(
                   backgroundColor: TaifaColors.emerald700,
                 ),
-                icon: const Icon(Icons.auto_awesome),
+                icon: const Icon(LucideIcons.sparkles),
               ),
             ],
           ),
@@ -1552,7 +1553,7 @@ class _ProductTile extends StatelessWidget {
               style: TextStyle(color: palette.textMuted, fontSize: 12),
             ),
             trailing: Icon(
-              Icons.chevron_right_rounded,
+              LucideIcons.chevronRight,
               color: palette.textMuted,
             ),
           ),
@@ -1596,7 +1597,7 @@ class _ListCard extends StatelessWidget {
               style: TextStyle(color: palette.textMuted, fontSize: 12),
             ),
             trailing: Icon(
-              Icons.chevron_right_rounded,
+              LucideIcons.chevronRight,
               color: palette.textMuted,
             ),
           ),

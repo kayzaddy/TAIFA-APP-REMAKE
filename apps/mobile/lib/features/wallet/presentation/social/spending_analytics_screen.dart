@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/theme/taifa_colors.dart';
 import '../../../../app/theme/taifa_dimens.dart';
+import '../../../../app/theme/taifa_icons.dart';
 import '../../../../app/theme/taifa_theme.dart';
 import '../../../../data/dto/social_dto.dart';
 import '../../application/social_providers.dart';
@@ -31,7 +32,13 @@ class SpendingAnalyticsScreen extends ConsumerWidget {
                   error: (e, _) => Center(child: Text('Could not load analytics.\n$e', textAlign: TextAlign.center)),
                   data: (analytics) {
                     if (analytics.months.every((m) => m.totalIn.isZero && m.totalOut.isZero)) {
-                      return const SocialEmptyState(icon: Icons.insights_rounded, message: 'No transaction activity in this window yet.');
+                      return const SocialEmptyState(
+                        icon: TaifaIcons.analytics,
+                        title: 'Nothing to chart yet',
+                        message:
+                            'Once money moves in or out, your monthly '
+                            'in/out totals and spending mix appear here.',
+                      );
                     }
                     final maxValue = analytics.months.fold<int>(
                       1,

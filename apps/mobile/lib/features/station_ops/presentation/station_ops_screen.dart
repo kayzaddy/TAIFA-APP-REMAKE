@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../application/station_ops_providers.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class StationOpsScreen extends ConsumerStatefulWidget {
   const StationOpsScreen({super.key});
@@ -33,7 +34,7 @@ class _StationOpsScreenState extends ConsumerState<StationOpsScreen> {
         actions: [
           IconButton(
             onPressed: state.loading ? null : controller.load,
-            icon: const Icon(Icons.refresh_rounded),
+            icon: const Icon(LucideIcons.refreshCw),
           ),
         ],
       ),
@@ -153,7 +154,7 @@ class _StationOpsScreenState extends ConsumerState<StationOpsScreen> {
                                 onPressed: () => controller.moveDriverUp(
                                   entry['driver'].toString(),
                                 ),
-                                icon: const Icon(Icons.arrow_upward_rounded),
+                                icon: const Icon(LucideIcons.arrowUp),
                               ),
                             ),
                           ),

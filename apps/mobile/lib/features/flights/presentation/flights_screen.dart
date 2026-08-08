@@ -9,6 +9,7 @@ import '../../../app/theme/taifa_typography.dart';
 import '../../../shared/widgets/taifa_logo.dart';
 import '../application/flight_providers.dart';
 import '../domain/flight_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Flights — Demo Complete search → select → ticket → wallet pay.
 class FlightsScreen extends ConsumerStatefulWidget {
@@ -117,7 +118,7 @@ class _TopBar extends StatelessWidget {
         children: [
           IconButton(
             onPressed: onBack,
-            icon: Icon(Icons.arrow_back_rounded, color: palette.textPrimary),
+            icon: Icon(LucideIcons.arrowLeft, color: palette.textPrimary),
           ),
           const TaifaLogo(variant: TaifaLogoVariant.mark, size: 32),
           const SizedBox(width: 8),
@@ -134,7 +135,7 @@ class _TopBar extends StatelessWidget {
           IconButton(
             onPressed: onHistory,
             icon: Icon(
-              Icons.airplane_ticket_outlined,
+              LucideIcons.plane,
               color: palette.textMuted,
             ),
           ),
@@ -219,7 +220,7 @@ class _Search extends StatelessWidget {
           alignment: Alignment.centerRight,
           child: IconButton(
             onPressed: ctrl.swapAirports,
-            icon: Icon(Icons.swap_vert_rounded, color: palette.textMuted),
+            icon: Icon(LucideIcons.arrowUpDown, color: palette.textMuted),
           ),
         ),
         _AirportField(
@@ -249,7 +250,7 @@ class _Search extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Icon(Icons.calendar_month_rounded, color: palette.textMuted),
+                Icon(LucideIcons.calendar, color: palette.textMuted),
                 const SizedBox(width: 10),
                 Text(
                   'Depart ${_fmtDate(state.departDate)}',
@@ -275,7 +276,7 @@ class _Search extends StatelessWidget {
             const Spacer(),
             IconButton(
               onPressed: () => ctrl.setPassengers(state.passengers - 1),
-              icon: Icon(Icons.remove_circle_outline, color: palette.textMuted),
+              icon: Icon(LucideIcons.circleMinus, color: palette.textMuted),
             ),
             Text(
               '${state.passengers}',
@@ -286,7 +287,7 @@ class _Search extends StatelessWidget {
             ),
             IconButton(
               onPressed: () => ctrl.setPassengers(state.passengers + 1),
-              icon: Icon(Icons.add_circle_outline, color: palette.textMuted),
+              icon: Icon(LucideIcons.circlePlus, color: palette.textMuted),
             ),
           ],
         ),
@@ -558,7 +559,7 @@ class _Ticketed extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Icon(
-            Icons.airplane_ticket_rounded,
+            LucideIcons.plane,
             color: TaifaColors.emerald500,
             size: 48,
           ),

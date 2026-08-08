@@ -6,6 +6,7 @@ import '../../../../app/theme/taifa_colors.dart';
 import '../../../../app/theme/taifa_dimens.dart';
 import '../../application/mos_providers.dart';
 import '../widgets/commerce_kit.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Executive / branch manager analytics dashboard.
 class CommerceManagementApp extends ConsumerStatefulWidget {
@@ -32,11 +33,11 @@ class _CommerceManagementAppState extends ConsumerState<CommerceManagementApp> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Management'),
-        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => context.pop()),
+        leading: IconButton(icon: const Icon(LucideIcons.arrowLeft), onPressed: () => context.pop()),
         actions: [
           IconButton(
             onPressed: () => context.push('/winga'),
-            icon: const Icon(Icons.handshake_outlined),
+            icon: const Icon(LucideIcons.handshake),
             tooltip: 'Winga',
           ),
         ],
@@ -56,23 +57,23 @@ class _CommerceManagementAppState extends ConsumerState<CommerceManagementApp> {
           ),
           const SizedBox(height: TaifaSpacing.xl),
           ListTile(
-            leading: const Icon(Icons.store),
+            leading: const Icon(LucideIcons.store),
             title: Text('Products · ${a.products}'),
             subtitle: Text(a.wingaEnabled ? 'Winga publishing enabled' : 'Winga not linked'),
           ),
           ListTile(
-            leading: const Icon(Icons.groups_outlined),
+            leading: const Icon(LucideIcons.users),
             title: Text('Customers · ${a.customers}'),
           ),
           ListTile(
-            leading: const Icon(Icons.local_shipping_outlined),
+            leading: const Icon(LucideIcons.truck),
             title: const Text('Mobility deliveries'),
             subtitle: const Text('Dispatch refs attach on fulfillment (shared Mobility)'),
             onTap: () => context.push('/mobility'),
           ),
           const SizedBox(height: TaifaSpacing.lg),
           Text('Growth recommendations', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
-          ...state.assistTips.map((t) => ListTile(leading: const Icon(Icons.trending_up), title: Text(t))),
+          ...state.assistTips.map((t) => ListTile(leading: const Icon(LucideIcons.trendingUp), title: Text(t))),
           const SizedBox(height: TaifaSpacing.lg),
           Text('Top products', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
           for (final p in state.products.take(5))

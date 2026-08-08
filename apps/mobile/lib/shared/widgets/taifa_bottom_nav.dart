@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 
 import '../../app/theme/taifa_colors.dart';
 import '../../app/theme/taifa_dimens.dart';
+import '../../app/theme/taifa_icons.dart';
 import '../../app/theme/taifa_theme.dart';
 
 class TaifaNavDestination {
   const TaifaNavDestination({required this.icon, required this.label});
+
   final IconData icon;
   final String label;
 }
@@ -112,14 +114,28 @@ class _NavItem extends StatelessWidget {
                     : null,
                 borderRadius: BorderRadius.circular(TaifaRadii.xs),
               ),
-              child: Icon(destination.icon, size: 20, color: color),
+              // Lucide is a single-weight family, so the selected state is
+              // carried by the gold pill, the colour, a slightly larger glyph
+              // and a bolder label rather than by swapping in a filled icon.
+              // The scale happens inside the fixed-size pill, so nothing
+              // around it reflows.
+              child: AnimatedScale(
+                scale: active ? 1.12 : 1,
+                duration: TaifaMotion.fast,
+                curve: TaifaMotion.standard,
+                child: Icon(
+                  destination.icon,
+                  size: TaifaIconSize.md,
+                  color: color,
+                ),
+              ),
             ),
             const SizedBox(height: 3),
             Text(
               destination.label,
               style: TextStyle(
                 fontSize: 9,
-                fontWeight: FontWeight.w500,
+                fontWeight: active ? FontWeight.w700 : FontWeight.w500,
                 color: color,
               ),
             ),

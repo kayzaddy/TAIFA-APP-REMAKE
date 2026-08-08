@@ -11,6 +11,7 @@ import '../application/wallet_providers.dart';
 import '../domain/currency.dart';
 import '../domain/money.dart';
 import '../domain/recipient.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class SendMoneyScreen extends ConsumerStatefulWidget {
   const SendMoneyScreen({super.key});
@@ -56,7 +57,7 @@ class _SendMoneyScreenState extends ConsumerState<SendMoneyScreen> {
               Row(
                 children: [
                   _CircleButton(
-                    icon: Icons.arrow_back_rounded,
+                    icon: LucideIcons.arrowLeft,
                     onTap: () => context.go('/wallet'),
                   ),
                   const SizedBox(width: TaifaSpacing.md),
@@ -154,7 +155,7 @@ class _SendMoneyScreenState extends ConsumerState<SendMoneyScreen> {
                 ),
                 trailing: r.verified
                     ? const Icon(
-                        Icons.verified_rounded,
+                        LucideIcons.badgeCheck,
                         size: 16,
                         color: TaifaColors.emerald500,
                       )

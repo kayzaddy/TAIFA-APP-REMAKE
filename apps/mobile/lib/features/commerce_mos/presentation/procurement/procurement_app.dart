@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../app/theme/taifa_dimens.dart';
 import '../../application/mos_providers.dart';
 import '../widgets/commerce_kit.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Procurement officer — suppliers, POs, vendor performance.
 class CommerceProcurementApp extends ConsumerStatefulWidget {
@@ -29,7 +30,7 @@ class _CommerceProcurementAppState extends ConsumerState<CommerceProcurementApp>
     return Scaffold(
       appBar: AppBar(
         title: const Text('Procurement'),
-        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => context.pop()),
+        leading: IconButton(icon: const Icon(LucideIcons.arrowLeft), onPressed: () => context.pop()),
       ),
       body: ListView(
         padding: const EdgeInsets.all(TaifaSpacing.screenH),
@@ -46,7 +47,7 @@ class _CommerceProcurementAppState extends ConsumerState<CommerceProcurementApp>
           Text('Suppliers', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
           for (final s in state.suppliers)
             ListTile(
-              leading: const Icon(Icons.local_shipping_outlined),
+              leading: const Icon(LucideIcons.truck),
               title: Text(s.name),
               subtitle: Text(s.code),
               trailing: Text('${s.rating.toStringAsFixed(1)}★'),

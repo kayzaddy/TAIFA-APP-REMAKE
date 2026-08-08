@@ -3,9 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app/theme/taifa_dimens.dart';
+import '../../../app/theme/taifa_icons.dart';
 import '../../../app/theme/taifa_theme.dart';
 import '../../../app/theme/taifa_typography.dart';
 import '../../../shared/widgets/quick_action_button.dart';
+import '../../../shared/widgets/taifa_icon_tile.dart';
+import '../../../shared/widgets/taifa_skeleton.dart';
 import '../application/wallet_providers.dart';
 import '../domain/currency.dart';
 import 'widgets/currency_switcher.dart';
@@ -33,7 +36,7 @@ class WalletScreen extends ConsumerWidget {
     return SafeArea(
       bottom: false,
       child: asyncState.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const _WalletSkeleton(),
         error: (e, _) => Center(
           child: Text(
             'Could not load wallet.\n$e',
@@ -79,8 +82,8 @@ class WalletScreen extends ConsumerWidget {
                   IconButton(
                     onPressed: () {},
                     icon: Icon(
-                      Icons.tune_rounded,
-                      size: 18,
+                      TaifaIcons.filter,
+                      size: TaifaIconSize.md,
                       color: palette.accent,
                     ),
                   ),
@@ -106,7 +109,7 @@ class WalletScreen extends ConsumerWidget {
                 children: [
                   Expanded(
                     child: QuickActionButton(
-                      icon: Icons.north_east_rounded,
+                      icon: TaifaIcons.sendMoney,
                       label: 'Send',
                       onTap: () => context.go('/wallet/send'),
                     ),
@@ -114,7 +117,7 @@ class WalletScreen extends ConsumerWidget {
                   const SizedBox(width: TaifaSpacing.sm),
                   Expanded(
                     child: QuickActionButton(
-                      icon: Icons.add_rounded,
+                      icon: TaifaIcons.topUp,
                       label: 'Top Up',
                       onTap: () => context.go('/wallet/topup'),
                     ),
@@ -122,23 +125,23 @@ class WalletScreen extends ConsumerWidget {
                   const SizedBox(width: TaifaSpacing.sm),
                   Expanded(
                     child: QuickActionButton(
-                      icon: Icons.qr_code_scanner_rounded,
-                      label: 'Pay QR',
+                      icon: TaifaIcons.scanQr,
+                      label: 'My QR',
                       onTap: () => context.go('/wallet/qr'),
                     ),
                   ),
                   const SizedBox(width: TaifaSpacing.sm),
                   Expanded(
                     child: QuickActionButton(
-                      icon: Icons.receipt_long_rounded,
+                      icon: TaifaIcons.splitBill,
                       label: 'Split Bill',
                       onTap: () => context.go('/wallet/bills'),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: TaifaSpacing.lg),
-              _MoreLinksRow(),
+              const SizedBox(height: TaifaSpacing.xl),
+              const _MoneyToolsGrid(),
               const SizedBox(height: TaifaSpacing.lg),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -151,22 +154,34 @@ class WalletScreen extends ConsumerWidget {
                       color: palette.textPrimary,
                     ),
                   ),
-                  Row(
-                    children: [
-                      Text(
-                        'All',
-                        style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600,
-                          color: palette.accent,
-                        ),
+                  // Was a decorative label; now it actually opens the
+                  // searchable history screen.
+                  InkWell(
+                    onTap: () => context.go('/wallet/history'),
+                    borderRadius: BorderRadius.circular(TaifaRadii.sm),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: TaifaSpacing.xs,
+                        vertical: TaifaSpacing.xxs,
                       ),
-                      Icon(
-                        Icons.arrow_forward_rounded,
-                        size: 12,
-                        color: palette.accent,
+                      child: Row(
+                        children: [
+                          Text(
+                            'All',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w600,
+                              color: palette.accent,
+                            ),
+                          ),
+                          Icon(
+                            TaifaIcons.chevronRight,
+                            size: 12,
+                            color: palette.accent,
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ],
               ),
@@ -183,62 +198,98 @@ class WalletScreen extends ConsumerWidget {
   }
 }
 
-/// Entry points into the social-payments surface that don't fit the four
-/// primary quick actions: requests, standing orders, contacts, notifications,
-/// history, analytics, spending cap, and profile/merchant settings.
-class _MoreLinksRow extends StatelessWidget {
-  const _MoreLinksRow();
+/// Loading state shaped like the real wallet: card, currency switcher, action
+/// row, then transactions. Reserving the layout means nothing jumps when the
+/// balance lands.
+class _WalletSkeleton extends StatelessWidget {
+  const _WalletSkeleton();
 
-  static const _links = [
-    (Icons.link_rounded, 'Payment\nLinks', '/wallet/links'),
-    (Icons.request_page_rounded, 'Requests', '/wallet/requests'),
-    (Icons.autorenew_rounded, 'Standing\nOrders', '/wallet/recurring'),
-    (Icons.contacts_rounded, 'Contacts', '/wallet/contacts'),
-    (Icons.notifications_none_rounded, 'Alerts', '/wallet/notifications'),
-    (Icons.history_rounded, 'History', '/wallet/history'),
-    (Icons.insights_rounded, 'Analytics', '/wallet/analytics'),
-    (Icons.shield_outlined, 'Spending\nCap', '/wallet/spending-cap'),
-    (Icons.storefront_rounded, 'Profile &\nMerchant', '/wallet/profile'),
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(
+        TaifaSpacing.screenH,
+        TaifaSpacing.md,
+        TaifaSpacing.screenH,
+        120,
+      ),
+      children: const [
+        TaifaSkeleton(width: double.infinity, height: 26, radius: TaifaRadii.sm),
+        SizedBox(height: TaifaSpacing.md),
+        TaifaSkeleton(width: double.infinity, height: 170, radius: TaifaRadii.xxl),
+        SizedBox(height: TaifaSpacing.md),
+        TaifaSkeleton(width: double.infinity, height: 34, radius: TaifaRadii.md),
+        SizedBox(height: TaifaSpacing.lg),
+        TaifaSkeleton(width: double.infinity, height: 72, radius: TaifaRadii.lg),
+        SizedBox(height: TaifaSpacing.xl),
+        TaifaSkeletonCard(),
+        SizedBox(height: TaifaSpacing.sm),
+        TaifaSkeletonCard(),
+      ],
+    );
+  }
+}
+
+/// Everything in the money surface that isn't one of the four primary quick
+/// actions, as a proper grid.
+///
+/// This replaced a horizontally-scrolling strip of 64px tiles with 8px
+/// labels: the tap targets were under the 44pt minimum, half the items were
+/// hidden off-screen with no affordance, and the labels were below a
+/// readable size. A wrapped grid shows the whole vocabulary at once.
+class _MoneyToolsGrid extends StatelessWidget {
+  const _MoneyToolsGrid();
+
+  static const _tools = <(IconData, String, String, TaifaIconHue)>[
+    (TaifaIcons.paymentLink, 'Payment\nLinks', '/wallet/links', TaifaIconHue.gold),
+    (TaifaIcons.moneyRequest, 'Requests', '/wallet/requests', TaifaIconHue.emerald),
+    (TaifaIcons.splitBill, 'Split\nBills', '/wallet/bills', TaifaIconHue.gold),
+    (TaifaIcons.standingOrder, 'Standing\nOrders', '/wallet/recurring', TaifaIconHue.ocean),
+    (TaifaIcons.contacts, 'Contacts', '/wallet/contacts', TaifaIconHue.violet),
+    (TaifaIcons.notifications, 'Alerts', '/wallet/notifications', TaifaIconHue.gold),
+    (TaifaIcons.history, 'History', '/wallet/history', TaifaIconHue.ocean),
+    (TaifaIcons.analytics, 'Analytics', '/wallet/analytics', TaifaIconHue.emerald),
+    (TaifaIcons.spendingCap, 'Spending\nCap', '/wallet/spending-cap', TaifaIconHue.violet),
+    (TaifaIcons.merchant, 'Profile &\nMerchant', '/wallet/profile', TaifaIconHue.gold),
   ];
 
   @override
   Widget build(BuildContext context) {
     final palette = context.taifa;
-    return SizedBox(
-      height: 74,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: _links.length,
-        separatorBuilder: (_, _) => const SizedBox(width: TaifaSpacing.sm),
-        itemBuilder: (context, i) {
-          final (icon, label, route) = _links[i];
-          return InkWell(
-            onTap: () => context.go(route),
-            borderRadius: BorderRadius.circular(TaifaRadii.md),
-            child: Container(
-              width: 64,
-              padding: const EdgeInsets.symmetric(vertical: TaifaSpacing.xs),
-              decoration: BoxDecoration(
-                color: palette.surface,
-                borderRadius: BorderRadius.circular(TaifaRadii.md),
-                border: Border.all(color: palette.border),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'MONEY TOOLS',
+          style: TaifaTypography.eyebrow(
+            palette.textMuted,
+          ).copyWith(fontSize: 10, letterSpacing: 2),
+        ),
+        const SizedBox(height: TaifaSpacing.sm),
+        GridView(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          // Max-extent + a fixed row height, rather than a fixed column count
+          // with an aspect ratio: a phone gets 4 columns, a tablet or the web
+          // build simply gets more of the same-sized tiles instead of the
+          // enormous stretched cells an aspect ratio produces when wide.
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 104,
+            mainAxisExtent: 86,
+            mainAxisSpacing: TaifaSpacing.xs,
+            crossAxisSpacing: TaifaSpacing.xs,
+          ),
+          children: [
+            for (final (icon, label, route, hue) in _tools)
+              TaifaFeatureTile(
+                icon: icon,
+                label: label.replaceAll('\n', ' '),
+                hue: hue,
+                onTap: () => context.go(route),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(icon, size: 18, color: palette.accent),
-                  const SizedBox(height: 4),
-                  Text(
-                    label,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 8, fontWeight: FontWeight.w600, height: 1.1, color: palette.textSecondary),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
+          ],
+        ),
+      ],
     );
   }
 }

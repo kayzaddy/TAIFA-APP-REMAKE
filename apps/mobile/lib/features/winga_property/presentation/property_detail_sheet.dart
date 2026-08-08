@@ -4,6 +4,7 @@ import '../../../app/theme/taifa_colors.dart';
 import '../../../app/theme/taifa_dimens.dart';
 import '../../../app/theme/taifa_theme.dart';
 import '../domain/property_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class PropertyDetailSheet extends StatelessWidget {
   const PropertyDetailSheet({
@@ -63,7 +64,7 @@ class PropertyDetailSheet extends StatelessWidget {
         children: [
           Row(
             children: [
-              IconButton(onPressed: onClose, icon: const Icon(Icons.close_rounded)),
+              IconButton(onPressed: onClose, icon: const Icon(LucideIcons.x)),
               Expanded(
                 child: Text(
                   listing.title,
@@ -79,14 +80,14 @@ class PropertyDetailSheet extends StatelessWidget {
                 IconButton(
                   onPressed: onToggleCompare,
                   icon: Icon(
-                    isInCompare ? Icons.compare_arrows : Icons.compare_arrows_outlined,
+                    isInCompare ? LucideIcons.arrowLeftRight : LucideIcons.arrowLeftRight,
                     color: TaifaColors.gold400,
                   ),
                 ),
               IconButton(
                 onPressed: onFavorite,
                 icon: Icon(
-                  isFavorite ? Icons.favorite : Icons.favorite_border,
+                  isFavorite ? LucideIcons.heart : LucideIcons.heart,
                   color: TaifaColors.gold400,
                 ),
               ),
@@ -136,7 +137,7 @@ class PropertyDetailSheet extends StatelessWidget {
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        const Icon(Icons.commute_rounded, size: 18, color: TaifaColors.gold400),
+                        const Icon(LucideIcons.bus, size: 18, color: TaifaColors.gold400),
                         const SizedBox(width: 6),
                         Text(
                           '${commute!.durationLabel} to CBD · ${(commute!.distanceMeters / 1000).toStringAsFixed(1)} km',
@@ -152,14 +153,14 @@ class PropertyDetailSheet extends StatelessWidget {
                     children: [
                       if (onVirtualTour != null)
                         ActionChip(
-                          avatar: const Icon(Icons.view_in_ar_rounded, size: 18),
+                          avatar: const Icon(LucideIcons.box, size: 18),
                           label: const Text('Virtual tour'),
                           onPressed: onVirtualTour,
                         ),
                       if (onViewingPass != null)
                         ActionChip(
                           avatar: Icon(
-                            listing.isUnlocked ? Icons.lock_open_rounded : Icons.lock_rounded,
+                            listing.isUnlocked ? LucideIcons.lockOpen : LucideIcons.lock,
                             size: 18,
                           ),
                           label: Text(listing.isUnlocked ? 'Unlocked' : 'Viewing Pass'),
@@ -167,31 +168,31 @@ class PropertyDetailSheet extends StatelessWidget {
                         ),
                       if (onLiveTour != null)
                         ActionChip(
-                          avatar: const Icon(Icons.videocam_rounded, size: 18),
+                          avatar: const Icon(LucideIcons.video, size: 18),
                           label: const Text('Live tour'),
                           onPressed: onLiveTour,
                         ),
                       if (onCopilot != null)
                         ActionChip(
-                          avatar: const Icon(Icons.psychology_rounded, size: 18),
+                          avatar: const Icon(LucideIcons.brain, size: 18),
                           label: const Text('Ask AI'),
                           onPressed: onCopilot,
                         ),
                       if (onHumanWinga != null)
                         ActionChip(
-                          avatar: const Icon(Icons.support_agent_rounded, size: 18),
+                          avatar: const Icon(LucideIcons.headset, size: 18),
                           label: const Text('Human Winga'),
                           onPressed: onHumanWinga,
                         ),
                       if (onApply != null && listing.transactionType == 'rent')
                         ActionChip(
-                          avatar: const Icon(Icons.assignment_rounded, size: 18),
+                          avatar: const Icon(LucideIcons.clipboardList, size: 18),
                           label: const Text('Apply & lease'),
                           onPressed: onApply,
                         ),
                       if (onReport != null)
                         ActionChip(
-                          avatar: const Icon(Icons.flag_outlined, size: 18),
+                          avatar: const Icon(LucideIcons.flag, size: 18),
                           label: const Text('Report'),
                           onPressed: onReport,
                         ),
@@ -216,7 +217,7 @@ class PropertyDetailSheet extends StatelessWidget {
                       padding: EdgeInsets.only(top: 8),
                       child: Row(
                         children: [
-                          Icon(Icons.verified_rounded, color: TaifaColors.emerald700, size: 18),
+                          Icon(LucideIcons.badgeCheck, color: TaifaColors.emerald700, size: 18),
                           SizedBox(width: 4),
                           Text(
                             'Taifa verified listing',
@@ -256,7 +257,7 @@ class PropertyDetailSheet extends StatelessWidget {
                     Text('Video tour', style: TextStyle(color: palette.textPrimary, fontWeight: FontWeight.w700)),
                     const SizedBox(height: 8),
                     ListTile(
-                      leading: const Icon(Icons.play_circle_fill_rounded, color: TaifaColors.gold400),
+                      leading: const Icon(LucideIcons.circlePlay, color: TaifaColors.gold400),
                       title: Text(videos.first.caption.isEmpty ? 'Property walkthrough' : videos.first.caption),
                       subtitle: const Text('Tap to play in browser'),
                       onTap: () {},
@@ -298,7 +299,7 @@ class _VisitScoreBanner extends StatelessWidget {
                 children: List.generate(
                   5,
                   (i) => Icon(
-                    i < score.stars ? Icons.star_rounded : Icons.star_border_rounded,
+                    i < score.stars ? LucideIcons.star : LucideIcons.star,
                     color: TaifaColors.gold400,
                     size: 20,
                   ),

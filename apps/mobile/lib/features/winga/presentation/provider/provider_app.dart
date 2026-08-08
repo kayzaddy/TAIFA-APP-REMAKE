@@ -7,6 +7,7 @@ import '../../../../app/theme/taifa_dimens.dart';
 import '../../application/brokerage_providers.dart';
 import '../widgets/experience_kit.dart';
 import '../widgets/winga_ui.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Provider business app — offerings, campaigns pulse, settlements visibility.
 class WingaProviderApp extends ConsumerStatefulWidget {
@@ -37,18 +38,18 @@ class _WingaProviderAppState extends ConsumerState<WingaProviderApp> {
       appBar: AppBar(
         title: const Text('Provider Hub'),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.pop(),
         ),
         actions: [
           IconButton(
             tooltip: 'Opportunities',
             onPressed: () => context.push('/winga/opportunities'),
-            icon: const Icon(Icons.campaign_outlined),
+            icon: const Icon(LucideIcons.megaphone),
           ),
           IconButton(
             onPressed: () => context.push('/wallet'),
-            icon: const Icon(Icons.account_balance_wallet_outlined),
+            icon: const Icon(LucideIcons.wallet),
           ),
         ],
       ),
@@ -73,10 +74,10 @@ class _WingaProviderAppState extends ConsumerState<WingaProviderApp> {
         selectedIndex: _tab,
         onDestinationSelected: (i) => setState(() => _tab = i),
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.home_outlined), label: 'Home'),
-          NavigationDestination(icon: Icon(Icons.inventory_2_outlined), label: 'Catalog'),
-          NavigationDestination(icon: Icon(Icons.inbox_outlined), label: 'Leads'),
-          NavigationDestination(icon: Icon(Icons.campaign_outlined), label: 'Campaigns'),
+          NavigationDestination(icon: Icon(LucideIcons.house), label: 'Home'),
+          NavigationDestination(icon: Icon(LucideIcons.package), label: 'Catalog'),
+          NavigationDestination(icon: Icon(LucideIcons.inbox), label: 'Leads'),
+          NavigationDestination(icon: Icon(LucideIcons.megaphone), label: 'Campaigns'),
         ],
       ),
     );
@@ -163,7 +164,7 @@ class _ProviderHome extends StatelessWidget {
         const WingaSectionHeader('Winga relationships'),
         ...state.wingas.take(5).map(
               (w) => ListTile(
-                leading: const Icon(Icons.handshake_outlined),
+                leading: const Icon(LucideIcons.handshake),
                 title: Text(w.displayName),
                 subtitle: Text(w.bio.isEmpty ? w.kind : w.bio),
                 trailing: Text('${w.reputationScoreE4 ~/ 1000}★'),
@@ -210,7 +211,7 @@ class _InboundDeals extends StatelessWidget {
     if (state.deals.isEmpty) {
       return const WingaEmptyState(
         message: 'Deals from Wingas land in your inbox here',
-        icon: Icons.inbox_outlined,
+        icon: LucideIcons.inbox,
       );
     }
     return ListView.separated(
@@ -262,7 +263,7 @@ class _CampaignAssist extends StatelessWidget {
         const SizedBox(height: TaifaSpacing.lg),
         ...state.assistTips.map(
           (t) => ListTile(
-            leading: const Icon(Icons.auto_graph),
+            leading: const Icon(LucideIcons.chartLine),
             title: Text(t),
           ),
         ),

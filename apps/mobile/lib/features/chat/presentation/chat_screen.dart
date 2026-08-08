@@ -9,6 +9,7 @@ import '../../../app/theme/taifa_typography.dart';
 import '../../../shared/widgets/taifa_logo.dart';
 import '../application/chat_providers.dart';
 import '../domain/chat_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
   const ChatScreen({super.key});
@@ -72,7 +73,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       }
                     },
                     icon: Icon(
-                      Icons.arrow_back_rounded,
+                      LucideIcons.arrowLeft,
                       color: palette.textPrimary,
                     ),
                   ),
@@ -142,7 +143,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       style: IconButton.styleFrom(
                         backgroundColor: TaifaColors.emerald700,
                       ),
-                      icon: const Icon(Icons.send_rounded),
+                      icon: const Icon(LucideIcons.send),
                     ),
                   ],
                 ),
@@ -179,7 +180,7 @@ class _Inbox extends StatelessWidget {
             leading: CircleAvatar(
               backgroundColor: TaifaColors.emerald700.withValues(alpha: 0.2),
               child: Icon(
-                Icons.chat_bubble_rounded,
+                LucideIcons.messageCircle,
                 color: TaifaColors.emerald700,
               ),
             ),

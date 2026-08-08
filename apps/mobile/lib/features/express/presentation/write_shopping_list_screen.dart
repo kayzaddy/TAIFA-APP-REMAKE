@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/theme/taifa_dimens.dart';
 import '../application/express_providers.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Dedicated Smart Shopping List editor — not the AI assistant.
 class WriteShoppingListScreen extends ConsumerStatefulWidget {
@@ -64,7 +65,7 @@ class _WriteShoppingListScreenState extends ConsumerState<WriteShoppingListScree
       appBar: AppBar(
         title: const Text('Write Shopping List'),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () {
             if (context.canPop()) {
               context.pop();
@@ -161,7 +162,7 @@ class _WriteShoppingListScreenState extends ConsumerState<WriteShoppingListScree
                     height: 18,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Icon(Icons.playlist_add_check),
+                : const Icon(LucideIcons.listChecks),
             label: Text(state.isBusy ? 'Matching…' : 'Add To Basket'),
           ),
         ],

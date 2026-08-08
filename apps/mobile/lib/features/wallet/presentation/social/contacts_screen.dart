@@ -3,13 +3,29 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/theme/taifa_colors.dart';
 import '../../../../app/theme/taifa_dimens.dart';
+import '../../../../app/theme/taifa_icons.dart';
 import '../../../../app/theme/taifa_theme.dart';
 import '../../../../data/dto/social_dto.dart';
 import '../../application/social_providers.dart';
+import '../../../../shared/widgets/taifa_skeleton.dart';
 import 'social_widgets.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class ContactsScreen extends ConsumerWidget {
   const ContactsScreen({super.key});
+
+  Future<void> _addContact(BuildContext context, WidgetRef ref) async {
+    final added = await showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: context.taifa.background,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(TaifaRadii.nav)),
+      ),
+      builder: (_) => const _AddContactSheet(),
+    );
+    if (added == true) ref.invalidate(contactsProvider);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,27 +40,27 @@ class ContactsScreen extends ConsumerWidget {
               SocialScreenHeader(
                 title: 'Contacts',
                 trailing: IconButton(
-                  icon: const Icon(Icons.person_add_rounded),
-                  onPressed: () async {
-                    final added = await showModalBottomSheet<bool>(
-                      context: context,
-                      isScrollControlled: true,
-                      backgroundColor: context.taifa.background,
-                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(TaifaRadii.nav))),
-                      builder: (_) => const _AddContactSheet(),
-                    );
-                    if (added == true) ref.invalidate(contactsProvider);
-                  },
+                  tooltip: 'Add contact',
+                  icon: const Icon(TaifaIcons.user, size: TaifaIconSize.md),
+                  onPressed: () => _addContact(context, ref),
                 ),
               ),
               const SizedBox(height: TaifaSpacing.lg),
               Expanded(
                 child: contactsAsync.when(
-                  loading: () => const Center(child: CircularProgressIndicator()),
+                  loading: () => const TaifaSkeletonList(),
                   error: (e, _) => Center(child: Text('Could not load contacts.\n$e', textAlign: TextAlign.center)),
                   data: (contacts) {
                     if (contacts.isEmpty) {
-                      return const SocialEmptyState(icon: Icons.contacts_rounded, message: 'No saved contacts yet.\nAdd someone by their phone number.');
+                      return SocialEmptyState(
+                        icon: TaifaIcons.contacts,
+                        title: 'No saved contacts',
+                        message:
+                            'Save the people you pay often by phone number, '
+                            'then send, request or split with one tap.',
+                        actionLabel: 'Add a contact',
+                        onAction: () => _addContact(context, ref),
+                      );
                     }
                     final favorites = contacts.where((c) => c.favorite).toList();
                     final others = contacts.where((c) => !c.favorite).toList();
@@ -116,7 +132,7 @@ class _ContactTile extends ConsumerWidget {
               ),
             ),
             IconButton(
-              icon: Icon(contact.favorite ? Icons.star_rounded : Icons.star_border_rounded, color: contact.favorite ? TaifaColors.gold500 : palette.textMuted, size: 20),
+              icon: Icon(contact.favorite ? LucideIcons.star : LucideIcons.star, color: contact.favorite ? TaifaColors.gold500 : palette.textMuted, size: 20),
               onPressed: () async {
                 try {
                   await ref.read(socialRepositoryProvider).toggleFavorite(contact.id, !contact.favorite);
@@ -127,7 +143,7 @@ class _ContactTile extends ConsumerWidget {
               },
             ),
             IconButton(
-              icon: const Icon(Icons.delete_outline_rounded, size: 18),
+              icon: const Icon(LucideIcons.trash2, size: 18),
               onPressed: () async {
                 try {
                   await ref.read(socialRepositoryProvider).removeContact(contact.id);

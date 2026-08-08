@@ -8,6 +8,7 @@ import '../../../app/theme/taifa_typography.dart';
 import '../../../shared/widgets/taifa_logo.dart';
 import '../application/notification_providers.dart';
 import '../domain/notification_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class NotificationsScreen extends ConsumerStatefulWidget {
   const NotificationsScreen({super.key});
@@ -27,11 +28,11 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   }
 
   IconData _icon(NotifKind k) => switch (k) {
-    NotifKind.ride => Icons.local_taxi_rounded,
-    NotifKind.food => Icons.restaurant_rounded,
-    NotifKind.payment => Icons.payments_rounded,
-    NotifKind.system => Icons.info_outline_rounded,
-    NotifKind.promo => Icons.local_offer_rounded,
+    NotifKind.ride => LucideIcons.carTaxiFront,
+    NotifKind.food => LucideIcons.utensils,
+    NotifKind.payment => LucideIcons.banknote,
+    NotifKind.system => LucideIcons.info,
+    NotifKind.promo => LucideIcons.tag,
   };
 
   @override
@@ -58,7 +59,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                       }
                     },
                     icon: Icon(
-                      Icons.arrow_back_rounded,
+                      LucideIcons.arrowLeft,
                       color: palette.textPrimary,
                     ),
                   ),

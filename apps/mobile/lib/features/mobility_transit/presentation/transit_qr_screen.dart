@@ -10,6 +10,7 @@ import '../../../app/theme/taifa_dimens.dart';
 import '../../../app/theme/taifa_theme.dart';
 import '../../../app/theme/taifa_typography.dart';
 import '../application/transit_providers.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Full-screen digital boarding pass (signed QR payload as scannable text block).
 class TransitQrScreen extends ConsumerStatefulWidget {
@@ -59,7 +60,7 @@ class _TransitQrScreenState extends ConsumerState<TransitQrScreen> {
         foregroundColor: Colors.white,
         title: const Text('Boarding pass'),
         leading: IconButton(
-          icon: const Icon(Icons.close_rounded),
+          icon: const Icon(LucideIcons.x),
           onPressed: () => context.pop(),
         ),
       ),
@@ -98,7 +99,7 @@ class _TransitQrScreenState extends ConsumerState<TransitQrScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
-                        Icons.qr_code_2_rounded,
+                        LucideIcons.qrCode,
                         size: 120,
                         color: TaifaColors.emerald900,
                       ),
@@ -182,7 +183,7 @@ class _TransitQrScreenState extends ConsumerState<TransitQrScreen> {
                   ),
                 );
               },
-              icon: const Icon(Icons.nfc_rounded),
+              icon: const Icon(LucideIcons.wifi),
               label: const Text('Simulate NFC tap'),
               style: OutlinedButton.styleFrom(
                 foregroundColor: Colors.white,

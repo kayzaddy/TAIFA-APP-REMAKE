@@ -5,6 +5,7 @@ import '../../../app/theme/taifa_colors.dart';
 import '../../../app/theme/taifa_dimens.dart';
 import '../../../app/theme/taifa_theme.dart';
 import '../application/transit_providers.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 Future<void> showTransitFeedbackSheet(
   BuildContext context, {
@@ -81,7 +82,7 @@ class _TransitFeedbackSheetState extends ConsumerState<_TransitFeedbackSheet> {
               return IconButton(
                 onPressed: () => setState(() => _rating = star),
                 icon: Icon(
-                  star <= _rating ? Icons.star_rounded : Icons.star_outline_rounded,
+                  star <= _rating ? LucideIcons.star : LucideIcons.star,
                   color: TaifaColors.gold400,
                   size: 32,
                 ),

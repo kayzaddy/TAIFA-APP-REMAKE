@@ -9,6 +9,7 @@ import '../../../app/theme/taifa_typography.dart';
 import '../../../shared/widgets/taifa_logo.dart';
 import '../application/housing_providers.dart';
 import '../domain/housing_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class HousingScreen extends ConsumerStatefulWidget {
   const HousingScreen({super.key});
@@ -76,7 +77,7 @@ class _HousingScreenState extends ConsumerState<HousingScreen> {
                       }
                     },
                     icon: Icon(
-                      Icons.arrow_back_rounded,
+                      LucideIcons.arrowLeft,
                       color: palette.textPrimary,
                     ),
                   ),
@@ -101,7 +102,7 @@ class _HousingScreenState extends ConsumerState<HousingScreen> {
                   ),
                   IconButton(
                     onPressed: ctrl.openHistory,
-                    icon: Icon(Icons.history_rounded, color: palette.textMuted),
+                    icon: Icon(LucideIcons.history, color: palette.textMuted),
                   ),
                 ],
               ),
@@ -119,7 +120,7 @@ class _HousingScreenState extends ConsumerState<HousingScreen> {
                         decoration: InputDecoration(
                           hintText: 'Search Mikocheni, Masaki…',
                           prefixIcon: Icon(
-                            Icons.search_rounded,
+                            LucideIcons.search,
                             color: palette.textMuted,
                           ),
                           filled: true,
@@ -203,7 +204,7 @@ class _HousingScreenState extends ConsumerState<HousingScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Icon(
-                          Icons.event_available_rounded,
+                          LucideIcons.calendarCheck,
                           color: TaifaColors.emerald500,
                           size: 48,
                         ),

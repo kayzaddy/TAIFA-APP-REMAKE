@@ -9,6 +9,7 @@ import '../../../app/theme/taifa_typography.dart';
 import '../../../shared/widgets/taifa_logo.dart';
 import '../application/family_providers.dart';
 import '../domain/family_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class FamilyScreen extends ConsumerStatefulWidget {
   const FamilyScreen({super.key});
@@ -70,7 +71,7 @@ class _FamilyScreenState extends ConsumerState<FamilyScreen> {
                       }
                     },
                     icon: Icon(
-                      Icons.arrow_back_rounded,
+                      LucideIcons.arrowLeft,
                       color: palette.textPrimary,
                     ),
                   ),
@@ -95,7 +96,7 @@ class _FamilyScreenState extends ConsumerState<FamilyScreen> {
                   IconButton(
                     onPressed: ctrl.openHistory,
                     icon: Icon(
-                      Icons.receipt_long_rounded,
+                      LucideIcons.receipt,
                       color: palette.textMuted,
                     ),
                   ),
@@ -200,12 +201,12 @@ class _FamilyScreenState extends ConsumerState<FamilyScreen> {
                             ButtonSegment(
                               value: FamilyTxKind.send,
                               label: Text('Send'),
-                              icon: Icon(Icons.north_east),
+                              icon: Icon(LucideIcons.arrowUpRight),
                             ),
                             ButtonSegment(
                               value: FamilyTxKind.request,
                               label: Text('Request'),
-                              icon: Icon(Icons.south_west),
+                              icon: Icon(LucideIcons.arrowDownLeft),
                             ),
                           ],
                           selected: {state.kind},

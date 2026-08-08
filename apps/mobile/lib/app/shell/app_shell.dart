@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../theme/taifa_dimens.dart';
+import '../theme/taifa_icons.dart';
 import '../../shared/widgets/taifa_bottom_nav.dart';
 
 /// Root shell hosting the persistent floating bottom navigation across the
@@ -13,14 +14,11 @@ class AppShell extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
 
   static const _destinations = [
-    TaifaNavDestination(icon: Icons.home_rounded, label: 'Home'),
-    TaifaNavDestination(icon: Icons.explore_rounded, label: 'Mobility'),
-    TaifaNavDestination(icon: Icons.auto_awesome_rounded, label: 'AI'),
-    TaifaNavDestination(
-      icon: Icons.account_balance_wallet_rounded,
-      label: 'Wallet',
-    ),
-    TaifaNavDestination(icon: Icons.menu_rounded, label: 'Menu'),
+    TaifaNavDestination(icon: TaifaIcons.home, label: 'Home'),
+    TaifaNavDestination(icon: TaifaIcons.mobility, label: 'Mobility'),
+    TaifaNavDestination(icon: TaifaIcons.ai, label: 'AI'),
+    TaifaNavDestination(icon: TaifaIcons.wallet, label: 'Wallet'),
+    TaifaNavDestination(icon: TaifaIcons.menu, label: 'Menu'),
   ];
 
   @override

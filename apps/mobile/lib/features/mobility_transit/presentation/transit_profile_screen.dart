@@ -7,6 +7,7 @@ import '../../../app/theme/taifa_dimens.dart';
 import '../../../app/theme/taifa_theme.dart';
 import '../application/transit_providers.dart';
 import '../domain/transit_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class TransitProfileScreen extends ConsumerStatefulWidget {
   const TransitProfileScreen({super.key});
@@ -101,7 +102,7 @@ class _TransitProfileScreenState extends ConsumerState<TransitProfileScreen> {
                           subjectCode: 'ubungo',
                           label: 'Ubungo BRT',
                         ),
-                        icon: const Icon(Icons.add_rounded, size: 18),
+                        icon: const Icon(LucideIcons.plus, size: 18),
                         label: const Text('Add Ubungo'),
                       ),
                     ],
@@ -117,8 +118,8 @@ class _TransitProfileScreenState extends ConsumerState<TransitProfileScreen> {
                         contentPadding: EdgeInsets.zero,
                         leading: Icon(
                           f.subjectType == 'route'
-                              ? Icons.directions_bus_filled_rounded
-                              : Icons.train_rounded,
+                              ? LucideIcons.bus
+                              : LucideIcons.trainFront,
                           color: TaifaColors.emerald500,
                         ),
                         title: Text(
@@ -130,7 +131,7 @@ class _TransitProfileScreenState extends ConsumerState<TransitProfileScreen> {
                           style: TextStyle(color: palette.textMuted, fontSize: 11),
                         ),
                         trailing: IconButton(
-                          icon: Icon(Icons.close_rounded, color: palette.textMuted, size: 18),
+                          icon: Icon(LucideIcons.x, color: palette.textMuted, size: 18),
                           onPressed: () => ctrl.removeFavorite(f.id),
                         ),
                         onTap: () {
@@ -262,7 +263,7 @@ class _StopFieldState extends State<_StopField> {
           borderSide: BorderSide.none,
         ),
         suffixIcon: IconButton(
-          icon: const Icon(Icons.check_rounded),
+          icon: const Icon(LucideIcons.check),
           onPressed: () => widget.onChanged(_ctrl.text.trim()),
         ),
       ),

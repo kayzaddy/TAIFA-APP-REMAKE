@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../router.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Adds a consistent home affordance above every entered page.
 ///
@@ -40,7 +41,7 @@ class GlobalHomeBackNavigation extends StatelessWidget {
                       child: IconButton(
                         key: const ValueKey('global-home-back'),
                         onPressed: () => TaifaRouter.router.go('/home'),
-                        icon: const Icon(Icons.arrow_back_rounded),
+                        icon: const Icon(LucideIcons.arrowLeft),
                       ),
                     ),
                   ),

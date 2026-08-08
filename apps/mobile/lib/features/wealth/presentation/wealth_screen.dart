@@ -8,6 +8,7 @@ import '../../../app/theme/taifa_theme.dart';
 import '../../../app/theme/taifa_typography.dart';
 import '../../../shared/widgets/taifa_logo.dart';
 import '../application/wealth_providers.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class WealthScreen extends ConsumerStatefulWidget {
   const WealthScreen({super.key});
@@ -60,7 +61,7 @@ class _WealthScreenState extends ConsumerState<WealthScreen> {
                       }
                     },
                     icon: Icon(
-                      Icons.arrow_back_rounded,
+                      LucideIcons.arrowLeft,
                       color: palette.textPrimary,
                     ),
                   ),
@@ -86,7 +87,7 @@ class _WealthScreenState extends ConsumerState<WealthScreen> {
                   IconButton(
                     onPressed: ctrl.openHistory,
                     icon: Icon(
-                      Icons.receipt_long_rounded,
+                      LucideIcons.receipt,
                       color: palette.textMuted,
                     ),
                   ),

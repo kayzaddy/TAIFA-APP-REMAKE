@@ -7,6 +7,7 @@ import '../../../app/theme/taifa_colors.dart';
 import '../../../app/theme/taifa_dimens.dart';
 import '../application/super_app_providers.dart';
 import '../domain/qr_resolver.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Universal QR experience — camera-ready shell; paste/simulate today.
 /// Never processes payments; only routes to MAP / Mobility / etc.
@@ -59,7 +60,7 @@ class _UniversalQrScreenState extends ConsumerState<UniversalQrScreen> {
       appBar: AppBar(
         title: const Text('Scan QR'),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () {
             if (context.canPop()) {
               context.pop();
@@ -83,7 +84,7 @@ class _UniversalQrScreenState extends ConsumerState<UniversalQrScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.qr_code_scanner_rounded, size: 64, color: TaifaColors.ocean500),
+                  Icon(LucideIcons.scanLine, size: 64, color: TaifaColors.ocean500),
                   const SizedBox(height: 12),
                   Text('Camera scanner — future-ready', style: text.titleSmall),
                   Text(

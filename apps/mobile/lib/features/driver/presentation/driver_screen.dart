@@ -9,6 +9,7 @@ import '../../../app/theme/taifa_typography.dart';
 import '../../../shared/widgets/taifa_logo.dart';
 import '../application/driver_providers.dart';
 import '../domain/driver_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class DriverScreen extends ConsumerStatefulWidget {
   const DriverScreen({super.key});
@@ -52,7 +53,7 @@ class _DriverScreenState extends ConsumerState<DriverScreen> {
                       }
                     },
                     icon: Icon(
-                      Icons.arrow_back_rounded,
+                      LucideIcons.arrowLeft,
                       color: palette.textPrimary,
                     ),
                   ),

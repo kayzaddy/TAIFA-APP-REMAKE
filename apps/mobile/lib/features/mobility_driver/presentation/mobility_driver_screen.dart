@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../mobility_transit/application/transit_providers.dart';
 import '../../station_ops/application/station_ops_providers.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class MobilityDriverScreen extends ConsumerStatefulWidget {
   const MobilityDriverScreen({super.key});
@@ -38,12 +39,12 @@ class _MobilityDriverScreenState extends ConsumerState<MobilityDriverScreen> {
         actions: [
           IconButton(
             onPressed: state.loading ? null : controller.load,
-            icon: const Icon(Icons.refresh_rounded),
+            icon: const Icon(LucideIcons.refreshCw),
           ),
           IconButton(
             tooltip: 'Emergency SOS',
             onPressed: controller.sos,
-            icon: const Icon(Icons.sos_rounded),
+            icon: const Icon(LucideIcons.siren),
           ),
         ],
       ),

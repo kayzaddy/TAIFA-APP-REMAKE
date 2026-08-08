@@ -4,6 +4,7 @@ import '../../../app/theme/taifa_colors.dart';
 import '../../../app/theme/taifa_dimens.dart';
 import '../../../app/theme/taifa_theme.dart';
 import '../domain/property_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class PropertyCopilotSheet extends StatefulWidget {
   const PropertyCopilotSheet({
@@ -45,8 +46,8 @@ class _PropertyCopilotSheetState extends State<PropertyCopilotSheet> {
         children: [
           Row(
             children: [
-              IconButton(onPressed: widget.onClose, icon: const Icon(Icons.close_rounded)),
-              const Icon(Icons.psychology_rounded, color: TaifaColors.gold400),
+              IconButton(onPressed: widget.onClose, icon: const Icon(LucideIcons.x)),
+              const Icon(LucideIcons.brain, color: TaifaColors.gold400),
               const SizedBox(width: 8),
               Text('Property Copilot', style: TextStyle(color: palette.textPrimary, fontWeight: FontWeight.w700)),
             ],
@@ -79,7 +80,7 @@ class _PropertyCopilotSheetState extends State<PropertyCopilotSheet> {
                   await widget.onAsk(_ctrl.text);
                   _ctrl.clear();
                 },
-                icon: const Icon(Icons.send_rounded, color: TaifaColors.gold400),
+                icon: const Icon(LucideIcons.send, color: TaifaColors.gold400),
               ),
             ],
           ),
@@ -132,7 +133,7 @@ class _PropertyHumanWingaSheetState extends State<PropertyHumanWingaSheet> {
         children: [
           Row(
             children: [
-              IconButton(onPressed: widget.onClose, icon: const Icon(Icons.close_rounded)),
+              IconButton(onPressed: widget.onClose, icon: const Icon(LucideIcons.x)),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,7 +147,7 @@ class _PropertyHumanWingaSheetState extends State<PropertyHumanWingaSheet> {
                 children: List.generate(
                   5,
                   (i) => Icon(
-                    i < w.trustStars ? Icons.star_rounded : Icons.star_border_rounded,
+                    i < w.trustStars ? LucideIcons.star : LucideIcons.star,
                     color: TaifaColors.gold400,
                     size: 16,
                   ),
@@ -193,7 +194,7 @@ class _PropertyHumanWingaSheetState extends State<PropertyHumanWingaSheet> {
                   await widget.onSend(_ctrl.text);
                   _ctrl.clear();
                 },
-                icon: const Icon(Icons.send_rounded, color: TaifaColors.gold400),
+                icon: const Icon(LucideIcons.send, color: TaifaColors.gold400),
               ),
             ],
           ),

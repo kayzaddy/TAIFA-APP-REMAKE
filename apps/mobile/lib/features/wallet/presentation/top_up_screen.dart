@@ -11,6 +11,7 @@ import '../domain/currency.dart';
 import '../domain/money.dart';
 import '../domain/payment_method.dart';
 import '../domain/transaction.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Top-up via M-Pesa STK — additive Wallet flow. Seed auto-settles; remote
 /// returns `processing` until the Daraja webhook credits the ledger.
@@ -104,7 +105,7 @@ class _TopUpScreenState extends ConsumerState<TopUpScreen> {
                   IconButton(
                     onPressed: () => context.go('/wallet'),
                     icon: Icon(
-                      Icons.arrow_back_rounded,
+                      LucideIcons.arrowLeft,
                       color: palette.textPrimary,
                     ),
                   ),
@@ -203,8 +204,8 @@ class _TopUpScreenState extends ConsumerState<TopUpScreen> {
                               ),
                               trailing: Icon(
                                 _source?.id == s.id
-                                    ? Icons.check_circle_rounded
-                                    : Icons.circle_outlined,
+                                    ? LucideIcons.circleCheckBig
+                                    : LucideIcons.circle,
                                 color: _source?.id == s.id
                                     ? TaifaColors.emerald500
                                     : palette.textMuted,

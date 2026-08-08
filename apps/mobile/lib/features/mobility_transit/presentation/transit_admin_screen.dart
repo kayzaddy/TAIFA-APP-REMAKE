@@ -6,6 +6,7 @@ import '../../../app/theme/taifa_colors.dart';
 import '../../../app/theme/taifa_dimens.dart';
 import '../../../app/theme/taifa_theme.dart';
 import '../application/transit_providers.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class TransitAdminScreen extends ConsumerStatefulWidget {
   const TransitAdminScreen({super.key});
@@ -36,7 +37,7 @@ class _TransitAdminScreenState extends ConsumerState<TransitAdminScreen> {
         actions: [
           IconButton(
             onPressed: state.isBusy ? null : ctrl.bootstrap,
-            icon: const Icon(Icons.refresh_rounded),
+            icon: const Icon(LucideIcons.refreshCw),
           ),
         ],
       ),
@@ -139,13 +140,13 @@ class _TransitAdminScreenState extends ConsumerState<TransitAdminScreen> {
                 const SizedBox(height: 12),
                 FilledButton.icon(
                   onPressed: state.isBusy ? null : ctrl.createWeeklyPass,
-                  icon: const Icon(Icons.add_card_rounded),
+                  icon: const Icon(LucideIcons.creditCard),
                   label: const Text('Add weekly pass product'),
                 ),
                 const SizedBox(height: 12),
                 OutlinedButton.icon(
                   onPressed: () => context.push('/city-ops'),
-                  icon: const Icon(Icons.dashboard_rounded),
+                  icon: const Icon(LucideIcons.layoutGrid),
                   label: const Text('Open city control center'),
                 ),
               ],

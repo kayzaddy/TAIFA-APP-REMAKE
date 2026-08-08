@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/theme/taifa_colors.dart';
 import '../../ecosystem/application/ecosystem_modules_provider.dart';
 import '../../ecosystem/domain/super_app_module_registry.dart';
 import '../domain/home_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Repository boundary for Home data. Today it returns curated seed data; the
 /// same interface will later be backed by the wallet + catalog services over
@@ -30,14 +30,14 @@ class SeedHomeRepository implements HomeRepository {
 
   @override
   List<QuickAction> quickActions() => const [
-    QuickAction(id: 'send', label: 'Send', icon: Icons.north_east_rounded),
+    QuickAction(id: 'send', label: 'Send', icon: LucideIcons.arrowUpRight),
     QuickAction(
       id: 'scan',
       label: 'Scan QR',
-      icon: Icons.qr_code_scanner_rounded,
+      icon: LucideIcons.scanLine,
     ),
-    QuickAction(id: 'topup', label: 'Top Up', icon: Icons.add_rounded),
-    QuickAction(id: 'bills', label: 'Bills', icon: Icons.receipt_long_rounded),
+    QuickAction(id: 'topup', label: 'Top Up', icon: LucideIcons.plus),
+    QuickAction(id: 'bills', label: 'Bills', icon: LucideIcons.receipt),
   ];
 
   @override
@@ -45,112 +45,112 @@ class SeedHomeRepository implements HomeRepository {
     ServiceItem(
       id: 'ride',
       label: 'Ride',
-      icon: Icons.local_taxi_rounded,
+      icon: LucideIcons.carTaxiFront,
       tint: TaifaColors.gold400,
       route: '/mobility',
     ),
     ServiceItem(
       id: 'pay',
       label: 'Pay',
-      icon: Icons.payments_rounded,
+      icon: LucideIcons.banknote,
       tint: TaifaColors.ocean500,
       route: '/pay',
     ),
     ServiceItem(
       id: 'winga',
       label: 'Winga',
-      icon: Icons.shopping_bag_rounded,
+      icon: LucideIcons.shoppingBag,
       tint: TaifaColors.emerald500,
       route: '/winga',
     ),
     ServiceItem(
       id: 'commerce',
       label: 'Shop',
-      icon: Icons.storefront_rounded,
+      icon: LucideIcons.store,
       tint: TaifaColors.emerald600,
       route: '/commerce',
     ),
     ServiceItem(
       id: 'express',
       label: 'Express',
-      icon: Icons.bolt_rounded,
+      icon: LucideIcons.zap,
       tint: TaifaColors.gold500,
       route: '/express',
     ),
     ServiceItem(
       id: 'food',
       label: 'Food',
-      icon: Icons.restaurant_rounded,
+      icon: LucideIcons.utensils,
       tint: TaifaColors.dangerSoft,
       route: '/food',
     ),
     ServiceItem(
       id: 'hotels',
       label: 'Hotels',
-      icon: Icons.hotel_rounded,
+      icon: LucideIcons.bed,
       tint: TaifaColors.ocean400,
       route: '/stays',
     ),
     ServiceItem(
       id: 'flights',
       label: 'Flights',
-      icon: Icons.flight_rounded,
+      icon: LucideIcons.plane,
       tint: TaifaColors.violetSoft,
       route: '/flights',
     ),
     ServiceItem(
       id: 'tourism',
       label: 'Tourism',
-      icon: Icons.landscape_rounded,
+      icon: LucideIcons.mountain,
       tint: TaifaColors.gold400,
       route: '/tourism',
     ),
     ServiceItem(
       id: 'gov',
       label: 'Gov',
-      icon: Icons.account_balance_rounded,
+      icon: LucideIcons.landmark,
       tint: TaifaColors.ocean400,
       route: '/gov',
     ),
     ServiceItem(
       id: 'health',
       label: 'Health',
-      icon: Icons.local_hospital_rounded,
+      icon: LucideIcons.briefcaseMedical,
       tint: TaifaColors.dangerSoft,
       route: '/health',
     ),
     ServiceItem(
       id: 'agriculture',
       label: 'Agri',
-      icon: Icons.agriculture_rounded,
+      icon: LucideIcons.sprout,
       tint: TaifaColors.emerald500,
       route: '/agriculture',
     ),
     ServiceItem(
       id: 'education',
       label: 'Educ.',
-      icon: Icons.school_rounded,
+      icon: LucideIcons.graduationCap,
       tint: TaifaColors.violetSoft,
       route: '/education',
     ),
     ServiceItem(
       id: 'housing',
       label: 'Home',
-      icon: Icons.cottage_rounded,
+      icon: LucideIcons.house,
       tint: TaifaColors.emerald500,
       route: '/housing',
     ),
     ServiceItem(
       id: 'services',
       label: 'Enable',
-      icon: Icons.apps_rounded,
+      icon: LucideIcons.layoutGrid,
       tint: TaifaColors.ocean400,
       route: '/my-services',
     ),
     ServiceItem(
       id: 'more',
       label: 'More',
-      icon: Icons.grid_view_rounded,
+      icon: LucideIcons.layoutGrid,
       tint: TaifaColors.gold400,
       route: '/menu',
     ),

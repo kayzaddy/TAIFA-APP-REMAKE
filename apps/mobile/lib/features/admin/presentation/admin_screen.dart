@@ -9,6 +9,7 @@ import '../../../app/theme/taifa_typography.dart';
 import '../../../shared/widgets/taifa_logo.dart';
 import '../application/admin_providers.dart';
 import '../domain/admin_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class AdminScreen extends ConsumerStatefulWidget {
   const AdminScreen({super.key});
@@ -52,7 +53,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
                       }
                     },
                     icon: Icon(
-                      Icons.arrow_back_rounded,
+                      LucideIcons.arrowLeft,
                       color: palette.textPrimary,
                     ),
                   ),
@@ -174,7 +175,7 @@ class _Dash extends StatelessWidget {
                       style: TextStyle(color: palette.textMuted, fontSize: 12),
                     ),
                     trailing: Icon(
-                      Icons.chevron_right_rounded,
+                      LucideIcons.chevronRight,
                       color: palette.textMuted,
                     ),
                   ),

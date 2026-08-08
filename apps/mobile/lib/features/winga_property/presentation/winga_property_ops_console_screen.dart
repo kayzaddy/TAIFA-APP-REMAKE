@@ -8,6 +8,7 @@ import '../../../app/theme/taifa_theme.dart';
 import '../../../shared/widgets/taifa_logo.dart';
 import '../application/property_ops_console_providers.dart';
 import '../domain/property_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Dedicated Winga Property ops console — web and mobile.
 class WingaPropertyOpsConsoleScreen extends ConsumerStatefulWidget {
@@ -64,7 +65,7 @@ class _WingaPropertyOpsConsoleScreenState extends ConsumerState<WingaPropertyOps
         actions: [
           IconButton(
             onPressed: state.isBusy ? null : ctrl.bootstrap,
-            icon: const Icon(Icons.refresh_rounded),
+            icon: const Icon(LucideIcons.refreshCw),
           ),
         ],
         bottom: TabBar(
@@ -112,7 +113,7 @@ class _WingaPropertyOpsConsoleScreenState extends ConsumerState<WingaPropertyOps
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.go('/winga-property'),
-        icon: const Icon(Icons.home_work_rounded),
+        icon: const Icon(LucideIcons.building2),
         label: const Text('Browse listings'),
       ),
     );
@@ -243,7 +244,7 @@ class _AuditTab extends StatelessWidget {
         final e = events[i];
         return ListTile(
           dense: true,
-          leading: const Icon(Icons.history_rounded, size: 18, color: TaifaColors.gold400),
+          leading: const Icon(LucideIcons.history, size: 18, color: TaifaColors.gold400),
           title: Text(e.action),
           subtitle: Text('${e.entityType} · ${e.actor}'),
           trailing: Text(e.createdAt, style: const TextStyle(fontSize: 10)),

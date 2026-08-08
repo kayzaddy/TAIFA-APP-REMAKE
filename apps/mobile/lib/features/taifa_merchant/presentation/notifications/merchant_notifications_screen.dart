@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../core/merchant_api_client.dart';
 import '../../data/models/merchant_workspace_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class MerchantNotificationsScreen extends ConsumerStatefulWidget {
   const MerchantNotificationsScreen({super.key});
@@ -49,7 +50,7 @@ class _MerchantNotificationsScreenState extends ConsumerState<MerchantNotificati
               return ListTile(
                 title: Text(n.title),
                 subtitle: Text(n.body),
-                trailing: n.isRead ? null : const Icon(Icons.fiber_new, color: Colors.orange),
+                trailing: n.isRead ? null : const Icon(LucideIcons.sparkles, color: Colors.orange),
                 onTap: () async {
                   await ref.read(merchantApiClientProvider).markNotificationRead(n.id);
                   _reload();

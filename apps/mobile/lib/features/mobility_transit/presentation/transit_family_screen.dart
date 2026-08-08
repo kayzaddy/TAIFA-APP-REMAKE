@@ -6,6 +6,7 @@ import '../../../app/theme/taifa_dimens.dart';
 import '../../../app/theme/taifa_theme.dart';
 import '../application/transit_providers.dart';
 import '../domain/transit_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class TransitFamilyScreen extends ConsumerStatefulWidget {
   const TransitFamilyScreen({super.key});
@@ -37,7 +38,7 @@ class _TransitFamilyScreenState extends ConsumerState<TransitFamilyScreen> {
           IconButton(
             tooltip: 'Add member',
             onPressed: state.isBusy ? null : () => _showAddMemberDialog(context, ctrl),
-            icon: const Icon(Icons.person_add_alt_1_rounded),
+            icon: const Icon(LucideIcons.userPlus),
           ),
         ],
       ),
@@ -287,7 +288,7 @@ class _EmptyMembersCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Icon(Icons.family_restroom_rounded, size: 40, color: palette.textMuted),
+          Icon(LucideIcons.users, size: 40, color: palette.textMuted),
           const SizedBox(height: 8),
           Text(
             'No linked members yet',
@@ -302,7 +303,7 @@ class _EmptyMembersCard extends StatelessWidget {
           const SizedBox(height: 12),
           OutlinedButton.icon(
             onPressed: onAdd,
-            icon: const Icon(Icons.person_add_alt_1_rounded, size: 18),
+            icon: const Icon(LucideIcons.userPlus, size: 18),
             label: const Text('Add member'),
           ),
         ],
@@ -375,7 +376,7 @@ class _MemberCard extends StatelessWidget {
               IconButton(
                 tooltip: 'Remove',
                 onPressed: isBusy ? null : onRemove,
-                icon: Icon(Icons.close_rounded, color: palette.textMuted, size: 20),
+                icon: Icon(LucideIcons.x, color: palette.textMuted, size: 20),
               ),
             ],
           ),
@@ -386,7 +387,7 @@ class _MemberCard extends StatelessWidget {
             width: double.infinity,
             child: FilledButton.icon(
               onPressed: isBusy || !member.canPurchase ? null : onBuy,
-              icon: const Icon(Icons.confirmation_number_outlined, size: 18),
+              icon: const Icon(LucideIcons.ticket, size: 18),
               label: const Text('Buy ticket'),
             ),
           ),
@@ -415,7 +416,7 @@ class _FamilyTicketTile extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Icon(Icons.qr_code_2_rounded, color: TaifaColors.gold400),
+          const Icon(LucideIcons.qrCode, color: TaifaColors.gold400),
           const SizedBox(width: 12),
           Expanded(
             child: Column(

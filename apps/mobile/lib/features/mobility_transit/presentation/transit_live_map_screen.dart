@@ -9,6 +9,7 @@ import '../../../app/theme/taifa_theme.dart';
 import '../application/transit_providers.dart';
 import '../domain/transit_models.dart';
 import 'transit_map_view.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class TransitLiveMapScreen extends ConsumerStatefulWidget {
   const TransitLiveMapScreen({super.key});
@@ -50,7 +51,7 @@ class _TransitLiveMapScreenState extends ConsumerState<TransitLiveMapScreen> {
         actions: [
           IconButton(
             onPressed: () => ref.read(transitLiveMapControllerProvider.notifier).load(),
-            icon: const Icon(Icons.refresh_rounded),
+            icon: const Icon(LucideIcons.refreshCw),
           ),
         ],
       ),
@@ -116,7 +117,7 @@ class _VehicleList extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 6),
                     child: Row(
                       children: [
-                        const Icon(Icons.directions_bus_filled, color: TaifaColors.emerald500, size: 18),
+                        const Icon(LucideIcons.bus, color: TaifaColors.emerald500, size: 18),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(

@@ -12,6 +12,7 @@ import '../application/transit_providers.dart';
 import '../domain/transit_models.dart';
 import 'transit_feedback_sheet.dart';
 import 'transit_route_detail.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class TransitHomeScreen extends ConsumerStatefulWidget {
   const TransitHomeScreen({super.key});
@@ -77,7 +78,7 @@ class _TransitHomeScreenState extends ConsumerState<TransitHomeScreen> {
                                   }
                                 },
                                 icon: Icon(
-                                  Icons.arrow_back_rounded,
+                                  LucideIcons.arrowLeft,
                                   color: palette.textPrimary,
                                 ),
                               ),
@@ -122,7 +123,7 @@ class _TransitHomeScreenState extends ConsumerState<TransitHomeScreen> {
                                   isLabelVisible: (home?.unreadNotifications ?? 0) > 0,
                                   label: Text('${home?.unreadNotifications ?? 0}'),
                                   child: Icon(
-                                    Icons.notifications_rounded,
+                                    LucideIcons.bell,
                                     color: palette.textPrimary,
                                   ),
                                 ),
@@ -130,7 +131,7 @@ class _TransitHomeScreenState extends ConsumerState<TransitHomeScreen> {
                               IconButton(
                                 tooltip: 'Profile',
                                 onPressed: () => context.push('/mobility/transit/profile'),
-                                icon: Icon(Icons.person_rounded, color: palette.textPrimary),
+                                icon: Icon(LucideIcons.user, color: palette.textPrimary),
                               ),
                               if (balance != null)
                                 Container(
@@ -169,7 +170,7 @@ class _TransitHomeScreenState extends ConsumerState<TransitHomeScreen> {
                               Expanded(
                                 child: OutlinedButton.icon(
                                   onPressed: () => context.push('/mobility/transit/plan'),
-                                  icon: const Icon(Icons.route_rounded, size: 18),
+                                  icon: const Icon(LucideIcons.route, size: 18),
                                   label: const Text('Plan journey'),
                                 ),
                               ),
@@ -177,7 +178,7 @@ class _TransitHomeScreenState extends ConsumerState<TransitHomeScreen> {
                               Expanded(
                                 child: OutlinedButton.icon(
                                   onPressed: () => context.push('/mobility/transit/live'),
-                                  icon: const Icon(Icons.map_rounded, size: 18),
+                                  icon: const Icon(LucideIcons.map, size: 18),
                                   label: const Text('Live map'),
                                 ),
                               ),
@@ -186,19 +187,19 @@ class _TransitHomeScreenState extends ConsumerState<TransitHomeScreen> {
                           const SizedBox(height: TaifaSpacing.sm),
                           OutlinedButton.icon(
                             onPressed: () => context.push('/mobility/transit/assistant'),
-                            icon: const Icon(Icons.auto_awesome_rounded, size: 18),
+                            icon: const Icon(LucideIcons.sparkles, size: 18),
                             label: const Text('Ask Mwendokasi AI'),
                           ),
                           const SizedBox(height: TaifaSpacing.sm),
                           OutlinedButton.icon(
                             onPressed: () => context.push('/mobility/transit/family'),
-                            icon: const Icon(Icons.family_restroom_rounded, size: 18),
+                            icon: const Icon(LucideIcons.users, size: 18),
                             label: const Text('Family tickets'),
                           ),
                           const SizedBox(height: TaifaSpacing.sm),
                           OutlinedButton.icon(
                             onPressed: () => context.push('/mobility/transit/lost-found'),
-                            icon: const Icon(Icons.search_rounded, size: 18),
+                            icon: const Icon(LucideIcons.search, size: 18),
                             label: const Text('Lost & found'),
                           ),
                           const SizedBox(height: TaifaSpacing.sm),
@@ -208,7 +209,7 @@ class _TransitHomeScreenState extends ConsumerState<TransitHomeScreen> {
                               routeId: state.selectedRoute?.id ??
                                   home?.featuredRoutes.firstOrNull?.id,
                             ),
-                            icon: const Icon(Icons.rate_review_outlined, size: 18),
+                            icon: const Icon(LucideIcons.messageSquareText, size: 18),
                             label: const Text('Rate your last trip'),
                           ),
                           Align(
@@ -229,7 +230,7 @@ class _TransitHomeScreenState extends ConsumerState<TransitHomeScreen> {
                               filled: true,
                               fillColor: palette.surfaceAlt,
                               prefixIcon: Icon(
-                                Icons.search_rounded,
+                                LucideIcons.search,
                                 color: palette.textMuted,
                               ),
                               border: OutlineInputBorder(
@@ -337,7 +338,7 @@ class _TransitHomeScreenState extends ConsumerState<TransitHomeScreen> {
         onPressed: state.isBusy
             ? null
             : () => _confirmSos(context, ref),
-        icon: const Icon(Icons.sos_rounded),
+        icon: const Icon(LucideIcons.siren),
         label: const Text('SOS'),
       ),
       bottomSheet: state.selectedRoute != null
@@ -528,7 +529,7 @@ class _StationChip extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.train_rounded, color: TaifaColors.emerald500, size: 22),
+          Icon(LucideIcons.trainFront, color: TaifaColors.emerald500, size: 22),
           const Spacer(),
           Text(
             station.name,
@@ -582,7 +583,7 @@ class _RouteTile extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(
-                    Icons.directions_bus_filled_rounded,
+                    LucideIcons.bus,
                     color: brandColor,
                   ),
                 ),
@@ -700,7 +701,7 @@ class _TicketCard extends StatelessWidget {
             padding: const EdgeInsets.all(14),
             child: Row(
               children: [
-                const Icon(Icons.qr_code_2_rounded, color: TaifaColors.gold400),
+                const Icon(LucideIcons.qrCode, color: TaifaColors.gold400),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(

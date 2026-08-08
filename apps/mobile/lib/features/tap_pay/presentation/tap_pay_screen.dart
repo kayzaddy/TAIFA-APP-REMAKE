@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../app/theme/taifa_colors.dart';
 import '../../../app/theme/taifa_dimens.dart';
 import '../application/tap_providers.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Tap & Pay — NFC interaction layer over MAP + Payments.
 class TapPayScreen extends ConsumerStatefulWidget {
@@ -44,7 +45,7 @@ class _TapPayScreenState extends ConsumerState<TapPayScreen> {
       appBar: AppBar(
         title: const Text('Tap & Pay'),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () {
             if (context.canPop()) {
               context.pop();
@@ -105,7 +106,7 @@ class _TapPayScreenState extends ConsumerState<TapPayScreen> {
                       HapticFeedback.mediumImpact();
                       ctrl.simulateTap();
                     },
-              icon: const Icon(Icons.contactless),
+              icon: const Icon(LucideIcons.wifi),
               label: Text(state.isBusy ? 'Working…' : 'Simulate NFC tap'),
             ),
           ],
@@ -123,7 +124,7 @@ class _TapPayScreenState extends ConsumerState<TapPayScreen> {
                       HapticFeedback.lightImpact();
                       ctrl.authenticate(method: 'biometric');
                     },
-              icon: const Icon(Icons.fingerprint),
+              icon: const Icon(LucideIcons.fingerprint),
               label: const Text('Use biometric'),
             ),
             OutlinedButton(
@@ -215,7 +216,7 @@ class _NfcPad extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.contactless, size: 72, color: color),
+            Icon(LucideIcons.wifi, size: 72, color: color),
             const SizedBox(height: 8),
             Text(
               switch (phase) {

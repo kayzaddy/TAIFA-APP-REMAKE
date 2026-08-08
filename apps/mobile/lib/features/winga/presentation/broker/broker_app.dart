@@ -7,6 +7,7 @@ import '../../../../app/theme/taifa_dimens.dart';
 import '../../application/brokerage_providers.dart';
 import '../widgets/experience_kit.dart';
 import '../widgets/winga_ui.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Winga (broker) business OS — CRM, pipeline, commissions, AI coach.
 class WingaBrokerApp extends ConsumerStatefulWidget {
@@ -44,25 +45,25 @@ class _WingaBrokerAppState extends ConsumerState<WingaBrokerApp> {
       appBar: AppBar(
         title: const Text('Winga Desk'),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.pop(),
         ),
         actions: [
           IconButton(
             tooltip: 'Opportunities',
             onPressed: () => context.push('/winga/opportunities'),
-            icon: const Icon(Icons.campaign_outlined),
+            icon: const Icon(LucideIcons.megaphone),
           ),
           IconButton(
             onPressed: () => context.push('/wallet'),
-            icon: const Icon(Icons.account_balance_wallet_outlined),
+            icon: const Icon(LucideIcons.wallet),
           ),
         ],
       ),
       floatingActionButton: _tab == 1
           ? FloatingActionButton.extended(
               onPressed: () => _showNewLead(context, state, ctrl),
-              icon: const Icon(Icons.person_add_alt_1),
+              icon: const Icon(LucideIcons.userPlus),
               label: const Text('New lead'),
             )
           : null,
@@ -93,11 +94,11 @@ class _WingaBrokerAppState extends ConsumerState<WingaBrokerApp> {
         selectedIndex: _tab,
         onDestinationSelected: (i) => setState(() => _tab = i),
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.dashboard_outlined), label: 'Home'),
-          NavigationDestination(icon: Icon(Icons.filter_alt_outlined), label: 'CRM'),
-          NavigationDestination(icon: Icon(Icons.payments_outlined), label: 'Earn'),
-          NavigationDestination(icon: Icon(Icons.store_mall_directory_outlined), label: 'Providers'),
-          NavigationDestination(icon: Icon(Icons.psychology_alt_outlined), label: 'Coach'),
+          NavigationDestination(icon: Icon(LucideIcons.layoutGrid), label: 'Home'),
+          NavigationDestination(icon: Icon(LucideIcons.funnel), label: 'CRM'),
+          NavigationDestination(icon: Icon(LucideIcons.banknote), label: 'Earn'),
+          NavigationDestination(icon: Icon(LucideIcons.store), label: 'Providers'),
+          NavigationDestination(icon: Icon(LucideIcons.brain), label: 'Coach'),
         ],
       ),
     );
@@ -236,7 +237,7 @@ class _Dashboard extends StatelessWidget {
         const SizedBox(height: TaifaSpacing.xl),
         const WingaSectionHeader('Marketplace pulse'),
         ListTile(
-          leading: const Icon(Icons.insights_outlined),
+          leading: const Icon(LucideIcons.chartLine),
           title: Text('Verified Wingas · ${a?.wingasVerified ?? 0}'),
           subtitle: Text('Providers · ${a?.providersVerified ?? 0}'),
         ),
@@ -262,7 +263,7 @@ class _Pipeline extends StatelessWidget {
     if (state.leads.isEmpty && state.deals.isEmpty) {
       return const WingaEmptyState(
         message: 'Your CRM pipeline is empty — add a lead to start earning',
-        icon: Icons.filter_alt_outlined,
+        icon: LucideIcons.funnel,
       );
     }
     return ListView(
@@ -306,7 +307,7 @@ class _Commissions extends StatelessWidget {
     if (state.commissions.isEmpty) {
       return const WingaEmptyState(
         message: 'Commission events appear after customers pay deals',
-        icon: Icons.payments_outlined,
+        icon: LucideIcons.banknote,
       );
     }
     return ListView.separated(
@@ -396,7 +397,7 @@ class _Coach extends StatelessWidget {
         ...state.assistTips.map(
           (t) => Card(
             child: ListTile(
-              leading: const Icon(Icons.tips_and_updates_outlined),
+              leading: const Icon(LucideIcons.lightbulb),
               title: Text(t),
             ),
           ),

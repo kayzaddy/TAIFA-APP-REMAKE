@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../station_ops/application/station_ops_providers.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class CityOpsScreen extends ConsumerStatefulWidget {
   const CityOpsScreen({super.key});
@@ -91,7 +92,7 @@ class _CityOpsScreenState extends ConsumerState<CityOpsScreen> {
         actions: [
           IconButton(
             onPressed: _loading ? null : _load,
-            icon: const Icon(Icons.refresh_rounded),
+            icon: const Icon(LucideIcons.refreshCw),
           ),
         ],
       ),
@@ -117,7 +118,7 @@ class _CityOpsScreenState extends ConsumerState<CityOpsScreen> {
                 ),
                 IconButton(
                   onPressed: _load,
-                  icon: const Icon(Icons.search_rounded),
+                  icon: const Icon(LucideIcons.search),
                 ),
               ],
             ),

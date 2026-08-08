@@ -12,6 +12,7 @@ import '../../wallet/domain/money.dart';
 import '../application/tourism_providers.dart';
 import '../domain/tourism_models.dart';
 import '../domain/tourism_trip_models.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Tourism — Demo Complete experiences (Zanzibar, safari, reefs).
 class TourismScreen extends ConsumerStatefulWidget {
@@ -79,7 +80,7 @@ class _TourismScreenState extends ConsumerState<TourismScreen> {
                       }
                     },
                     icon: Icon(
-                      Icons.arrow_back_rounded,
+                      LucideIcons.arrowLeft,
                       color: palette.textPrimary,
                     ),
                   ),
@@ -115,7 +116,7 @@ class _TourismScreenState extends ConsumerState<TourismScreen> {
                   IconButton(
                     onPressed: ctrl.openHistory,
                     icon: Icon(
-                      Icons.receipt_long_rounded,
+                      LucideIcons.receipt,
                       color: palette.textMuted,
                     ),
                   ),
@@ -266,7 +267,7 @@ class _Home extends StatelessWidget {
                       Row(
                         children: [
                           Icon(
-                            Icons.map_rounded,
+                            LucideIcons.map,
                             color: TaifaColors.ocean400,
                           ),
                           const SizedBox(width: 8),
@@ -323,7 +324,7 @@ class _Home extends StatelessWidget {
           onChanged: ctrl.search,
           decoration: InputDecoration(
             hintText: 'Search Zanzibar, safari, reefs…',
-            prefixIcon: Icon(Icons.search_rounded, color: palette.textMuted),
+            prefixIcon: Icon(LucideIcons.search, color: palette.textMuted),
             filled: true,
             fillColor: palette.surface,
             border: OutlineInputBorder(
@@ -369,7 +370,7 @@ class _Home extends StatelessWidget {
                           ),
                         ),
                         child: const Icon(
-                          Icons.landscape_rounded,
+                          LucideIcons.mountain,
                           color: Colors.white70,
                         ),
                       ),
@@ -444,7 +445,7 @@ class _PlanInterview extends StatelessWidget {
           children: [
             IconButton(
               onPressed: () => ctrl.setGuests(state.guests - 1),
-              icon: Icon(Icons.remove_circle_outline, color: palette.textMuted),
+              icon: Icon(LucideIcons.circleMinus, color: palette.textMuted),
             ),
             Text(
               '${state.guests}',
@@ -455,7 +456,7 @@ class _PlanInterview extends StatelessWidget {
             ),
             IconButton(
               onPressed: () => ctrl.setGuests(state.guests + 1),
-              icon: Icon(Icons.add_circle_outline, color: palette.textMuted),
+              icon: Icon(LucideIcons.circlePlus, color: palette.textMuted),
             ),
           ],
         ),
@@ -747,7 +748,7 @@ class _TripHub extends StatelessWidget {
                 'from ${t.price.format()}',
                 style: TextStyle(color: palette.textMuted, fontSize: 12),
               ),
-              trailing: const Icon(Icons.chevron_right_rounded),
+              trailing: const Icon(LucideIcons.chevronRight),
               onTap: () => ctrl.openTour(t),
             ),
           );
@@ -755,7 +756,7 @@ class _TripHub extends StatelessWidget {
         const SizedBox(height: 16),
         OutlinedButton.icon(
           onPressed: ctrl.openTourismHelp,
-          icon: const Icon(Icons.emergency_rounded),
+          icon: const Icon(LucideIcons.siren),
           label: const Text('Help & SOS'),
         ),
         const SizedBox(height: 12),
@@ -941,7 +942,7 @@ class _TripCheckoutReceipt extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Icon(
-            Icons.check_circle_rounded,
+            LucideIcons.circleCheckBig,
             color: TaifaColors.emerald500,
             size: 48,
           ),
@@ -1077,10 +1078,10 @@ class _TourismHelp extends StatelessWidget {
             contentPadding: EdgeInsets.zero,
             leading: Icon(
               switch (p.kind) {
-                'hospital' => Icons.local_hospital_rounded,
-                'police' => Icons.local_police_rounded,
-                'embassy' => Icons.flag_rounded,
-                _ => Icons.place_rounded,
+                'hospital' => LucideIcons.briefcaseMedical,
+                'police' => LucideIcons.siren,
+                'embassy' => LucideIcons.flag,
+                _ => LucideIcons.mapPin,
               },
               color: palette.textMuted,
             ),
@@ -1232,7 +1233,7 @@ class _Checkout extends StatelessWidget {
             const Spacer(),
             IconButton(
               onPressed: () => ctrl.setGuests(state.guests - 1),
-              icon: Icon(Icons.remove_circle_outline, color: palette.textMuted),
+              icon: Icon(LucideIcons.circleMinus, color: palette.textMuted),
             ),
             Text(
               '${state.guests}',
@@ -1243,7 +1244,7 @@ class _Checkout extends StatelessWidget {
             ),
             IconButton(
               onPressed: () => ctrl.setGuests(state.guests + 1),
-              icon: Icon(Icons.add_circle_outline, color: palette.textMuted),
+              icon: Icon(LucideIcons.circlePlus, color: palette.textMuted),
             ),
           ],
         ),
@@ -1290,7 +1291,7 @@ class _Confirmed extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Icon(
-            Icons.check_circle_rounded,
+            LucideIcons.circleCheckBig,
             color: TaifaColors.emerald500,
             size: 48,
           ),

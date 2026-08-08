@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+
 import '../../ecosystem/application/ecosystem_modules_provider.dart'
     show ecosystemClientProvider;
 
@@ -53,7 +55,7 @@ class _AgricultureScreenState extends ConsumerState<AgricultureScreen> {
         actions: [
           IconButton(
             onPressed: _loading ? null : _load,
-            icon: const Icon(Icons.refresh_rounded),
+            icon: const Icon(LucideIcons.refreshCw),
           ),
         ],
       ),

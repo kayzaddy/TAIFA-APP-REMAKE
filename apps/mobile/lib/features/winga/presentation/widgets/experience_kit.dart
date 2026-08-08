@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../../../../app/theme/taifa_colors.dart';
 import '../../../../app/theme/taifa_dimens.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Experience-layer primitives — answers “what next?” on every surface.
 class WingaJourneyStepper extends StatelessWidget {
@@ -92,7 +93,7 @@ class WingaTrustBadge extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
-            verified ? Icons.verified : Icons.hourglass_empty,
+            verified ? LucideIcons.badgeCheck : LucideIcons.hourglass,
             size: 14,
             color: color,
           ),
@@ -220,7 +221,7 @@ class WingaOfflineBanner extends StatelessWidget {
         ),
         child: Row(
           children: [
-            const Icon(Icons.cloud_off_outlined, size: 18, color: TaifaColors.ocean500),
+            const Icon(LucideIcons.cloudOff, size: 18, color: TaifaColors.ocean500),
             const SizedBox(width: TaifaSpacing.sm),
             Expanded(
               child: Text(
@@ -407,7 +408,7 @@ class WingaOpportunityCard extends StatelessWidget {
                 if (onSave != null)
                   IconButton(
                     onPressed: onSave,
-                    icon: const Icon(Icons.bookmark_border),
+                    icon: const Icon(LucideIcons.bookmark),
                     visualDensity: VisualDensity.compact,
                   ),
               ],

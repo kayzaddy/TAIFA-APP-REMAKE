@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../wallet/application/wallet_providers.dart' show apiClientProvider;
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class RegionalSupervisorScreen extends ConsumerStatefulWidget {
   const RegionalSupervisorScreen({super.key});
@@ -65,7 +66,7 @@ class _RegionalSupervisorScreenState
         actions: [
           IconButton(
             onPressed: _loading ? null : _load,
-            icon: const Icon(Icons.refresh_rounded),
+            icon: const Icon(LucideIcons.refreshCw),
           ),
         ],
       ),
