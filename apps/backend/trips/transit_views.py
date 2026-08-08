@@ -299,7 +299,7 @@ class TransitAvlPingView(APIView):
         return Response(svc.avl_vehicle_to_dict(vehicle))
 
 
-@extend_schema(tags=["mobility-transit"], operation_id="mobility_transit_profile")
+@extend_schema(tags=["mobility-transit"])
 class TransitProfileView(APIView):
     permission_classes = [IsDevice]
 
@@ -314,7 +314,7 @@ class TransitProfileView(APIView):
         return Response(svc.passenger_profile_bundle(owner=profile.owner))
 
 
-@extend_schema(tags=["mobility-transit"], operation_id="mobility_transit_favorites_list")
+@extend_schema(tags=["mobility-transit"])
 class TransitFavoriteListView(APIView):
     permission_classes = [IsDevice]
 
@@ -351,7 +351,7 @@ class TransitFavoriteDeleteView(APIView):
         return Response(status=204)
 
 
-@extend_schema(tags=["mobility-transit"], operation_id="mobility_transit_notifications_list")
+@extend_schema(tags=["mobility-transit"])
 class TransitNotificationListView(APIView):
     permission_classes = [IsDevice]
 
@@ -367,7 +367,7 @@ class TransitNotificationListView(APIView):
         return Response({"marked_read": count})
 
 
-@extend_schema(tags=["mobility-transit"], operation_id="mobility_transit_feedback_create")
+@extend_schema(tags=["mobility-transit"])
 class TransitFeedbackView(APIView):
     permission_classes = [IsDevice]
 
@@ -431,7 +431,7 @@ class TransitAnalyticsView(APIView):
         return Response(svc.transit_analytics_bundle(region=region, days=days))
 
 
-@extend_schema(tags=["mobility-transit"], operation_id="mobility_transit_admin_routes")
+@extend_schema(tags=["mobility-transit"])
 class TransitAdminRouteView(APIView):
     permission_classes = [IsDevice, IsMobilityOperator]
 
@@ -441,6 +441,11 @@ class TransitAdminRouteView(APIView):
         except MobilityError as exc:
             return Response({"detail": str(exc)}, status=400)
         return Response(svc.route_to_dict(route), status=201)
+
+
+@extend_schema(tags=["mobility-transit"])
+class TransitAdminRouteDetailView(APIView):
+    permission_classes = [IsDevice, IsMobilityOperator]
 
     def patch(self, request, route_id):
         try:
@@ -456,7 +461,7 @@ class TransitAdminRouteView(APIView):
         return Response(svc.route_to_dict(route))
 
 
-@extend_schema(tags=["mobility-transit"], operation_id="mobility_transit_admin_products")
+@extend_schema(tags=["mobility-transit"])
 class TransitAdminProductView(APIView):
     permission_classes = [IsDevice, IsMobilityOperator]
 
@@ -466,6 +471,11 @@ class TransitAdminProductView(APIView):
         except MobilityError as exc:
             return Response({"detail": str(exc)}, status=400)
         return Response(svc.product_to_dict(product), status=201)
+
+
+@extend_schema(tags=["mobility-transit"])
+class TransitAdminProductDetailView(APIView):
+    permission_classes = [IsDevice, IsMobilityOperator]
 
     def patch(self, request, product_id):
         try:
@@ -481,7 +491,7 @@ class TransitAdminProductView(APIView):
         return Response(svc.product_to_dict(product))
 
 
-@extend_schema(tags=["mobility-transit"], operation_id="mobility_transit_assistant")
+@extend_schema(tags=["mobility-transit"])
 class TransitAssistantView(APIView):
     permission_classes = [IsDevice]
 
@@ -526,7 +536,7 @@ class TransitFamilyBundleView(APIView):
         return Response(svc.transit_family_bundle(guardian_owner=owner_of(request)))
 
 
-@extend_schema(tags=["mobility-transit"], operation_id="mobility_transit_family_members")
+@extend_schema(tags=["mobility-transit"])
 class TransitFamilyMemberListView(APIView):
     permission_classes = [IsDevice]
 
@@ -570,7 +580,7 @@ class TransitFamilyMemberDeleteView(APIView):
         return Response(status=204)
 
 
-@extend_schema(tags=["mobility-transit"], operation_id="mobility_transit_lost_found_bundle")
+@extend_schema(tags=["mobility-transit"])
 class TransitLostFoundView(APIView):
     permission_classes = [IsDevice]
 

@@ -132,6 +132,21 @@ class PaymentOrchestrator:
         outcome = self.engine.initiate_transfer(owner=owner, amount=amount, **kwargs)
         return self._after_money(ctx, "payment.transfer", outcome)
 
+    def initiate_p2p(self, *, ctx: OrchestratorContext, payer: str, payee: str, amount: Money, **kwargs) -> EngineResult:
+        self._gate(
+            ctx,
+            RiskContext(
+                owner=payer,
+                amount=amount,
+                operation="transfer",
+                device_id=ctx.device_id,
+                ip=ctx.ip,
+                counterparty=payee,
+            ),
+        )
+        outcome = self.engine.initiate_p2p(payer=payer, payee=payee, amount=amount, **kwargs)
+        return self._after_money(ctx, "payment.p2p", outcome)
+
     def initiate_withdrawal(self, *, ctx: OrchestratorContext, owner: str, amount: Money, **kwargs) -> EngineResult:
         self._gate(
             ctx,

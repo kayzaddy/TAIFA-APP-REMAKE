@@ -341,13 +341,13 @@ urlpatterns = [
     path("transit/admin/routes", transit_views.TransitAdminRouteView.as_view(), name="transit-admin-routes"),
     path(
         "transit/admin/routes/<uuid:route_id>",
-        transit_views.TransitAdminRouteView.as_view(),
+        transit_views.TransitAdminRouteDetailView.as_view(),
         name="transit-admin-route-update",
     ),
     path("transit/admin/products", transit_views.TransitAdminProductView.as_view(), name="transit-admin-products"),
     path(
         "transit/admin/products/<uuid:product_id>",
-        transit_views.TransitAdminProductView.as_view(),
+        transit_views.TransitAdminProductDetailView.as_view(),
         name="transit-admin-product-update",
     ),
     path("transit/assistant", transit_views.TransitAssistantView.as_view(), name="transit-assistant"),

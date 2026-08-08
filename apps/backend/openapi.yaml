@@ -168,6 +168,77 @@ paths:
       responses:
         '200':
           description: No response body
+  /api/v1/auth/device/merchant:
+    post:
+      operationId: api_v1_auth_device_merchant_create
+      description: |-
+        POST /api/v1/auth/device/merchant — self-service merchant opt-in.
+
+        Enabling this does not change anything retroactively: only payment links
+        created *after* opting in carry the platform fee (snapshotted at creation
+        in `PaymentLink.fee_bps`). P2P transfers/requests/splits are never fee'd.
+      summary: Turn merchant mode on/off (fee applies to payment links you create
+        afterwards)
+      tags:
+      - social-payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MerchantStatus'
+        required: true
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantStatusResponse'
+          description: ''
+  /api/v1/auth/device/profile:
+    post:
+      operationId: api_v1_auth_device_profile_create
+      description: |-
+        POST /api/v1/auth/device/profile — makes this wallet findable by phone.
+
+        A device only becomes payable-by-phone once its owner sets a number here;
+        until then it can still send/receive via payment links, QR, and the raw
+        `owner` handle, just not phone lookup.
+      summary: Set my phone number / display name so others can find and pay me
+      tags:
+      - social-payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceProfile'
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceProfileResponse'
+          description: ''
+  /api/v1/auth/device/push-token:
+    post:
+      operationId: api_v1_auth_device_push_token_create
+      summary: Update push notification token for the authenticated device
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevicePushToken'
+        required: true
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
   /api/v1/auth/device/register:
     post:
       operationId: api_v1_auth_device_register_create
@@ -1999,7 +2070,7 @@ paths:
           description: No response body
   /api/v1/continental/countries:
     get:
-      operationId: api_v1_continental_countries_retrieve
+      operationId: continental_countries_list
       tags:
       - continental
       security:
@@ -2009,7 +2080,7 @@ paths:
           description: No response body
   /api/v1/continental/countries/{country_code}:
     get:
-      operationId: api_v1_continental_countries_retrieve_2
+      operationId: continental_countries_retrieve
       parameters:
       - in: path
         name: country_code
@@ -2350,6 +2421,201 @@ paths:
       responses:
         '200':
           description: No response body
+  /api/v1/express/ai/basket:
+    post:
+      operationId: api_v1_express_ai_basket_create
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/express/checkout:
+    post:
+      operationId: api_v1_express_checkout_create
+      description: 'One-tap: rank → accept → pay → READY → rider.'
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/express/list/parse:
+    post:
+      operationId: api_v1_express_list_parse_create
+      description: Smart Shopping List — parse multiline list into matched basket
+        items.
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/express/orders:
+    get:
+      operationId: express_orders_list
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_express_orders_create
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/express/orders/{order_id}:
+    get:
+      operationId: express_orders_retrieve
+      parameters:
+      - in: path
+        name: order_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/express/orders/{order_id}/accept:
+    post:
+      operationId: api_v1_express_orders_accept_create
+      parameters:
+      - in: path
+        name: order_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/express/orders/{order_id}/advance:
+    post:
+      operationId: api_v1_express_orders_advance_create
+      parameters:
+      - in: path
+        name: order_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/express/orders/{order_id}/deliver:
+    post:
+      operationId: api_v1_express_orders_deliver_create
+      parameters:
+      - in: path
+        name: order_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/express/orders/{order_id}/pay:
+    post:
+      operationId: api_v1_express_orders_pay_create
+      parameters:
+      - in: path
+        name: order_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/express/orders/{order_id}/ready:
+    post:
+      operationId: api_v1_express_orders_ready_create
+      description: Merchant READY → auto-dispatch rider + package POD.
+      parameters:
+      - in: path
+        name: order_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/express/products:
+    get:
+      operationId: api_v1_express_products_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/express/quote:
+    post:
+      operationId: api_v1_express_quote_create
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/express/rank:
+    get:
+      operationId: api_v1_express_rank_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/express/stores:
+    get:
+      operationId: api_v1_express_stores_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
   /api/v1/governance/catalog:
     get:
       operationId: api_v1_governance_catalog_retrieve
@@ -2367,6 +2633,613 @@ paths:
       - governance
       security:
       - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/integrations/catalog:
+    get:
+      operationId: api_v1_integrations_catalog_retrieve
+      tags:
+      - api
+      security:
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/v1/integrations/certification:
+    get:
+      operationId: api_v1_integrations_certification_retrieve
+      tags:
+      - api
+      security:
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/v1/integrations/health:
+    get:
+      operationId: api_v1_integrations_health_retrieve
+      tags:
+      - api
+      security:
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/v1/map/bootstrap:
+    post:
+      operationId: api_v1_map_bootstrap_create
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/map/funding/prefs:
+    get:
+      operationId: api_v1_map_funding_prefs_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_map_funding_prefs_create
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: api_v1_map_funding_prefs_update
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    patch:
+      operationId: api_v1_map_funding_prefs_partial_update
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/map/funding/resolve:
+    post:
+      operationId: api_v1_map_funding_resolve_create
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/map/intents/{public_code}:
+    get:
+      operationId: api_v1_map_intents_retrieve
+      parameters:
+      - in: path
+        name: public_code
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/map/intents/{public_code}/pay:
+    post:
+      operationId: api_v1_map_intents_pay_create
+      parameters:
+      - in: path
+        name: public_code
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/map/links/{path_token}:
+    get:
+      operationId: api_v1_map_links_retrieve
+      parameters:
+      - in: path
+        name: path_token
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/map/merchants/{merchant_id}/analytics:
+    get:
+      operationId: api_v1_map_merchants_analytics_retrieve
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/map/merchants/{merchant_id}/checkout:
+    post:
+      operationId: api_v1_map_merchants_checkout_create
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/map/merchants/{merchant_id}/invoices:
+    get:
+      operationId: api_v1_map_merchants_invoices_retrieve
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_map_merchants_invoices_create
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/map/merchants/{merchant_id}/links:
+    get:
+      operationId: api_v1_map_merchants_links_retrieve
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_map_merchants_links_create
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/map/merchants/{merchant_id}/mobility/accept:
+    post:
+      operationId: api_v1_map_merchants_mobility_accept_create
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/map/merchants/{merchant_id}/profile:
+    get:
+      operationId: api_v1_map_merchants_profile_retrieve
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    patch:
+      operationId: api_v1_map_merchants_profile_partial_update
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/map/merchants/{merchant_id}/qr:
+    post:
+      operationId: api_v1_map_merchants_qr_create
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/map/merchants/{merchant_id}/qr/library:
+    get:
+      operationId: api_v1_map_merchants_qr_library_retrieve
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/map/merchants/{merchant_id}/qr/static/pay:
+    post:
+      operationId: api_v1_map_merchants_qr_static_pay_create
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/map/merchants/{merchant_id}/tap:
+    post:
+      operationId: api_v1_map_merchants_tap_create
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/map/merchants/{merchant_id}/terminals:
+    get:
+      operationId: api_v1_map_merchants_terminals_retrieve
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_map_merchants_terminals_create
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/map/merchants/{merchant_id}/winga/accept:
+    post:
+      operationId: api_v1_map_merchants_winga_accept_create
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/map/receipts/{public_code}:
+    get:
+      operationId: api_v1_map_receipts_retrieve
+      parameters:
+      - in: path
+        name: public_code
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/map/tap/{public_code}:
+    get:
+      operationId: api_v1_map_tap_retrieve
+      parameters:
+      - in: path
+        name: public_code
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/map/tap/{public_code}/auth:
+    post:
+      operationId: api_v1_map_tap_auth_create
+      parameters:
+      - in: path
+        name: public_code
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/map/tap/{public_code}/cancel:
+    post:
+      operationId: api_v1_map_tap_cancel_create
+      parameters:
+      - in: path
+        name: public_code
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/map/tap/{public_code}/confirm:
+    post:
+      operationId: api_v1_map_tap_confirm_create
+      parameters:
+      - in: path
+        name: public_code
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mobility-channels/drivers/bind:
+    post:
+      operationId: api_v1_mobility_channels_drivers_bind_create
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mobility-channels/stations/{station_id}/dispatch:
+    post:
+      operationId: api_v1_mobility_channels_stations_dispatch_create
+      description: Stage dispatcher manual dispatch trigger.
+      parameters:
+      - in: path
+        name: station_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mobility-channels/trips/{trip_id}/dispatch-detail:
+    get:
+      operationId: api_v1_mobility_channels_trips_dispatch_detail_retrieve
+      description: 'Demo: show SMS offer preview and channel attempts for a trip.'
+      parameters:
+      - in: path
+        name: trip_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mobility-channels/trips/{trip_id}/simulate-sms-accept:
+    post:
+      operationId: api_v1_mobility_channels_trips_simulate_sms_accept_create
+      description: 'Demo: simulate feature-phone driver replying YES via SMS.'
+      parameters:
+      - in: path
+        name: trip_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mobility-channels/trips/{trip_id}/status:
+    get:
+      operationId: api_v1_mobility_channels_trips_status_retrieve
+      description: Passenger-friendly hybrid dispatch status (channel opaque).
+      parameters:
+      - in: path
+        name: trip_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mobility-channels/trips/{trip_id}/verify-pin:
+    post:
+      operationId: api_v1_mobility_channels_trips_verify_pin_create
+      parameters:
+      - in: path
+        name: trip_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mobility-channels/webhooks/ivr/dtmf:
+    post:
+      operationId: api_v1_mobility_channels_webhooks_ivr_dtmf_create
+      tags:
+      - api
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mobility-channels/webhooks/sms/inbound:
+    post:
+      operationId: api_v1_mobility_channels_webhooks_sms_inbound_create
+      description: Inbound SMS from aggregator (Africa's Talking, Twilio, etc.).
+      tags:
+      - api
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mobility-channels/webhooks/ussd:
+    post:
+      operationId: api_v1_mobility_channels_webhooks_ussd_create
+      tags:
+      - api
       responses:
         '200':
           description: No response body
@@ -2803,6 +3676,937 @@ paths:
                 items:
                   $ref: '#/components/schemas/Application'
           description: ''
+  /api/v1/mos/bootstrap:
+    post:
+      operationId: api_v1_mos_bootstrap_create
+      description: Register ACTIVE merchant + MOS profile + HQ branch + warehouse.
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mos/merchants/{merchant_id}:
+    get:
+      operationId: api_v1_mos_merchants_retrieve
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mos/merchants/{merchant_id}/analytics/summary:
+    get:
+      operationId: api_v1_mos_merchants_analytics_summary_retrieve
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mos/merchants/{merchant_id}/assist:
+    post:
+      operationId: api_v1_mos_merchants_assist_create
+      description: AI commerce copilot stub — never authorizes payments.
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mos/merchants/{merchant_id}/branches:
+    get:
+      operationId: api_v1_mos_merchants_branches_retrieve
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_mos_merchants_branches_create
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mos/merchants/{merchant_id}/customers:
+    get:
+      operationId: api_v1_mos_merchants_customers_retrieve
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_mos_merchants_customers_create
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mos/merchants/{merchant_id}/orders:
+    get:
+      operationId: mos_merchant_orders_list
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_mos_merchants_orders_create
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mos/merchants/{merchant_id}/orders/{order_id}:
+    get:
+      operationId: mos_merchant_orders_retrieve
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: order_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mos/merchants/{merchant_id}/orders/{order_id}/fulfill:
+    post:
+      operationId: api_v1_mos_merchants_orders_fulfill_create
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: order_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mos/merchants/{merchant_id}/orders/{order_id}/pay:
+    post:
+      operationId: api_v1_mos_merchants_orders_pay_create
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: order_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mos/merchants/{merchant_id}/pos/sessions:
+    get:
+      operationId: api_v1_mos_merchants_pos_sessions_retrieve
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_mos_merchants_pos_sessions_create
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mos/merchants/{merchant_id}/pos/sessions/{session_id}/close:
+    post:
+      operationId: api_v1_mos_merchants_pos_sessions_close_create
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: session_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mos/merchants/{merchant_id}/products:
+    get:
+      operationId: api_v1_mos_merchants_products_retrieve
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_mos_merchants_products_create
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mos/merchants/{merchant_id}/products/{product_id}/publish-winga:
+    post:
+      operationId: api_v1_mos_merchants_products_publish_winga_create
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: product_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mos/merchants/{merchant_id}/purchase-orders:
+    get:
+      operationId: api_v1_mos_merchants_purchase_orders_retrieve
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_mos_merchants_purchase_orders_create
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mos/merchants/{merchant_id}/staff:
+    get:
+      operationId: api_v1_mos_merchants_staff_retrieve
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_mos_merchants_staff_create
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mos/merchants/{merchant_id}/stock:
+    get:
+      operationId: api_v1_mos_merchants_stock_retrieve
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mos/merchants/{merchant_id}/stock/adjust:
+    post:
+      operationId: api_v1_mos_merchants_stock_adjust_create
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mos/merchants/{merchant_id}/suppliers:
+    get:
+      operationId: api_v1_mos_merchants_suppliers_retrieve
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_mos_merchants_suppliers_create
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/mos/merchants/{merchant_id}/warehouses:
+    get:
+      operationId: api_v1_mos_merchants_warehouses_retrieve
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_mos_merchants_warehouses_create
+      parameters:
+      - in: path
+        name: merchant_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/payments/bills:
+    get:
+      operationId: api_v1_payments_bills_list
+      summary: Create (POST) or list (GET) split bills
+      tags:
+      - social-payments
+      security:
+      - DeviceToken: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillSplit'
+          description: ''
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BillSplit'
+          description: ''
+    post:
+      operationId: api_v1_payments_bills_create
+      summary: Create (POST) or list (GET) split bills
+      tags:
+      - social-payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillSplitCreate'
+        required: true
+      security:
+      - DeviceToken: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillSplit'
+          description: ''
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BillSplit'
+          description: ''
+  /api/v1/payments/bills/{bill_id}:
+    get:
+      operationId: api_v1_payments_bills_retrieve
+      summary: View one split bill
+      parameters:
+      - in: path
+        name: bill_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - social-payments
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillSplit'
+          description: ''
+  /api/v1/payments/bills/{bill_id}/cancel:
+    post:
+      operationId: api_v1_payments_bills_cancel_create
+      summary: Cancel a split bill (organizer only) — cancels every unpaid share
+      parameters:
+      - in: path
+        name: bill_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - social-payments
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillSplit'
+          description: ''
+  /api/v1/payments/contacts:
+    get:
+      operationId: api_v1_payments_contacts_list
+      summary: Save (POST) or list (GET) my contacts
+      tags:
+      - social-payments
+      security:
+      - DeviceToken: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+          description: ''
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+          description: ''
+    post:
+      operationId: api_v1_payments_contacts_create
+      summary: Save (POST) or list (GET) my contacts
+      tags:
+      - social-payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactCreate'
+        required: true
+      security:
+      - DeviceToken: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+          description: ''
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+          description: ''
+  /api/v1/payments/contacts/{contact_id}:
+    delete:
+      operationId: api_v1_payments_contacts_destroy
+      summary: Remove a saved contact
+      parameters:
+      - in: path
+        name: contact_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - social-payments
+      security:
+      - DeviceToken: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/payments/contacts/{contact_id}/{action}:
+    post:
+      operationId: payments_contact_action
+      summary: Toggle favorite on a saved contact
+      parameters:
+      - in: path
+        name: action
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: contact_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - social-payments
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+          description: ''
+  /api/v1/payments/links:
+    get:
+      operationId: api_v1_payments_links_list
+      summary: Create (POST) or list (GET) my payment links
+      tags:
+      - social-payments
+      security:
+      - DeviceToken: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentLink'
+          description: ''
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PaymentLink'
+          description: ''
+    post:
+      operationId: api_v1_payments_links_create
+      summary: Create (POST) or list (GET) my payment links
+      tags:
+      - social-payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentLinkCreate'
+      security:
+      - DeviceToken: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentLink'
+          description: ''
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PaymentLink'
+          description: ''
+  /api/v1/payments/links/{link_id}/{action}:
+    post:
+      operationId: payments_link_action
+      summary: Pause or resume one of my payment links
+      parameters:
+      - in: path
+        name: action
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: link_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - social-payments
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentLink'
+          description: ''
+  /api/v1/payments/pay/{slug}:
+    get:
+      operationId: api_v1_payments_pay_retrieve
+      summary: Public payment-link info (what a payer sees before paying)
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - social-payments
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentLinkPublic'
+          description: ''
+  /api/v1/payments/pay/{slug}/confirm:
+    post:
+      operationId: api_v1_payments_pay_confirm_create
+      summary: Pay a payment link from my wallet (instant P2P)
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - social-payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayLink'
+      security:
+      - DeviceToken: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+          description: ''
+  /api/v1/payments/people/lookup:
+    post:
+      operationId: api_v1_payments_people_lookup_create
+      description: |-
+        POST /api/v1/payments/people/lookup — resolve a phone number to a
+        wallet owner + display name, for "pay a friend" pickers. Reveals only
+        what's needed to address a payment — never balance or history.
+
+        POST (not GET ?phone=) deliberately: a leading '+' in a query string is
+        form-urlencoding for a space, which would silently corrupt every E.164
+        number — exactly the numbers this endpoint exists to look up.
+      summary: Find a TAIFA wallet by phone number
+      tags:
+      - social-payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PhoneLookupRequest'
+        required: true
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+          description: ''
+  /api/v1/payments/recurring:
+    get:
+      operationId: api_v1_payments_recurring_list
+      summary: Create (POST) or list (GET) my standing orders
+      tags:
+      - social-payments
+      security:
+      - DeviceToken: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecurringPayment'
+          description: ''
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecurringPayment'
+          description: ''
+    post:
+      operationId: api_v1_payments_recurring_create
+      summary: Create (POST) or list (GET) my standing orders
+      tags:
+      - social-payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecurringPaymentCreate'
+        required: true
+      security:
+      - DeviceToken: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecurringPayment'
+          description: ''
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecurringPayment'
+          description: ''
+  /api/v1/payments/recurring/{recurring_id}/{action}:
+    post:
+      operationId: payments_recurring_action
+      summary: Pause, resume, or cancel a standing order
+      parameters:
+      - in: path
+        name: action
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: recurring_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - social-payments
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecurringPayment'
+          description: ''
   /api/v1/payments/refunds:
     post:
       operationId: api_v1_payments_refunds_create
@@ -2829,6 +4633,84 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Transaction'
+          description: ''
+  /api/v1/payments/requests:
+    get:
+      operationId: api_v1_payments_requests_list
+      summary: Create (POST) or list (GET) money requests — sent and received
+      tags:
+      - social-payments
+      security:
+      - DeviceToken: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MoneyRequest'
+          description: ''
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MoneyRequest'
+          description: ''
+    post:
+      operationId: api_v1_payments_requests_create
+      summary: Create (POST) or list (GET) money requests — sent and received
+      tags:
+      - social-payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MoneyRequestCreate'
+        required: true
+      security:
+      - DeviceToken: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MoneyRequest'
+          description: ''
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MoneyRequest'
+          description: ''
+  /api/v1/payments/requests/{request_id}/{action}:
+    post:
+      operationId: payments_request_action
+      summary: Pay, decline (payer) or cancel (requester) a money request
+      parameters:
+      - in: path
+        name: action
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: request_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - social-payments
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MoneyRequest'
           description: ''
   /api/v1/payments/topups:
     post:
@@ -3022,6 +4904,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/Wallet'
           description: ''
+  /api/v1/payments/wallet/qr:
+    get:
+      operationId: api_v1_payments_wallet_qr_retrieve
+      description: |-
+        Returns the device owner's standing "receive" link (created on first
+        call) plus the payload a client should encode as a QR code. Scanning wallet
+        resolves the slug via the public link endpoint and pays it.
+      summary: 'My receive-QR: a reusable open-amount payment link + QR payload'
+      tags:
+      - social-payments
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentLink'
+          description: ''
   /api/v1/payments/webhooks/mpesa/stk:
     post:
       operationId: api_v1_payments_webhooks_mpesa_stk_create
@@ -3139,6 +5040,224 @@ paths:
               schema:
                 $ref: '#/components/schemas/Transaction'
           description: ''
+  /api/v1/tourism/assist/nearby:
+    get:
+      operationId: tourism_assist_nearby
+      tags:
+      - tourism
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/tourism/assist/sos:
+    post:
+      operationId: tourism_assist_sos
+      tags:
+      - tourism
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/tourism/connectivity/esim/{order_id}/qr:
+    get:
+      operationId: tourism_esim_qr
+      parameters:
+      - in: path
+        name: order_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - tourism
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/tourism/connectivity/esim/plans:
+    get:
+      operationId: tourism_esim_plans_list
+      tags:
+      - tourism
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/tourism/connectivity/esim/quote:
+    post:
+      operationId: tourism_esim_quote
+      tags:
+      - tourism
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/tourism/trips:
+    get:
+      operationId: tourism_trips_list
+      tags:
+      - tourism
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: tourism_trips_create
+      tags:
+      - tourism
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/tourism/trips/{trip_id}:
+    get:
+      operationId: tourism_trips_retrieve
+      parameters:
+      - in: path
+        name: trip_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - tourism
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/tourism/trips/{trip_id}/attach-booking:
+    post:
+      operationId: tourism_trips_attach_booking
+      parameters:
+      - in: path
+        name: trip_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - tourism
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/tourism/trips/{trip_id}/cart/build:
+    post:
+      operationId: tourism_trips_cart_build
+      parameters:
+      - in: path
+        name: trip_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - tourism
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/tourism/trips/{trip_id}/checkout:
+    post:
+      operationId: tourism_trips_checkout_create
+      parameters:
+      - in: path
+        name: trip_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - tourism
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/tourism/trips/{trip_id}/checkout/pay:
+    post:
+      operationId: tourism_trips_checkout_pay
+      parameters:
+      - in: path
+        name: trip_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - tourism
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/tourism/trips/{trip_id}/itineraries:
+    get:
+      operationId: tourism_trips_itineraries_list
+      parameters:
+      - in: path
+        name: trip_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - tourism
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/tourism/trips/{trip_id}/itineraries/{itinerary_id}/select:
+    post:
+      operationId: tourism_trips_select_itinerary
+      parameters:
+      - in: path
+        name: itinerary_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: trip_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - tourism
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/tourism/trips/{trip_id}/plan:
+    post:
+      operationId: tourism_trips_plan
+      parameters:
+      - in: path
+        name: trip_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - tourism
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
   /api/v1/trips/:
     get:
       operationId: trips_list
@@ -3486,7 +5605,7 @@ paths:
           description: ''
   /api/v1/trips/driver/performance:
     get:
-      operationId: api_v1_trips_driver_performance_retrieve
+      operationId: trips_driver_performance_self
       tags:
       - mobility-drivers
       security:
@@ -3496,7 +5615,7 @@ paths:
           description: No response body
   /api/v1/trips/driver/performance/{driver_id}:
     get:
-      operationId: api_v1_trips_driver_performance_retrieve_2
+      operationId: trips_driver_performance_detail
       parameters:
       - in: path
         name: driver_id
@@ -4637,6 +6756,540 @@ paths:
       responses:
         '200':
           description: No response body
+  /api/v1/trips/transit/admin/lost-found:
+    get:
+      operationId: mobility_transit_admin_lost_found
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/admin/lost-found/{item_id}/resolve:
+    post:
+      operationId: mobility_transit_admin_lost_found_resolve
+      parameters:
+      - in: path
+        name: item_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/admin/products:
+    post:
+      operationId: api_v1_trips_transit_admin_products_create
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/admin/products/{product_id}:
+    patch:
+      operationId: api_v1_trips_transit_admin_products_partial_update
+      parameters:
+      - in: path
+        name: product_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/admin/routes:
+    post:
+      operationId: api_v1_trips_transit_admin_routes_create
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/admin/routes/{route_id}:
+    patch:
+      operationId: api_v1_trips_transit_admin_routes_partial_update
+      parameters:
+      - in: path
+        name: route_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/analytics:
+    get:
+      operationId: mobility_transit_analytics
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/assistant:
+    get:
+      operationId: api_v1_trips_transit_assistant_retrieve
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_trips_transit_assistant_create
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/avl/ping:
+    post:
+      operationId: mobility_transit_avl_ping
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/driver/runs:
+    get:
+      operationId: mobility_transit_driver_runs_list
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/driver/runs/{run_id}:
+    patch:
+      operationId: mobility_transit_driver_runs_update
+      parameters:
+      - in: path
+        name: run_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/family:
+    get:
+      operationId: mobility_transit_family_bundle
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/family/members:
+    get:
+      operationId: api_v1_trips_transit_family_members_retrieve
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_trips_transit_family_members_create
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/family/members/{member_id}:
+    delete:
+      operationId: mobility_transit_family_member_delete
+      parameters:
+      - in: path
+        name: member_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/trips/transit/favorites:
+    get:
+      operationId: api_v1_trips_transit_favorites_retrieve
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_trips_transit_favorites_create
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/favorites/{favorite_id}:
+    delete:
+      operationId: mobility_transit_favorites_delete
+      parameters:
+      - in: path
+        name: favorite_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/trips/transit/feedback:
+    get:
+      operationId: api_v1_trips_transit_feedback_retrieve
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_trips_transit_feedback_create
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/home:
+    get:
+      operationId: mobility_transit_home
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/lost-found:
+    get:
+      operationId: api_v1_trips_transit_lost_found_retrieve
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_trips_transit_lost_found_create
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/lost-found/{item_id}/claim:
+    post:
+      operationId: mobility_transit_lost_found_claim
+      parameters:
+      - in: path
+        name: item_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/lost-found/{item_id}/resolve:
+    post:
+      operationId: mobility_transit_lost_found_resolve
+      parameters:
+      - in: path
+        name: item_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/lost-found/photo:
+    post:
+      operationId: mobility_transit_lost_found_photo
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/map:
+    get:
+      operationId: mobility_transit_live_map
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/modes:
+    get:
+      operationId: mobility_transit_modes
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/notifications:
+    get:
+      operationId: api_v1_trips_transit_notifications_retrieve
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_trips_transit_notifications_create
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/plan:
+    get:
+      operationId: mobility_transit_plan
+      parameters:
+      - in: query
+        name: destination_stop
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: origin_stop
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: region
+        schema:
+          type: string
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/products:
+    get:
+      operationId: mobility_transit_products_list
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/profile:
+    get:
+      operationId: api_v1_trips_transit_profile_retrieve
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    patch:
+      operationId: api_v1_trips_transit_profile_partial_update
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/routes:
+    get:
+      operationId: mobility_transit_routes_list
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/routes/{route_id}:
+    get:
+      operationId: mobility_transit_routes_retrieve
+      parameters:
+      - in: path
+        name: route_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/safety/sos:
+    post:
+      operationId: mobility_transit_safety_sos
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/search:
+    get:
+      operationId: mobility_transit_search
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/stations/{stop_code}:
+    get:
+      operationId: mobility_transit_stations_retrieve
+      parameters:
+      - in: path
+        name: stop_code
+        schema:
+          type: string
+        required: true
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/stations/nearby:
+    get:
+      operationId: mobility_transit_stations_nearby
+      parameters:
+      - in: query
+        name: lat
+        schema:
+          type: number
+          format: double
+        required: true
+      - in: query
+        name: limit
+        schema:
+          type: integer
+      - in: query
+        name: lng
+        schema:
+          type: number
+          format: double
+        required: true
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/tickets/mine:
+    get:
+      operationId: mobility_transit_tickets_mine
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/tickets/purchase:
+    post:
+      operationId: mobility_transit_tickets_purchase
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/trips/transit/tickets/validate:
+    post:
+      operationId: mobility_transit_tickets_validate
+      tags:
+      - mobility-transit
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
   /api/v1/trips/verification/decisions:
     post:
       operationId: api_v1_trips_verification_decisions_create
@@ -4671,6 +7324,1607 @@ paths:
       operationId: api_v1_trips_zones_create
       tags:
       - mobility-regional
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/applications:
+    get:
+      operationId: winga_property_applications_list
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/applications/{application_id}:
+    get:
+      operationId: winga_property_applications_retrieve
+      parameters:
+      - in: path
+        name: application_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/applications/{application_id}/approve:
+    post:
+      operationId: api_v1_winga_property_applications_approve_create
+      description: Owner/ops approval after verification checks pass.
+      parameters:
+      - in: path
+        name: application_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/applications/{application_id}/documents:
+    post:
+      operationId: api_v1_winga_property_applications_documents_create
+      parameters:
+      - in: path
+        name: application_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/applications/{application_id}/fraud-signals:
+    get:
+      operationId: api_v1_winga_property_applications_fraud_signals_retrieve
+      parameters:
+      - in: path
+        name: application_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/applications/{application_id}/generate-lease:
+    post:
+      operationId: api_v1_winga_property_applications_generate_lease_create
+      parameters:
+      - in: path
+        name: application_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/applications/{application_id}/submit:
+    post:
+      operationId: api_v1_winga_property_applications_submit_create
+      parameters:
+      - in: path
+        name: application_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/applications/{application_id}/verify-identity:
+    post:
+      operationId: api_v1_winga_property_applications_verify_identity_create
+      parameters:
+      - in: path
+        name: application_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/applications/{application_id}/verify-income:
+    post:
+      operationId: api_v1_winga_property_applications_verify_income_create
+      parameters:
+      - in: path
+        name: application_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/assignments:
+    get:
+      operationId: winga_property_assignments_list
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/assignments/{assignment_id}:
+    get:
+      operationId: winga_property_assignments_retrieve
+      parameters:
+      - in: path
+        name: assignment_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/assignments/{assignment_id}/appointments:
+    get:
+      operationId: api_v1_winga_property_assignments_appointments_retrieve
+      parameters:
+      - in: path
+        name: assignment_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_winga_property_assignments_appointments_create
+      parameters:
+      - in: path
+        name: assignment_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/assignments/{assignment_id}/chat:
+    get:
+      operationId: api_v1_winga_property_assignments_chat_retrieve
+      parameters:
+      - in: path
+        name: assignment_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_winga_property_assignments_chat_create
+      parameters:
+      - in: path
+        name: assignment_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/assignments/{assignment_id}/commission-preview:
+    get:
+      operationId: api_v1_winga_property_assignments_commission_preview_retrieve
+      parameters:
+      - in: path
+        name: assignment_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/assignments/{assignment_id}/documents:
+    get:
+      operationId: api_v1_winga_property_assignments_documents_retrieve
+      parameters:
+      - in: path
+        name: assignment_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_winga_property_assignments_documents_create
+      parameters:
+      - in: path
+        name: assignment_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/categories:
+    get:
+      operationId: api_v1_winga_property_categories_list
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PropertyCategory'
+          description: ''
+  /api/v1/winga-property/copilot/chat:
+    post:
+      operationId: api_v1_winga_property_copilot_chat_create
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/copilot/rankings:
+    get:
+      operationId: api_v1_winga_property_copilot_rankings_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/discovery/ai-search:
+    post:
+      operationId: api_v1_winga_property_discovery_ai_search_create
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/discovery/compare:
+    post:
+      operationId: api_v1_winga_property_discovery_compare_create
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/discovery/recently-viewed:
+    get:
+      operationId: api_v1_winga_property_discovery_recently_viewed_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/discovery/recommendations:
+    get:
+      operationId: api_v1_winga_property_discovery_recommendations_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/discovery/search:
+    get:
+      operationId: api_v1_winga_property_discovery_search_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/favorites:
+    get:
+      operationId: api_v1_winga_property_favorites_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_winga_property_favorites_create
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/lease-payments/{payment_id}/pay:
+    post:
+      operationId: api_v1_winga_property_lease_payments_pay_create
+      parameters:
+      - in: path
+        name: payment_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/leases/{lease_id}:
+    get:
+      operationId: api_v1_winga_property_leases_retrieve
+      parameters:
+      - in: path
+        name: lease_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/leases/{lease_id}/move:
+    post:
+      operationId: api_v1_winga_property_leases_move_create
+      parameters:
+      - in: path
+        name: lease_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/leases/{lease_id}/renew:
+    post:
+      operationId: api_v1_winga_property_leases_renew_create
+      parameters:
+      - in: path
+        name: lease_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/leases/{lease_id}/sign:
+    post:
+      operationId: api_v1_winga_property_leases_sign_create
+      parameters:
+      - in: path
+        name: lease_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/listings:
+    get:
+      operationId: winga_property_listings_list
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_winga_property_listings_create
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/listings/{listing_id}:
+    get:
+      operationId: winga_property_listings_retrieve
+      parameters:
+      - in: path
+        name: listing_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    patch:
+      operationId: api_v1_winga_property_listings_partial_update
+      parameters:
+      - in: path
+        name: listing_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: api_v1_winga_property_listings_destroy
+      parameters:
+      - in: path
+        name: listing_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/winga-property/listings/{listing_id}/applications:
+    post:
+      operationId: api_v1_winga_property_listings_applications_create
+      parameters:
+      - in: path
+        name: listing_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/listings/{listing_id}/assign-winga:
+    post:
+      operationId: api_v1_winga_property_listings_assign_winga_create
+      parameters:
+      - in: path
+        name: listing_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/listings/{listing_id}/commute:
+    get:
+      operationId: api_v1_winga_property_listings_commute_retrieve
+      parameters:
+      - in: path
+        name: listing_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/listings/{listing_id}/experience:
+    get:
+      operationId: api_v1_winga_property_listings_experience_retrieve
+      parameters:
+      - in: path
+        name: listing_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/listings/{listing_id}/fraud-signals:
+    get:
+      operationId: api_v1_winga_property_listings_fraud_signals_retrieve
+      parameters:
+      - in: path
+        name: listing_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/listings/{listing_id}/intelligence:
+    get:
+      operationId: api_v1_winga_property_listings_intelligence_retrieve
+      parameters:
+      - in: path
+        name: listing_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/listings/{listing_id}/live-sessions:
+    get:
+      operationId: api_v1_winga_property_listings_live_sessions_retrieve
+      parameters:
+      - in: path
+        name: listing_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_winga_property_listings_live_sessions_create
+      parameters:
+      - in: path
+        name: listing_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/listings/{listing_id}/media:
+    post:
+      operationId: api_v1_winga_property_listings_media_create
+      parameters:
+      - in: path
+        name: listing_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/listings/{listing_id}/negotiation-assist:
+    post:
+      operationId: api_v1_winga_property_listings_negotiation_assist_create
+      parameters:
+      - in: path
+        name: listing_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/listings/{listing_id}/relocation-assist:
+    post:
+      operationId: api_v1_winga_property_listings_relocation_assist_create
+      parameters:
+      - in: path
+        name: listing_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/listings/{listing_id}/report:
+    post:
+      operationId: api_v1_winga_property_listings_report_create
+      parameters:
+      - in: path
+        name: listing_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/listings/{listing_id}/submit-verification:
+    post:
+      operationId: api_v1_winga_property_listings_submit_verification_create
+      parameters:
+      - in: path
+        name: listing_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/listings/{listing_id}/verification-history:
+    get:
+      operationId: api_v1_winga_property_listings_verification_history_retrieve
+      parameters:
+      - in: path
+        name: listing_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/listings/{listing_id}/verify:
+    post:
+      operationId: api_v1_winga_property_listings_verify_create
+      description: Admin/ops verification — foundation hook.
+      parameters:
+      - in: path
+        name: listing_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/listings/{listing_id}/visit-score:
+    get:
+      operationId: api_v1_winga_property_listings_visit_score_retrieve
+      parameters:
+      - in: path
+        name: listing_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/live-sessions/{session_id}:
+    get:
+      operationId: api_v1_winga_property_live_sessions_retrieve
+      parameters:
+      - in: path
+        name: session_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/live-sessions/{session_id}/end:
+    post:
+      operationId: api_v1_winga_property_live_sessions_end_create
+      parameters:
+      - in: path
+        name: session_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/live-sessions/{session_id}/join:
+    post:
+      operationId: api_v1_winga_property_live_sessions_join_create
+      parameters:
+      - in: path
+        name: session_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/live-sessions/{session_id}/messages:
+    get:
+      operationId: api_v1_winga_property_live_sessions_messages_retrieve
+      parameters:
+      - in: path
+        name: session_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_winga_property_live_sessions_messages_create
+      parameters:
+      - in: path
+        name: session_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/live-sessions/{session_id}/start:
+    post:
+      operationId: api_v1_winga_property_live_sessions_start_create
+      parameters:
+      - in: path
+        name: session_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/map/clusters:
+    get:
+      operationId: api_v1_winga_property_map_clusters_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/map/pins:
+    get:
+      operationId: api_v1_winga_property_map_pins_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/move-workflows/{workflow_id}/complete:
+    post:
+      operationId: api_v1_winga_property_move_workflows_complete_create
+      parameters:
+      - in: path
+        name: workflow_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/ops/analytics:
+    get:
+      operationId: api_v1_winga_property_ops_analytics_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/ops/console:
+    get:
+      operationId: api_v1_winga_property_ops_console_retrieve
+      description: Dedicated ops console — dashboard, moderation, disputes, audit
+        in one call.
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/ops/dashboard:
+    get:
+      operationId: api_v1_winga_property_ops_dashboard_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/ops/disputes:
+    get:
+      operationId: api_v1_winga_property_ops_disputes_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_winga_property_ops_disputes_create
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/ops/disputes/{dispute_id}/assign:
+    post:
+      operationId: api_v1_winga_property_ops_disputes_assign_create
+      parameters:
+      - in: path
+        name: dispute_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/ops/disputes/{dispute_id}/resolve:
+    post:
+      operationId: api_v1_winga_property_ops_disputes_resolve_create
+      parameters:
+      - in: path
+        name: dispute_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/ops/listings/{listing_id}/suspend:
+    post:
+      operationId: api_v1_winga_property_ops_listings_suspend_create
+      parameters:
+      - in: path
+        name: listing_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/ops/moderation-queue:
+    get:
+      operationId: api_v1_winga_property_ops_moderation_queue_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/ops/moderation/{report_id}/resolve:
+    post:
+      operationId: api_v1_winga_property_ops_moderation_resolve_create
+      parameters:
+      - in: path
+        name: report_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/owners/me:
+    get:
+      operationId: api_v1_winga_property_owners_me_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_winga_property_owners_me_create
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/saved-searches:
+    get:
+      operationId: api_v1_winga_property_saved_searches_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_winga_property_saved_searches_create
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/types:
+    get:
+      operationId: api_v1_winga_property_types_list
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PropertyType'
+          description: ''
+  /api/v1/winga-property/viewing-pass:
+    get:
+      operationId: api_v1_winga_property_viewing_pass_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_winga_property_viewing_pass_create
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/viewing-pass/{pass_id}/pay:
+    post:
+      operationId: api_v1_winga_property_viewing_pass_pay_create
+      parameters:
+      - in: path
+        name: pass_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/viewing-pass/plans:
+    get:
+      operationId: api_v1_winga_property_viewing_pass_plans_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/viewing-pass/unlock/{listing_id}:
+    post:
+      operationId: api_v1_winga_property_viewing_pass_unlock_create
+      parameters:
+      - in: path
+        name: listing_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/viewing-pass/verify:
+    post:
+      operationId: api_v1_winga_property_viewing_pass_verify_create
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/wingas:
+    get:
+      operationId: api_v1_winga_property_wingas_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga-property/wingas/leaderboard:
+    get:
+      operationId: api_v1_winga_property_wingas_leaderboard_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga/analytics/summary:
+    get:
+      operationId: api_v1_winga_analytics_summary_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga/assist:
+    post:
+      operationId: api_v1_winga_assist_create
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga/categories:
+    get:
+      operationId: api_v1_winga_categories_list
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+          description: ''
+  /api/v1/winga/commission-events:
+    get:
+      operationId: api_v1_winga_commission_events_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga/commission-rules:
+    get:
+      operationId: api_v1_winga_commission_rules_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_winga_commission_rules_create
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga/deals:
+    get:
+      operationId: winga_deals_list
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_winga_deals_create
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga/deals/{id}:
+    get:
+      operationId: winga_deals_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga/deals/{id}/advance:
+    post:
+      operationId: api_v1_winga_deals_advance_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga/deals/{id}/pay:
+    post:
+      operationId: api_v1_winga_deals_pay_create
+      description: Ledger-backed payment — never AI-authorized.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga/deals/{id}/settle-commission:
+    post:
+      operationId: api_v1_winga_deals_settle_commission_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga/domains:
+    get:
+      operationId: api_v1_winga_domains_list
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BrokerageDomain'
+          description: ''
+  /api/v1/winga/favorites:
+    get:
+      operationId: api_v1_winga_favorites_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_winga_favorites_create
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga/leads:
+    get:
+      operationId: api_v1_winga_leads_retrieve
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_winga_leads_create
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga/offerings:
+    get:
+      operationId: api_v1_winga_offerings_list
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Offering'
+          description: ''
+    post:
+      operationId: api_v1_winga_offerings_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Offering'
+        required: true
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offering'
+          description: ''
+  /api/v1/winga/providers:
+    get:
+      operationId: api_v1_winga_providers_list
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProviderProfile'
+          description: ''
+    post:
+      operationId: api_v1_winga_providers_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProviderProfile'
+        required: true
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderProfile'
+          description: ''
+  /api/v1/winga/providers/{id}/verify:
+    post:
+      operationId: api_v1_winga_providers_verify_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga/quotations:
+    post:
+      operationId: api_v1_winga_quotations_create
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga/reviews:
+    post:
+      operationId: api_v1_winga_reviews_create
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/winga/wingas:
+    get:
+      operationId: api_v1_winga_wingas_list
+      tags:
+      - api
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WingaProfile'
+          description: ''
+    post:
+      operationId: api_v1_winga_wingas_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WingaProfile'
+        required: true
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WingaProfile'
+          description: ''
+  /api/v1/winga/wingas/{id}/verify:
+    post:
+      operationId: api_v1_winga_wingas_verify_create
+      description: Ops/admin verification hook — marks Winga verified after KYC.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
       security:
       - DeviceToken: []
       responses:
@@ -4902,6 +9156,99 @@ components:
         * `suspended` - Suspended
         * `approved` - Approved
         * `blocked` - Blocked
+    BillSplit:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        organizer:
+          type: string
+          maxLength: 128
+        organizer_name:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          maxLength: 128
+        emoji:
+          type: string
+          maxLength: 16
+        total_amount_minor:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        currency:
+          $ref: '#/components/schemas/CurrencyEnum'
+        status:
+          $ref: '#/components/schemas/BillSplitStatusEnum'
+        paid_amount_minor:
+          type: integer
+          readOnly: true
+        shares:
+          type: array
+          items:
+            $ref: '#/components/schemas/MoneyRequest'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - organizer
+      - organizer_name
+      - paid_amount_minor
+      - shares
+      - title
+      - total_amount_minor
+      - updated_at
+    BillSplitCreate:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 128
+        emoji:
+          type: string
+          default: ''
+          maxLength: 16
+        currency:
+          allOf:
+          - $ref: '#/components/schemas/CurrencyEnum'
+          default: TZS
+        total_amount_minor:
+          type: integer
+          minimum: 1
+        split_type:
+          allOf:
+          - $ref: '#/components/schemas/SplitTypeEnum'
+          default: even
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/SplitParticipant'
+      required:
+      - participants
+      - title
+      - total_amount_minor
+    BillSplitStatusEnum:
+      enum:
+      - open
+      - settled
+      - cancelled
+      type: string
+      description: |-
+        * `open` - Open
+        * `settled` - Settled
+        * `cancelled` - Cancelled
     Blacklist:
       type: object
       properties:
@@ -4954,6 +9301,66 @@ components:
       - identifier
       - identifier_type
       - reason
+    BrokerageDomain:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        code:
+          type: string
+          maxLength: 64
+          pattern: ^[-a-zA-Z0-9_]+$
+        name:
+          type: string
+          maxLength: 128
+        description:
+          type: string
+        active:
+          type: boolean
+        default_commission_bps:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        workflow_definition_code:
+          type: string
+          description: enterprise.WorkflowDefinition.code
+          maxLength: 64
+        attributes_schema: {}
+      required:
+      - code
+      - id
+      - name
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        domain:
+          type: string
+          format: uuid
+        parent:
+          type: string
+          format: uuid
+          nullable: true
+        code:
+          type: string
+          maxLength: 64
+          pattern: ^[-a-zA-Z0-9_]+$
+        name:
+          type: string
+          maxLength: 128
+        active:
+          type: boolean
+      required:
+      - code
+      - domain
+      - id
+      - name
     CategoryEnum:
       enum:
       - food
@@ -5086,6 +9493,44 @@ components:
       - notification_backlog
       - open_findings
       - suspended_applications
+    Contact:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        contact_owner:
+          type: string
+          maxLength: 128
+        display_name:
+          type: string
+          maxLength: 128
+        phone_number:
+          type: string
+          maxLength: 20
+        favorite:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - contact_owner
+      - created_at
+      - id
+    ContactCreate:
+      type: object
+      properties:
+        phone_number:
+          type: string
+          maxLength: 20
+        label:
+          type: string
+          default: ''
+          maxLength: 128
+      required:
+      - phone_number
     CurrencyEnum:
       enum:
       - TZS
@@ -5190,6 +9635,36 @@ components:
       - recipient_phone_masked
       - recipient_verification_code
       - trip
+    DeviceProfile:
+      type: object
+      properties:
+        phone_number:
+          type: string
+          maxLength: 20
+        display_name:
+          type: string
+          maxLength: 128
+    DeviceProfileResponse:
+      type: object
+      properties:
+        owner:
+          type: string
+        display_name:
+          type: string
+        phone_number:
+          type: string
+      required:
+      - display_name
+      - owner
+      - phone_number
+    DevicePushToken:
+      type: object
+      properties:
+        push_token:
+          type: string
+          maxLength: 255
+      required:
+      - push_token
     DeviceRegister:
       type: object
       properties:
@@ -5200,6 +9675,9 @@ components:
           type: string
           default: ''
         platform:
+          type: string
+          default: ''
+        push_token:
           type: string
           default: ''
       required:
@@ -6894,6 +11372,16 @@ components:
       description: |-
         * `active` - Active
         * `cancelled` - Cancelled
+    IntervalEnum:
+      enum:
+      - daily
+      - weekly
+      - monthly
+      type: string
+      description: |-
+        * `daily` - Daily
+        * `weekly` - Weekly
+        * `monthly` - Monthly
     JobAssignment:
       type: object
       properties:
@@ -7066,6 +11554,23 @@ components:
         * `ready` - Ready
         * `completed` - Completed
         * `cancelled` - Cancelled
+    MerchantStatus:
+      type: object
+      properties:
+        enable:
+          type: boolean
+      required:
+      - enable
+    MerchantStatusResponse:
+      type: object
+      properties:
+        is_merchant:
+          type: boolean
+        fee_bps:
+          type: integer
+      required:
+      - fee_bps
+      - is_merchant
     MobilityDispatchOfferStatusEnum:
       enum:
       - pending
@@ -7356,6 +11861,183 @@ components:
         * `rejected` - Rejected
         * `expired` - Expired
         * `suspended` - Suspended
+    MoneyRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        requester:
+          type: string
+          maxLength: 128
+        requester_name:
+          type: string
+          readOnly: true
+        payer:
+          type: string
+          maxLength: 128
+        payer_name:
+          type: string
+          readOnly: true
+        amount_minor:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        currency:
+          $ref: '#/components/schemas/CurrencyEnum'
+        note:
+          type: string
+          maxLength: 255
+        emoji:
+          type: string
+          maxLength: 16
+        status:
+          $ref: '#/components/schemas/MoneyRequestStatusEnum'
+        transaction_id:
+          type: string
+          nullable: true
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        responded_at:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+      - amount_minor
+      - created_at
+      - id
+      - payer
+      - payer_name
+      - requester
+      - requester_name
+      - transaction_id
+    MoneyRequestCreate:
+      type: object
+      properties:
+        payer:
+          type: string
+          default: ''
+          maxLength: 128
+        payer_phone:
+          type: string
+          default: ''
+          maxLength: 20
+        amount_minor:
+          type: integer
+          minimum: 1
+        currency:
+          allOf:
+          - $ref: '#/components/schemas/CurrencyEnum'
+          default: TZS
+        note:
+          type: string
+          default: ''
+          maxLength: 255
+        emoji:
+          type: string
+          default: ''
+          maxLength: 16
+      required:
+      - amount_minor
+    MoneyRequestStatusEnum:
+      enum:
+      - pending
+      - paid
+      - declined
+      - cancelled
+      - expired
+      type: string
+      description: |-
+        * `pending` - Pending
+        * `paid` - Paid
+        * `declined` - Declined
+        * `cancelled` - Cancelled
+        * `expired` - Expired
+    Offering:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        provider:
+          type: string
+          format: uuid
+        domain:
+          type: string
+          format: uuid
+        category:
+          type: string
+          format: uuid
+          nullable: true
+        kind:
+          $ref: '#/components/schemas/OfferingKindEnum'
+        title:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        currency:
+          type: string
+          maxLength: 8
+        price_minor:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        compare_at_minor:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          nullable: true
+        inventory_qty:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          nullable: true
+        attributes: {}
+        variants: {}
+        availability: {}
+        locations: {}
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - domain
+      - id
+      - provider
+      - title
+    OfferingKindEnum:
+      enum:
+      - product
+      - service
+      - booking
+      - rental
+      - digital
+      - referral
+      - logistics
+      - other
+      type: string
+      description: |-
+        * `product` - Product
+        * `service` - Service
+        * `booking` - Booking
+        * `rental` - Rental
+        * `digital` - Digital
+        * `referral` - Referral
+        * `logistics` - Logistics
+        * `other` - Other
     OperationsDashboard:
       type: object
       properties:
@@ -7523,6 +12205,154 @@ components:
           type: string
         eta_label:
           type: string
+    PayLink:
+      type: object
+      properties:
+        amount_minor:
+          type: integer
+          minimum: 1
+          nullable: true
+    PaymentLink:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        slug:
+          type: string
+          maxLength: 24
+        url:
+          type: string
+          readOnly: true
+        owner:
+          type: string
+          maxLength: 128
+        display_name:
+          type: string
+          maxLength: 128
+        amount_minor:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          nullable: true
+        currency:
+          $ref: '#/components/schemas/CurrencyEnum'
+        note:
+          type: string
+          maxLength: 255
+        emoji:
+          type: string
+          maxLength: 16
+        status:
+          $ref: '#/components/schemas/PaymentLinkStatusEnum'
+        single_use:
+          type: boolean
+        expires_at:
+          type: string
+          format: date-time
+          nullable: true
+        fee_bps:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        total_paid_minor:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        payment_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - owner
+      - slug
+      - url
+    PaymentLinkCreate:
+      type: object
+      properties:
+        amount_minor:
+          type: integer
+          minimum: 1
+          nullable: true
+        currency:
+          allOf:
+          - $ref: '#/components/schemas/CurrencyEnum'
+          default: TZS
+        note:
+          type: string
+          default: ''
+          maxLength: 255
+        emoji:
+          type: string
+          default: ''
+          maxLength: 16
+        display_name:
+          type: string
+          default: ''
+          maxLength: 128
+        single_use:
+          type: boolean
+          default: false
+        expires_in_hours:
+          type: integer
+          maximum: 2160
+          minimum: 1
+          nullable: true
+    PaymentLinkPublic:
+      type: object
+      description: What a payer sees before paying — no owner internals beyond display
+        name.
+      properties:
+        slug:
+          type: string
+          maxLength: 24
+        payee:
+          type: string
+          readOnly: true
+        amount_minor:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          nullable: true
+        currency:
+          $ref: '#/components/schemas/CurrencyEnum'
+        note:
+          type: string
+          maxLength: 255
+        emoji:
+          type: string
+          maxLength: 16
+        status:
+          $ref: '#/components/schemas/PaymentLinkStatusEnum'
+        single_use:
+          type: boolean
+      required:
+      - payee
+      - slug
+    PaymentLinkStatusEnum:
+      enum:
+      - active
+      - paused
+      - completed
+      - expired
+      type: string
+      description: |-
+        * `active` - Active
+        * `paused` - Paused
+        * `completed` - Completed
+        * `expired` - Expired
     PaymentMethodEnum:
       enum:
       - wallet
@@ -7537,6 +12367,24 @@ components:
         * `mobile_money` - mobile_money
         * `cash` - cash
         * `corporate` - corporate
+    Person:
+      type: object
+      properties:
+        owner:
+          type: string
+        display_name:
+          type: string
+      required:
+      - display_name
+      - owner
+    PhoneLookupRequest:
+      type: object
+      properties:
+        phone_number:
+          type: string
+          maxLength: 20
+      required:
+      - phone_number
     PreferredLanguageEnum:
       enum:
       - sw
@@ -7630,6 +12478,58 @@ components:
       - effective_from
       - id
       - vehicle_mode
+    PropertyCategory:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        code:
+          type: string
+          maxLength: 64
+          pattern: ^[-a-zA-Z0-9_]+$
+        name:
+          type: string
+          maxLength: 128
+        description:
+          type: string
+        icon:
+          type: string
+          maxLength: 64
+        sort_order:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+      required:
+      - code
+      - id
+      - name
+    PropertyType:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        category_code:
+          type: string
+          readOnly: true
+        code:
+          type: string
+          maxLength: 64
+          pattern: ^[-a-zA-Z0-9_]+$
+        name:
+          type: string
+          maxLength: 128
+        description:
+          type: string
+      required:
+      - category_code
+      - code
+      - id
+      - name
     ProviderEnum:
       enum:
       - nida
@@ -7648,6 +12548,50 @@ components:
         * `insurance` - insurance
         * `inspection` - inspection
         * `local_government` - local_government
+    ProviderProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        principal:
+          type: string
+          maxLength: 128
+        legal_name:
+          type: string
+          maxLength: 255
+        trading_name:
+          type: string
+          maxLength: 255
+        verification_status:
+          allOf:
+          - $ref: '#/components/schemas/VerificationStatusEnum'
+          readOnly: true
+        locations: {}
+        operating_hours: {}
+        reputation_score_e4:
+          type: integer
+          readOnly: true
+        active:
+          type: boolean
+        merchant:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - legal_name
+      - merchant
+      - principal
+      - reputation_score_e4
+      - verification_status
     QueueEntry:
       type: object
       properties:
@@ -7732,6 +12676,114 @@ components:
       - subject_id
       - subject_type
       - trip
+    RecurringPayment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        owner:
+          type: string
+          maxLength: 128
+        payee:
+          type: string
+          maxLength: 128
+        payee_name:
+          type: string
+          readOnly: true
+        amount_minor:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        currency:
+          $ref: '#/components/schemas/CurrencyEnum'
+        note:
+          type: string
+          maxLength: 255
+        emoji:
+          type: string
+          maxLength: 16
+        interval:
+          $ref: '#/components/schemas/IntervalEnum'
+        status:
+          $ref: '#/components/schemas/RecurringPaymentStatusEnum'
+        next_run_at:
+          type: string
+          format: date-time
+        last_run_at:
+          type: string
+          format: date-time
+          nullable: true
+        consecutive_failures:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - amount_minor
+      - created_at
+      - id
+      - interval
+      - next_run_at
+      - owner
+      - payee
+      - payee_name
+      - updated_at
+    RecurringPaymentCreate:
+      type: object
+      properties:
+        payee:
+          type: string
+          default: ''
+          maxLength: 128
+        payee_phone:
+          type: string
+          default: ''
+          maxLength: 20
+        amount_minor:
+          type: integer
+          minimum: 1
+        currency:
+          allOf:
+          - $ref: '#/components/schemas/CurrencyEnum'
+          default: TZS
+        interval:
+          $ref: '#/components/schemas/IntervalEnum'
+        note:
+          type: string
+          default: ''
+          maxLength: 255
+        emoji:
+          type: string
+          default: ''
+          maxLength: 16
+        start_at:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+      - amount_minor
+      - interval
+    RecurringPaymentStatusEnum:
+      enum:
+      - active
+      - paused
+      - cancelled
+      type: string
+      description: |-
+        * `active` - Active
+        * `paused` - Paused
+        * `cancelled` - Cancelled
     RefundRequest:
       type: object
       properties:
@@ -7897,6 +12949,29 @@ components:
       - latitude
       - longitude
       - owner
+    SplitParticipant:
+      type: object
+      properties:
+        phone_number:
+          type: string
+          default: ''
+          maxLength: 20
+        payer:
+          type: string
+          default: ''
+          maxLength: 128
+        amount_minor:
+          type: integer
+          minimum: 1
+          nullable: true
+    SplitTypeEnum:
+      enum:
+      - even
+      - custom
+      type: string
+      description: |-
+        * `even` - even
+        * `custom` - custom
     StageEnum:
       enum:
       - draft
@@ -8799,6 +13874,12 @@ components:
         promo_code:
           type: string
           default: ''
+        hybrid_sms_demo:
+          type: boolean
+          default: false
+        passenger_msisdn:
+          type: string
+          default: ''
       required:
       - dropoff_lat
       - dropoff_lng
@@ -9126,6 +14207,20 @@ components:
       - rejected_applications
       - suspended_drivers
       - suspended_vehicles
+    VerificationStatusEnum:
+      enum:
+      - unverified
+      - pending
+      - verified
+      - rejected
+      - suspended
+      type: string
+      description: |-
+        * `unverified` - Unverified
+        * `pending` - Pending
+        * `verified` - Verified
+        * `rejected` - Rejected
+        * `suspended` - Suspended
     Wallet:
       type: object
       description: Response shape for `GET /wallet` (documentation only).
@@ -9324,6 +14419,58 @@ components:
         * `pickup` - Pickup
         * `delivering` - Delivering
         * `completed` - Completed
+    WingaProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        principal:
+          type: string
+          maxLength: 128
+        kind:
+          $ref: '#/components/schemas/WingaProfileKindEnum'
+        display_name:
+          type: string
+          maxLength: 255
+        bio:
+          type: string
+        verification_status:
+          allOf:
+          - $ref: '#/components/schemas/VerificationStatusEnum'
+          readOnly: true
+        certification:
+          type: string
+          maxLength: 128
+        reputation_score_e4:
+          type: integer
+          readOnly: true
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - display_name
+      - id
+      - principal
+      - reputation_score_e4
+      - verification_status
+    WingaProfileKindEnum:
+      enum:
+      - individual
+      - business
+      - corporate_agency
+      - referral_org
+      type: string
+      description: |-
+        * `individual` - Individual
+        * `business` - Business
+        * `corporate_agency` - Corporate Agency
+        * `referral_org` - Referral Org
     WingaServiceBooking:
       type: object
       properties:
@@ -9557,10 +14704,18 @@ tags:
   description: Balance + transaction reads
 - name: payments
   description: Top-ups and transfers
+- name: social-payments
+  description: Payment links, money requests, QR, contacts
 - name: webhooks
   description: Provider callbacks
 - name: commerce
   description: Food / stay / flight / tour bookings
+- name: tourism
+  description: DTOS trips and itineraries
+- name: mos
+  description: Taifa Commerce Merchant Operating System
+- name: map
+  description: Taifa Merchant Acceptance Platform (QR, links, invoices, POS)
 - name: trips
   description: Mobility trip records
 - name: platform

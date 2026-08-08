@@ -213,6 +213,84 @@ class TransactionEngine:
         self._complete(key_obj, txn)
         return EngineResult(txn, result)
 
+    # --- internal P2P (payment links / money requests) ---
+    def initiate_p2p(
+        self, *, payer: str, payee: str, amount: Money,
+        idempotency_key: str, note: str = "", counterparty_label: str = "",
+        fee: Money | None = None,
+    ) -> EngineResult:
+        """Instant wallet-to-wallet transfer inside TAIFA, atomic, final.
+
+        Free (P2P: send/request/split) unless `fee` is given — the merchant-
+        link path, where the payer's `amount` is unchanged (the sticker
+        price) but the payee receives `amount - fee`, the difference landing
+        in `fee_income`.
+
+        Creates a debit transaction for the payer (holding the ledger entry) and
+        a mirrored credit transaction for the payee (linked via `parent`).
+        """
+        if payer == payee:
+            raise InvalidTransition("Cannot pay yourself")
+        fee = fee if fee is not None and not fee.is_zero else Money.zero(amount.currency)
+        request_hash = _hash({"op": "p2p", "payer": payer, "payee": payee,
+                              "amt": amount.minor_units, "cur": amount.currency.code,
+                              "fee": fee.minor_units})
+        key_obj, created = self._begin(idempotency_key, "p2p", request_hash)
+        if not created and key_obj.transaction:
+            return EngineResult(key_obj.transaction, None, replayed=True)
+
+        with db_transaction.atomic():
+            balance = self._locked_wallet_balance(payer, amount.currency)
+            txn = Transaction.objects.create(
+                owner=payer,
+                type=TransactionType.SEND_MONEY,
+                status=TransactionStatus.PROCESSING,
+                direction=TransactionDirection.DEBIT,
+                amount_minor=amount.minor_units,
+                fee_minor=fee.minor_units,
+                currency=amount.currency.code,
+                counterparty=counterparty_label or payee,
+                method_kind="wallet",
+                method_ref=payee,
+                idempotency_key=idempotency_key,
+                note=note,
+            )
+            if amount > balance:
+                self._transition_to(txn, TransactionStatus.FAILED)
+                txn.save(update_fields=["status"])
+                self._complete(key_obj, txn)
+                return EngineResult(txn, None)
+
+            self._transition_to(txn, TransactionStatus.SUCCEEDED)
+            if fee.is_zero:
+                entry = journal.post_p2p_transfer(txn, payer, payee, amount, f"P2P {payer} → {payee}")
+            else:
+                entry = journal.post_p2p_transfer_with_fee(
+                    txn, payer, payee, amount, fee, f"P2P {payer} → {payee} (fee {fee})"
+                )
+            Transaction.objects.filter(pk=txn.pk).update(
+                ledger_entry=entry, status=TransactionStatus.SUCCEEDED
+            )
+            net = amount - fee
+            Transaction.objects.create(
+                owner=payee,
+                type=TransactionType.RECEIVE_MONEY,
+                status=TransactionStatus.SUCCEEDED,
+                direction=TransactionDirection.CREDIT,
+                amount_minor=net.minor_units,
+                fee_minor=fee.minor_units,
+                currency=amount.currency.code,
+                counterparty=payer,
+                method_kind="wallet",
+                method_ref=payer,
+                idempotency_key=f"p2p-recv-{idempotency_key}",
+                note=note,
+                parent=txn,
+            )
+            txn.refresh_from_db()
+            self._complete(key_obj, txn)
+            return EngineResult(txn, None)
+
     # --- withdrawals ---
     def initiate_withdrawal(
         self, *, owner: str, amount: Money, method_kind: str, method_ref: str,

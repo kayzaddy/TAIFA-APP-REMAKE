@@ -168,5 +168,41 @@ class RiskEngine:
         )
 
 
+def check_request_spam(requester: str, payer: str) -> RiskDecision:
+    """Anti-abuse guard for `MoneyRequest` creation (incl. per-participant on a
+    BillSplit). No money moves here, so this is deliberately separate from
+    `RiskEngine.evaluate` (which gates debits/credits) — it exists purely to
+    stop someone flooding a stranger's inbox with requests."""
+    from .models import MoneyRequest, MoneyRequestStatus
+
+    max_per_payer = int(getattr(settings, "RISK_MAX_PENDING_REQUESTS_PER_PAYER", 0) or 0)
+    if max_per_payer > 0:
+        count = MoneyRequest.objects.filter(
+            requester=requester, payer=payer, status=MoneyRequestStatus.PENDING
+        ).count()
+        if count >= max_per_payer:
+            return RiskDecision(
+                RiskDecisionKind.DENY,
+                code="REQUEST_SPAM_PER_PAYER",
+                message=f"Too many pending requests to this person already (max {max_per_payer}).",
+                rules_fired=("request_spam_per_payer",),
+            )
+
+    max_total = int(getattr(settings, "RISK_MAX_PENDING_REQUESTS_TOTAL", 0) or 0)
+    if max_total > 0:
+        count = MoneyRequest.objects.filter(
+            requester=requester, status=MoneyRequestStatus.PENDING
+        ).count()
+        if count >= max_total:
+            return RiskDecision(
+                RiskDecisionKind.DENY,
+                code="REQUEST_SPAM_TOTAL",
+                message=f"Too many pending requests outstanding already (max {max_total}).",
+                rules_fired=("request_spam_total",),
+            )
+
+    return RiskDecision(RiskDecisionKind.ALLOW, code="OK")
+
+
 def default_risk_engine() -> RiskEngine:
     return RiskEngine()

@@ -32,6 +32,20 @@ def reconcile_ledger_task():
     }
 
 
+@shared_task(name="payments.run_due_recurring_payments")
+def run_due_recurring_payments_task():
+    """Executes every due standing order (rent, allowances, subscriptions)."""
+    from .recurring import run_due_recurring_payments
+
+    outcomes = run_due_recurring_payments()
+    return {
+        "ran": len(outcomes),
+        "succeeded": sum(1 for o in outcomes if o.status == "succeeded"),
+        "failed": sum(1 for o in outcomes if o.status == "failed"),
+        "paused": sum(1 for o in outcomes if o.status == "paused"),
+    }
+
+
 @shared_task(name="payments.ops_heartbeat")
 def ops_heartbeat_task():
     """Periodic ops heartbeat — proves beat + worker path is alive."""

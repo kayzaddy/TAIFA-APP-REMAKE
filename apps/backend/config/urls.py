@@ -15,6 +15,7 @@ from config.health import (
     startup_payload,
 )
 from payments.metrics import metrics_view
+from payments.people_views import DeviceProfileView, MerchantStatusView
 from payments.views import DevicePushTokenView, DeviceRegisterView
 
 
@@ -66,6 +67,8 @@ urlpatterns = [
     ),
     path("api/v1/auth/device/register", DeviceRegisterView.as_view(), name="device-register"),
     path("api/v1/auth/device/push-token", DevicePushTokenView.as_view(), name="device-push-token"),
+    path("api/v1/auth/device/profile", DeviceProfileView.as_view(), name="device-profile"),
+    path("api/v1/auth/device/merchant", MerchantStatusView.as_view(), name="device-merchant"),
     path("api/v1/payments/", include("payments.urls")),
     path("api/v1/enterprise/", include("enterprise.urls")),
     path("api/v1/mobility-registry/", include("mobility_registry.urls")),

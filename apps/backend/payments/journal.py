@@ -268,6 +268,43 @@ def post_transfer_settle(
     return ledger.post_entry(txn, description, specs, kind=LedgerEntryKind.SETTLE)
 
 
+def post_p2p_transfer(
+    txn: Transaction, payer: str, payee: str, amount: Money, description: str
+) -> LedgerEntry:
+    """Instant internal transfer: payer wallet → payee wallet, no rail, no fee.
+
+    Both accounts are USER_WALLET liabilities in the same currency, so the
+    platform's books are unchanged — money simply changes hands inside TAIFA.
+    """
+    cur = amount.currency
+    return ledger.post_entry(
+        txn,
+        description,
+        [
+            ledger.PostingSpec.debit(user_wallet(payer, cur), amount),
+            ledger.PostingSpec.credit(user_wallet(payee, cur), amount),
+        ],
+        kind=LedgerEntryKind.SETTLE,
+    )
+
+
+def post_p2p_transfer_with_fee(
+    txn: Transaction, payer: str, payee: str, gross: Money, fee: Money, description: str
+) -> LedgerEntry:
+    """Merchant-tier link payment: payer's wallet debits the full sticker
+    price; the payee (merchant) receives it minus the platform's cut, which
+    lands in `fee_income` — the same account regular transfer fees use."""
+    cur = gross.currency
+    net = gross - fee
+    specs = [
+        ledger.PostingSpec.debit(user_wallet(payer, cur), gross),
+        ledger.PostingSpec.credit(user_wallet(payee, cur), net),
+    ]
+    if not fee.is_zero:
+        specs.append(ledger.PostingSpec.credit(fee_income(cur), fee))
+    return ledger.post_entry(txn, description, specs, kind=LedgerEntryKind.SETTLE)
+
+
 def post_withdrawal_hold(txn: Transaction, owner: str, amount: Money) -> LedgerEntry:
     """Authorize withdrawal: move funds from available wallet to hold."""
     cur = amount.currency

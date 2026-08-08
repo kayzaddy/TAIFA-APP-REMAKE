@@ -399,6 +399,14 @@ class Device(models.Model):
     label = models.CharField(max_length=128, blank=True, default="")
     platform = models.CharField(max_length=32, blank=True, default="")
     push_token = models.CharField(max_length=255, blank=True, default="")
+    # Human-findable identity for P2P (pay/request by phone, like M-Pesa/Ziina).
+    # Null (not blank-string) so only real numbers participate in the unique
+    # constraint — many devices can otherwise have no phone on file.
+    phone_number = models.CharField(max_length=20, unique=True, null=True, blank=True, default=None)
+    # Self-service merchant opt-in: payment links created while this is true
+    # snapshot a platform fee (settings.PAYMENTS_MERCHANT_FEE_BPS) at creation
+    # time. P2P (send/request/split) is always free regardless of this flag.
+    is_merchant = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     last_seen_at = models.DateTimeField(auto_now=True)
 
@@ -478,6 +486,81 @@ class SettlementLine(models.Model):
     )
 
 
+class Contact(models.Model):
+    """A saved person in the owner's TAIFA address book (Ziina/Grab-style
+    'pay a friend' picker). `contact_owner` is the target's wallet owner —
+    resolved once at save time via phone lookup, then reused without another
+    phone round-trip."""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    owner = models.CharField(max_length=128, db_index=True)
+    contact_owner = models.CharField(max_length=128)
+    display_name = models.CharField(max_length=128, blank=True, default="")
+    phone_number = models.CharField(max_length=20, blank=True, default="")
+    favorite = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-favorite", "display_name"]
+        constraints = [
+            models.UniqueConstraint(fields=["owner", "contact_owner"], name="unique_contact_per_owner")
+        ]
+        indexes = [models.Index(fields=["owner", "-favorite"])]
+
+    def __str__(self) -> str:
+        return f"Contact {self.owner} → {self.contact_owner}"
+
+
+class RecurringInterval(models.TextChoices):
+    DAILY = "daily"
+    WEEKLY = "weekly"
+    MONTHLY = "monthly"
+
+
+class RecurringPaymentStatus(models.TextChoices):
+    ACTIVE = "active"
+    PAUSED = "paused"
+    CANCELLED = "cancelled"
+
+
+class RecurringPayment(models.Model):
+    """A standing order (rent, allowance, subscription) — an internal P2P
+    transfer that fires automatically on a schedule via Celery beat.
+    Auto-pauses after repeated insufficient-funds failures rather than
+    silently failing forever; see `payments.recurring`."""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    owner = models.CharField(max_length=128, db_index=True)  # who pays
+    payee = models.CharField(max_length=128)  # who receives (wallet owner)
+    amount_minor = models.BigIntegerField()
+    currency = models.CharField(max_length=8, choices=CURRENCY_CHOICES, default="TZS")
+    note = models.CharField(max_length=255, blank=True, default="")
+    emoji = models.CharField(max_length=16, blank=True, default="")
+    interval = models.CharField(max_length=8, choices=RecurringInterval.choices)
+    status = models.CharField(
+        max_length=16, choices=RecurringPaymentStatus.choices, default=RecurringPaymentStatus.ACTIVE
+    )
+    next_run_at = models.DateTimeField(db_index=True)
+    last_run_at = models.DateTimeField(null=True, blank=True)
+    last_transaction = models.ForeignKey(
+        Transaction, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
+    consecutive_failures = models.PositiveIntegerField(default=0)
+    max_consecutive_failures = models.PositiveIntegerField(default=3)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["owner", "-created_at"]),
+            models.Index(fields=["status", "next_run_at"]),
+        ]
+
+    def __str__(self) -> str:
+        return f"RecurringPayment {self.amount_minor} {self.currency} {self.owner}→{self.payee} [{self.interval}, {self.status}]"
+
+
 class ReconciliationExceptionCode(models.TextChoices):
     MISSING_SETTLEMENT = "missing_settlement"
     DUPLICATE_SETTLEMENT = "duplicate_settlement"
@@ -486,6 +569,127 @@ class ReconciliationExceptionCode(models.TextChoices):
     UNEXPECTED_SETTLEMENT = "unexpected_settlement"
     LATE_SETTLEMENT = "late_settlement"
     UNKNOWN_TRANSACTION = "unknown_transaction"
+
+
+class PaymentLinkStatus(models.TextChoices):
+    ACTIVE = "active"
+    PAUSED = "paused"
+    COMPLETED = "completed"  # single-use link that has been paid
+    EXPIRED = "expired"
+
+
+class PaymentLink(models.Model):
+    """A shareable receive-money link (Ziina-style): `taifa.app/pay/<slug>`.
+
+    The owner shares the link (or its QR); any wallet holder opens it and pays.
+    `amount_minor` may be null — the payer chooses the amount ("open" link).
+    A `single_use` link completes after its first successful payment.
+    """
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    slug = models.CharField(max_length=24, unique=True, db_index=True)
+    owner = models.CharField(max_length=128, db_index=True)
+    display_name = models.CharField(max_length=128, blank=True, default="")
+    amount_minor = models.BigIntegerField(null=True, blank=True)
+    currency = models.CharField(max_length=8, choices=CURRENCY_CHOICES, default="TZS")
+    note = models.CharField(max_length=255, blank=True, default="")
+    emoji = models.CharField(max_length=16, blank=True, default="")
+    status = models.CharField(
+        max_length=16, choices=PaymentLinkStatus.choices, default=PaymentLinkStatus.ACTIVE
+    )
+    single_use = models.BooleanField(default=False)
+    # Snapshotted at creation from the owner's merchant status — later toggling
+    # is_merchant never changes fees on links already issued. 0 for plain P2P.
+    fee_bps = models.PositiveIntegerField(default=0)
+    expires_at = models.DateTimeField(null=True, blank=True)
+    total_paid_minor = models.BigIntegerField(default=0)
+    payment_count = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        indexes = [models.Index(fields=["owner", "-created_at"])]
+
+    def __str__(self) -> str:
+        return f"PaymentLink {self.slug} → {self.owner} [{self.status}]"
+
+
+class BillSplitStatus(models.TextChoices):
+    OPEN = "open"
+    SETTLED = "settled"
+    CANCELLED = "cancelled"
+
+
+class BillSplit(models.Model):
+    """A bill the organizer already paid, split across friends (Ziina-style).
+    Each participant's share is a `MoneyRequest` (see `MoneyRequest.bill`) —
+    BillSplit itself carries no money; it's the grouping + rollup status."""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    organizer = models.CharField(max_length=128, db_index=True)
+    title = models.CharField(max_length=128)
+    emoji = models.CharField(max_length=16, blank=True, default="")
+    total_amount_minor = models.BigIntegerField()
+    currency = models.CharField(max_length=8, choices=CURRENCY_CHOICES, default="TZS")
+    status = models.CharField(max_length=16, choices=BillSplitStatus.choices, default=BillSplitStatus.OPEN)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        indexes = [models.Index(fields=["organizer", "-created_at"])]
+
+    def __str__(self) -> str:
+        return f"BillSplit {self.title} {self.total_amount_minor} {self.currency} [{self.status}]"
+
+
+class MoneyRequestStatus(models.TextChoices):
+    PENDING = "pending"
+    PAID = "paid"
+    DECLINED = "declined"
+    CANCELLED = "cancelled"
+    EXPIRED = "expired"
+
+
+class MoneyRequest(models.Model):
+    """A request for money from another wallet holder (Ziina-style).
+
+    The requester names a payer (wallet owner); the payer sees it in their
+    inbox and either pays (instant internal P2P settle) or declines.
+    """
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    requester = models.CharField(max_length=128, db_index=True)
+    payer = models.CharField(max_length=128, db_index=True)
+    amount_minor = models.BigIntegerField()
+    currency = models.CharField(max_length=8, choices=CURRENCY_CHOICES, default="TZS")
+    note = models.CharField(max_length=255, blank=True, default="")
+    emoji = models.CharField(max_length=16, blank=True, default="")
+    status = models.CharField(
+        max_length=16, choices=MoneyRequestStatus.choices, default=MoneyRequestStatus.PENDING
+    )
+    # The settlement transaction (payer side) once paid.
+    transaction = models.ForeignKey(
+        Transaction, null=True, blank=True, on_delete=models.PROTECT, related_name="money_requests"
+    )
+    # Set when this request is one participant's share of a BillSplit.
+    bill = models.ForeignKey(
+        BillSplit, null=True, blank=True, on_delete=models.PROTECT, related_name="shares"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    responded_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["requester", "-created_at"]),
+            models.Index(fields=["payer", "status"]),
+        ]
+
+    def __str__(self) -> str:
+        return f"MoneyRequest {self.amount_minor} {self.currency} {self.requester}←{self.payer} [{self.status}]"
 
 
 class ReconciliationException(models.Model):

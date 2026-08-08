@@ -217,11 +217,14 @@ SPECTACULAR_SETTINGS = {
         "MobilityDispatchStrategyEnum": "trips.models.DispatchStrategy.choices",
         "MobilityDispatchOfferStatusEnum": "trips.models.DispatchOfferStatus.choices",
         "MobilitySafetyStatusEnum": "trips.models.SafetyIncidentStatus.choices",
+        "PaymentLinkStatusEnum": "payments.models.PaymentLinkStatus.choices",
+        "MoneyRequestStatusEnum": "payments.models.MoneyRequestStatus.choices",
     },
     "TAGS": [
         {"name": "auth", "description": "Device registration + bound tokens"},
         {"name": "wallet", "description": "Balance + transaction reads"},
         {"name": "payments", "description": "Top-ups and transfers"},
+        {"name": "social-payments", "description": "Payment links, money requests, QR, contacts"},
         {"name": "webhooks", "description": "Provider callbacks"},
         {"name": "commerce", "description": "Food / stay / flight / tour bookings"},
         {"name": "tourism", "description": "DTOS trips and itineraries"},
@@ -271,6 +274,10 @@ CELERY_BEAT_SCHEDULE = {
     "ops-heartbeat-hourly": {
         "task": "payments.ops_heartbeat",
         "schedule": 60 * 60,
+    },
+    "run-due-recurring-payments": {
+        "task": "payments.run_due_recurring_payments",
+        "schedule": 60 * 5,  # every 5 minutes
     },
     "mobility-scheduled-dispatch": {
         "task": "mobility.dispatch_scheduled",
@@ -403,6 +410,12 @@ METRICS_ALLOWED_IPS = _env_list("METRICS_ALLOWED_IPS", "")
 ALLOW_DEMO_STK = _env_bool("TAIFA_ALLOW_DEMO_STK", DEBUG)
 ALLOW_DEMO_WALLET_FUNDING = _env_bool("TAIFA_ALLOW_DEMO_WALLET_FUNDING", DEBUG)
 WITHDRAWAL_AUTO_APPROVE = _env_bool("TAIFA_WITHDRAWAL_AUTO_APPROVE", DEBUG)
+
+# Platform cut on payment links owned by a self-service merchant (basis
+# points; 150 = 1.5%). Snapshotted onto each PaymentLink at creation — see
+# payments.models.PaymentLink.fee_bps. Person-to-person (send/request/split)
+# is always free regardless of this setting.
+PAYMENTS_MERCHANT_FEE_BPS = int(os.environ.get("PAYMENTS_MERCHANT_FEE_BPS", "150"))
 REQUIRE_DEVICE_BINDING = _env_bool("TAIFA_REQUIRE_DEVICE_BINDING", not DEBUG)
 
 # National Mobility Registry encryption keyring. Production requires explicit,
@@ -466,6 +479,16 @@ RISK_REVIEW_ABOVE_MINOR = int(
 RISK_VELOCITY_WINDOW_SECONDS = int(os.environ.get("RISK_VELOCITY_WINDOW_SECONDS", "60") or 60)
 RISK_VELOCITY_MAX_TXNS = int(os.environ.get("RISK_VELOCITY_MAX_TXNS", "30") or 30)
 RISK_SANCTIONS_OWNERS = _env_list("RISK_SANCTIONS_OWNERS", "")
+
+# Anti-abuse (not a money-movement limit, so always finite — no DEBUG/test
+# carve-out): caps unsolicited MoneyRequests (incl. one-per-participant on a
+# BillSplit) so a stranger can't flood someone's inbox with requests.
+RISK_MAX_PENDING_REQUESTS_PER_PAYER = int(
+    os.environ.get("RISK_MAX_PENDING_REQUESTS_PER_PAYER", "10") or 0
+)
+RISK_MAX_PENDING_REQUESTS_TOTAL = int(
+    os.environ.get("RISK_MAX_PENDING_REQUESTS_TOTAL", "100") or 0
+)
 
 # Ecosystem AI adapters: capability_code → dotted class path (optional overrides)
 TAIFA_AI_ADAPTERS = json.loads(os.environ.get("TAIFA_AI_ADAPTERS_JSON", "{}"))

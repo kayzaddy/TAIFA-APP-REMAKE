@@ -17,6 +17,7 @@ from .models import (
     PostingDirection,
     Transaction,
     TransactionStatus,
+    TransactionType,
 )
 
 # Last run snapshot for Prometheus scrapes (updated by `run_reconciliation`).
@@ -141,10 +142,20 @@ def _check_currency_consistency(issues: list[Issue]) -> None:
 
 
 def _check_succeeded_have_ledger(issues: list[Issue]) -> None:
-    qs = Transaction.objects.filter(
-        status=TransactionStatus.SUCCEEDED,
-        ledger_entry__isnull=True,
-    ).values_list("id", flat=True)[:100]
+    # RECEIVE_MONEY is the payee-side mirror of an internal P2P transfer: the
+    # single ledger entry lives on the payer's SEND_MONEY txn (ledger_entry is
+    # one-to-one), and the mirror points at it via `parent`. Money moved once.
+    qs = (
+        Transaction.objects.filter(
+            status=TransactionStatus.SUCCEEDED,
+            ledger_entry__isnull=True,
+        )
+        .exclude(
+            type=TransactionType.RECEIVE_MONEY,
+            parent__ledger_entry__isnull=False,
+        )
+        .values_list("id", flat=True)[:100]
+    )
     for txn_id in qs:
         issues.append(
             Issue(

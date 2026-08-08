@@ -1,11 +1,45 @@
 from django.urls import path
 
-from . import views
+from . import bill_views, p2p_views, people_views, recurring_views, views
 
 app_name = "payments"
 
 urlpatterns = [
     path("wallet", views.WalletView.as_view(), name="wallet"),
+    path("wallet/qr", p2p_views.ReceiveQrView.as_view(), name="wallet-qr"),
+    path("bills", bill_views.BillSplitListCreateView.as_view(), name="bills"),
+    path("bills/<uuid:bill_id>", bill_views.BillSplitDetailView.as_view(), name="bill-detail"),
+    path("bills/<uuid:bill_id>/cancel", bill_views.BillSplitCancelView.as_view(), name="bill-cancel"),
+    path(
+        "recurring", recurring_views.RecurringPaymentListCreateView.as_view(), name="recurring-payments"
+    ),
+    path(
+        "recurring/<uuid:recurring_id>/<str:action>",
+        recurring_views.RecurringPaymentActionView.as_view(),
+        name="recurring-payment-action",
+    ),
+    path("people/lookup", people_views.PeopleLookupView.as_view(), name="people-lookup"),
+    path("contacts", people_views.ContactListCreateView.as_view(), name="contacts"),
+    path("contacts/<uuid:contact_id>", people_views.ContactDetailView.as_view(), name="contact-detail"),
+    path(
+        "contacts/<uuid:contact_id>/<str:action>",
+        people_views.ContactActionView.as_view(),
+        name="contact-action",
+    ),
+    path("links", p2p_views.PaymentLinkListCreateView.as_view(), name="payment-links"),
+    path(
+        "links/<uuid:link_id>/<str:action>",
+        p2p_views.PaymentLinkStatusView.as_view(),
+        name="payment-link-action",
+    ),
+    path("pay/<str:slug>", p2p_views.PaymentLinkPublicView.as_view(), name="pay-link-info"),
+    path("pay/<str:slug>/confirm", p2p_views.PayLinkView.as_view(), name="pay-link-confirm"),
+    path("requests", p2p_views.MoneyRequestListCreateView.as_view(), name="money-requests"),
+    path(
+        "requests/<uuid:request_id>/<str:action>",
+        p2p_views.MoneyRequestActionView.as_view(),
+        name="money-request-action",
+    ),
     path("topups", views.TopUpView.as_view(), name="topups"),
     path("topups/<uuid:txn_id>/demo-complete", views.DemoTopUpCompleteView.as_view(), name="topup-demo-complete"),
     path("topups/<uuid:txn_id>/poll-status", views.PollTopUpStatusView.as_view(), name="topup-poll-status"),
