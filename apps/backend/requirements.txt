@@ -23,7 +23,7 @@ python-dateutil==2.9.0.post0  # month-safe recurring-payment scheduling (relativ
 requests==2.33.0
 
 # Async processing (webhooks, retries, reconciliation)
-celery==5.4.0
+celery==5.6.3
 redis==5.2.1
 
 # Real-time trip/driver tracking
