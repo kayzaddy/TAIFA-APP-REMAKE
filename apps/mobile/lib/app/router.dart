@@ -67,6 +67,17 @@ import '../features/tourism/presentation/tourism_screen.dart';
 import '../features/wallet/presentation/send_money_screen.dart';
 import '../features/wallet/presentation/top_up_screen.dart';
 import '../features/wallet/presentation/wallet_screen.dart';
+import '../features/wallet/presentation/social/contacts_screen.dart';
+import '../features/wallet/presentation/social/money_requests_screen.dart';
+import '../features/wallet/presentation/social/my_qr_screen.dart';
+import '../features/wallet/presentation/social/payment_links_screen.dart';
+import '../features/wallet/presentation/social/payment_notifications_screen.dart';
+import '../features/wallet/presentation/social/payment_profile_screen.dart';
+import '../features/wallet/presentation/social/recurring_payments_screen.dart';
+import '../features/wallet/presentation/social/spending_analytics_screen.dart';
+import '../features/wallet/presentation/social/spending_cap_screen.dart';
+import '../features/wallet/presentation/social/split_bills_screen.dart';
+import '../features/wallet/presentation/social/transaction_search_screen.dart';
 import '../features/wealth/presentation/wealth_screen.dart';
 import '../features/insurance/presentation/insurance_screen.dart';
 import '../features/family/presentation/family_screen.dart';
@@ -544,6 +555,71 @@ class TaifaRouter {
                     path: 'topup',
                     parentNavigatorKey: _rootKey,
                     builder: (_, _) => const TopUpScreen(),
+                  ),
+                  GoRoute(
+                    path: 'links',
+                    parentNavigatorKey: _rootKey,
+                    builder: (_, _) => const PaymentLinksScreen(),
+                  ),
+                  GoRoute(
+                    path: 'pay/:slug',
+                    parentNavigatorKey: _rootKey,
+                    builder: (_, state) => PayLinkScreen(slug: state.pathParameters['slug']!),
+                  ),
+                  GoRoute(
+                    path: 'qr',
+                    parentNavigatorKey: _rootKey,
+                    builder: (_, _) => const MyQrScreen(),
+                  ),
+                  GoRoute(
+                    path: 'requests',
+                    parentNavigatorKey: _rootKey,
+                    builder: (_, _) => const MoneyRequestsScreen(),
+                  ),
+                  GoRoute(
+                    path: 'bills',
+                    parentNavigatorKey: _rootKey,
+                    builder: (_, _) => const SplitBillsScreen(),
+                  ),
+                  GoRoute(
+                    path: 'bills/:billId',
+                    parentNavigatorKey: _rootKey,
+                    builder: (_, state) => BillDetailScreen(billId: state.pathParameters['billId']!),
+                  ),
+                  GoRoute(
+                    path: 'recurring',
+                    parentNavigatorKey: _rootKey,
+                    builder: (_, _) => const RecurringPaymentsScreen(),
+                  ),
+                  GoRoute(
+                    path: 'contacts',
+                    parentNavigatorKey: _rootKey,
+                    builder: (_, _) => const ContactsScreen(),
+                  ),
+                  GoRoute(
+                    path: 'notifications',
+                    parentNavigatorKey: _rootKey,
+                    builder: (_, _) => const PaymentNotificationsScreen(),
+                  ),
+                  GoRoute(
+                    path: 'history',
+                    parentNavigatorKey: _rootKey,
+                    builder: (_, _) => const TransactionSearchScreen(),
+                  ),
+                  GoRoute(
+                    path: 'analytics',
+                    parentNavigatorKey: _rootKey,
+                    builder: (_, _) => const SpendingAnalyticsScreen(),
+                  ),
+                  GoRoute(
+                    path: 'spending-cap',
+                    parentNavigatorKey: _rootKey,
+                    builder: (_, _) => const SpendingCapScreen(),
+                  ),
+                  GoRoute(
+                    path: 'profile',
+                    parentNavigatorKey: _rootKey,
+                    builder: (_, _) => const PaymentProfileScreen(),
                   ),
                 ],
               ),

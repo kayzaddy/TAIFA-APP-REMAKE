@@ -124,19 +124,21 @@ class WalletScreen extends ConsumerWidget {
                     child: QuickActionButton(
                       icon: Icons.qr_code_scanner_rounded,
                       label: 'Pay QR',
-                      onTap: () {},
+                      onTap: () => context.go('/wallet/qr'),
                     ),
                   ),
                   const SizedBox(width: TaifaSpacing.sm),
                   Expanded(
                     child: QuickActionButton(
                       icon: Icons.receipt_long_rounded,
-                      label: 'Bills',
-                      onTap: () {},
+                      label: 'Split Bill',
+                      onTap: () => context.go('/wallet/bills'),
                     ),
                   ),
                 ],
               ),
+              const SizedBox(height: TaifaSpacing.lg),
+              _MoreLinksRow(),
               const SizedBox(height: TaifaSpacing.lg),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -174,6 +176,66 @@ class WalletScreen extends ConsumerWidget {
                 TransactionTile(transaction: snap.transactions[i]),
               ],
             ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+/// Entry points into the social-payments surface that don't fit the four
+/// primary quick actions: requests, standing orders, contacts, notifications,
+/// history, analytics, spending cap, and profile/merchant settings.
+class _MoreLinksRow extends StatelessWidget {
+  const _MoreLinksRow();
+
+  static const _links = [
+    (Icons.link_rounded, 'Payment\nLinks', '/wallet/links'),
+    (Icons.request_page_rounded, 'Requests', '/wallet/requests'),
+    (Icons.autorenew_rounded, 'Standing\nOrders', '/wallet/recurring'),
+    (Icons.contacts_rounded, 'Contacts', '/wallet/contacts'),
+    (Icons.notifications_none_rounded, 'Alerts', '/wallet/notifications'),
+    (Icons.history_rounded, 'History', '/wallet/history'),
+    (Icons.insights_rounded, 'Analytics', '/wallet/analytics'),
+    (Icons.shield_outlined, 'Spending\nCap', '/wallet/spending-cap'),
+    (Icons.storefront_rounded, 'Profile &\nMerchant', '/wallet/profile'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.taifa;
+    return SizedBox(
+      height: 74,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: _links.length,
+        separatorBuilder: (_, _) => const SizedBox(width: TaifaSpacing.sm),
+        itemBuilder: (context, i) {
+          final (icon, label, route) = _links[i];
+          return InkWell(
+            onTap: () => context.go(route),
+            borderRadius: BorderRadius.circular(TaifaRadii.md),
+            child: Container(
+              width: 64,
+              padding: const EdgeInsets.symmetric(vertical: TaifaSpacing.xs),
+              decoration: BoxDecoration(
+                color: palette.surface,
+                borderRadius: BorderRadius.circular(TaifaRadii.md),
+                border: Border.all(color: palette.border),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(icon, size: 18, color: palette.accent),
+                  const SizedBox(height: 4),
+                  Text(
+                    label,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 8, fontWeight: FontWeight.w600, height: 1.1, color: palette.textSecondary),
+                  ),
+                ],
+              ),
+            ),
           );
         },
       ),

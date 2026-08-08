@@ -250,6 +250,13 @@ CORS_ALLOW_ALL_ORIGINS = _env_bool("CORS_ALLOW_ALL", DEBUG)
 CORS_ALLOWED_ORIGINS = _env_list("CORS_ALLOWED_ORIGINS")
 CSRF_TRUSTED_ORIGINS = _env_list("CSRF_TRUSTED_ORIGINS")
 
+# django-cors-headers' default allow-list doesn't include the app's custom
+# device-bound auth headers — without this, every browser (Flutter web)
+# request 403s at the CORS preflight before it ever reaches a view.
+from corsheaders.defaults import default_headers  # noqa: E402
+
+CORS_ALLOW_HEADERS = [*default_headers, "x-device-id", "idempotency-key"]
+
 if not DEBUG:
     SECURE_SSL_REDIRECT = _env_bool("SECURE_SSL_REDIRECT", True)
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
