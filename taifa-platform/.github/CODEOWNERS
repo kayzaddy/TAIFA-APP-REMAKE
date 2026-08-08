@@ -1,0 +1,27 @@
+# Path ownership (CODEOWNERS)
+
+# Replace @taifa/* with real GitHub teams when org is provisioned.
+
+/docs/ @taifa/enterprise-architecture @taifa/product-ops
+/docs/governance/ @taifa/enterprise-architecture
+/docs/engineering/ @taifa/platform-engineering
+
+/platforms/taifa-core/ @taifa/core-platform
+/platforms/tnpi/ @taifa/payments-platform
+/platforms/tnmp/ @taifa/mobility-platform
+/platforms/gdsp/ @taifa/government-platform
+/platforms/tip/ @taifa/integration-platform
+/platforms/identity/ @taifa/identity
+/platforms/notifications/ @taifa/messaging
+/platforms/analytics/ @taifa/data-analytics
+/platforms/ai/ @taifa/ai-platform
+
+/products/merchant/ @taifa/merchant-product
+
+/infrastructure/ @taifa/devsecops
+/automation/ @taifa/devsecops
+/.github/ @taifa/devsecops
+
+/apis/ @taifa/integration-platform @taifa/enterprise-architecture
+/sdk/ @taifa/developer-experience
+/design-system/ @taifa/design-systems

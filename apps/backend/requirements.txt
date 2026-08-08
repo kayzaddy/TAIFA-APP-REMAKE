@@ -46,3 +46,6 @@ opentelemetry-instrumentation-celery==0.50b0
 # WebSockets (Channels: real-time trip/driver tracking) share one process model.
 gunicorn==23.0.0
 uvicorn[standard]==0.34.0
+
+# JWT (taifa_merchant BFF auth)
+PyJWT==2.10.1

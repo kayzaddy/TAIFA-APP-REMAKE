@@ -7,13 +7,10 @@ government services, tourism, housing, health, education, jobs and an AI
 assistant — engineered to scale from **100 users to 10M+** without an
 architectural rewrite.
 
-This repository is a **monorepo**. Platform domains are architecturally complete;
-ongoing work follows **enterprise governance** — [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md) · **[Taifa Core Phase 1](docs/platform/00_PLATFORM_OVERVIEW.md)** · [Architecture Constitution](docs/architecture/README.md).
+This repository is a **monorepo**. The canonical enterprise layout is **[`taifa-platform/`](taifa-platform/README.md)** (PDL-026). Legacy paths (`apps/`, `infra/`, root `docs/`) migrate incrementally—see [taifa-platform/docs/engineering/LEGACY_REPO_MAPPING.md](taifa-platform/docs/engineering/LEGACY_REPO_MAPPING.md).
 
-TAIFA is a national (and Pan-African) super-app ecosystem — wallet & payments, mobility, food,
-government services, tourism, housing, health, education, jobs and an AI
-assistant — engineered to scale from **100 users to 10M+** without an
-architectural rewrite.
+Platform domains are architecturally complete;
+ongoing work follows **enterprise governance** — [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md) · **[TPOS (Product Engineering)](docs/tpos/00_TPOS_CHARTER.md)** · **[TEOS (Engineering)](docs/teos/00_TEOS_CHARTER.md)** · **[Product portfolio & delivery roadmap](docs/TAIFA_PRODUCT_PORTFOLIO_AND_DELIVERY_ROADMAP.md)** · **[Taifa Core Phase 1](docs/platform/00_PLATFORM_OVERVIEW.md)** · [Architecture Constitution](docs/architecture/README.md).
 
 ---
 
@@ -21,6 +18,7 @@ architectural rewrite.
 
 ```
 TAIFA APP REMAKE/
+├─ taifa-platform/         # Enterprise monorepo layout (SSOT target) — PDL-026
 ├─ apps/
 │  ├─ mobile/              # Flutter super-app
 │  └─ backend/             # Django API + domain apps + taifa_kernel / taifa_platform

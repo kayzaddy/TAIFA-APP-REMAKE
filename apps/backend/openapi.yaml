@@ -3119,6 +3119,646 @@ paths:
       responses:
         '200':
           description: No response body
+  /api/v1/merchant-app/activities:
+    get:
+      operationId: api_v1_merchant_app_activities_retrieve
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/auth/forgot-password:
+    post:
+      operationId: api_v1_merchant_app_auth_forgot_password_create
+      tags:
+      - api
+      security:
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/auth/login:
+    post:
+      operationId: api_v1_merchant_app_auth_login_create
+      tags:
+      - api
+      security:
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/auth/logout:
+    post:
+      operationId: api_v1_merchant_app_auth_logout_create
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/auth/mfa:
+    post:
+      operationId: api_v1_merchant_app_auth_mfa_create
+      tags:
+      - api
+      security:
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/auth/session:
+    get:
+      operationId: api_v1_merchant_app_auth_session_retrieve
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/auth/signup:
+    post:
+      operationId: api_v1_merchant_app_auth_signup_create
+      tags:
+      - api
+      security:
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/branches:
+    get:
+      operationId: api_v1_merchant_app_branches_retrieve
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_merchant_app_branches_create
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/branches/{branch_id}:
+    get:
+      operationId: merchant_app_branch_detail
+      parameters:
+      - in: path
+        name: branch_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+    patch:
+      operationId: api_v1_merchant_app_branches_partial_update
+      parameters:
+      - in: path
+        name: branch_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: api_v1_merchant_app_branches_destroy
+      parameters:
+      - in: path
+        name: branch_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/merchant-app/branches/{branch_id}/dashboard:
+    get:
+      operationId: api_v1_merchant_app_branches_dashboard_retrieve
+      parameters:
+      - in: path
+        name: branch_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/business-profile:
+    get:
+      operationId: api_v1_merchant_app_business_profile_retrieve
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+    patch:
+      operationId: api_v1_merchant_app_business_profile_partial_update
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/dashboard:
+    get:
+      operationId: api_v1_merchant_app_dashboard_retrieve
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/dashboard/operational:
+    get:
+      operationId: api_v1_merchant_app_dashboard_operational_retrieve
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/devices:
+    get:
+      operationId: api_v1_merchant_app_devices_retrieve
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_merchant_app_devices_create
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/devices/{device_id}:
+    get:
+      operationId: merchant_app_device_detail
+      parameters:
+      - in: path
+        name: device_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/devices/{device_id}/activate:
+    post:
+      operationId: api_v1_merchant_app_devices_activate_create
+      parameters:
+      - in: path
+        name: device_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/devices/{device_id}/assign:
+    post:
+      operationId: api_v1_merchant_app_devices_assign_create
+      parameters:
+      - in: path
+        name: device_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/devices/{device_id}/deactivate:
+    post:
+      operationId: api_v1_merchant_app_devices_deactivate_create
+      parameters:
+      - in: path
+        name: device_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/employees:
+    get:
+      operationId: api_v1_merchant_app_employees_retrieve
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_v1_merchant_app_employees_create
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/employees/{employee_id}:
+    patch:
+      operationId: api_v1_merchant_app_employees_partial_update
+      parameters:
+      - in: path
+        name: employee_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: api_v1_merchant_app_employees_destroy
+      parameters:
+      - in: path
+        name: employee_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/merchant-app/employees/{employee_id}/suspend:
+    post:
+      operationId: api_v1_merchant_app_employees_suspend_create
+      parameters:
+      - in: path
+        name: employee_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/merchants/me:
+    get:
+      operationId: api_v1_merchant_app_merchants_me_retrieve
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+    patch:
+      operationId: api_v1_merchant_app_merchants_me_partial_update
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/merchants/register:
+    post:
+      operationId: api_v1_merchant_app_merchants_register_create
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/notifications:
+    get:
+      operationId: api_v1_merchant_app_notifications_retrieve
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/notifications/{notification_id}/read:
+    post:
+      operationId: api_v1_merchant_app_notifications_read_create
+      parameters:
+      - in: path
+        name: notification_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/notifications/preferences:
+    get:
+      operationId: api_v1_merchant_app_notifications_preferences_retrieve
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+    patch:
+      operationId: api_v1_merchant_app_notifications_preferences_partial_update
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/payments/analytics/today:
+    get:
+      operationId: api_v1_merchant_app_payments_analytics_today_retrieve
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/payments/links:
+    post:
+      operationId: api_v1_merchant_app_payments_links_create
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/payments/links/{link_id}/complete:
+    post:
+      operationId: api_v1_merchant_app_payments_links_complete_create
+      parameters:
+      - in: path
+        name: link_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/payments/qr:
+    post:
+      operationId: api_v1_merchant_app_payments_qr_create
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/payments/qr/{qr_id}/complete:
+    post:
+      operationId: api_v1_merchant_app_payments_qr_complete_create
+      parameters:
+      - in: path
+        name: qr_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/payments/receipts/{receipt_id}:
+    get:
+      operationId: api_v1_merchant_app_payments_receipts_retrieve
+      parameters:
+      - in: path
+        name: receipt_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/payments/receipts/{receipt_id}/share:
+    post:
+      operationId: api_v1_merchant_app_payments_receipts_share_create
+      parameters:
+      - in: path
+        name: receipt_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/payments/softpos/{transaction_id}/confirm:
+    post:
+      operationId: api_v1_merchant_app_payments_softpos_confirm_create
+      parameters:
+      - in: path
+        name: transaction_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/payments/softpos/sessions:
+    post:
+      operationId: api_v1_merchant_app_payments_softpos_sessions_create
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/payments/terminals:
+    post:
+      operationId: api_v1_merchant_app_payments_terminals_create
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/payments/terminals/{device_id}:
+    get:
+      operationId: api_v1_merchant_app_payments_terminals_retrieve
+      parameters:
+      - in: path
+        name: device_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/payments/transactions:
+    get:
+      operationId: api_v1_merchant_app_payments_transactions_retrieve
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/payments/transactions/{transaction_id}:
+    get:
+      operationId: merchant_app_transaction_detail
+      parameters:
+      - in: path
+        name: transaction_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/payments/transactions/{transaction_id}/refund:
+    post:
+      operationId: api_v1_merchant_app_payments_transactions_refund_create
+      parameters:
+      - in: path
+        name: transaction_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/merchant-app/settings:
+    get:
+      operationId: api_v1_merchant_app_settings_retrieve
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
+    patch:
+      operationId: api_v1_merchant_app_settings_partial_update
+      tags:
+      - api
+      security:
+      - MerchantJWT: []
+      responses:
+        '200':
+          description: No response body
   /api/v1/mobility-channels/drivers/bind:
     post:
       operationId: api_v1_mobility_channels_drivers_bind_create
@@ -14694,6 +15334,11 @@ components:
       scheme: bearer
       description: 'Device-bound token from `POST /auth/device/register`. Send it
         as `Authorization: Bearer <token>` together with the `X-Device-Id` header.'
+    MerchantJWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Merchant BFF session token from the login/register endpoints.
 servers:
 - url: /
   description: current host

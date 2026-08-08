@@ -17,7 +17,7 @@ import '../features/home/presentation/home_screen.dart';
 import '../features/housing/presentation/housing_screen.dart';
 import '../features/jobs/presentation/jobs_screen.dart';
 import '../features/menu/presentation/menu_screen.dart';
-import '../features/merchant/presentation/merchant_screen.dart';
+import '../features/taifa_merchant/merchant_routes.dart';
 import '../features/commerce_mos/presentation/commerce_mos_hub_screen.dart';
 import '../features/commerce_mos/presentation/onboarding/commerce_onboarding_screen.dart';
 import '../features/commerce_mos/presentation/merchant/merchant_desk_app.dart';
@@ -160,7 +160,7 @@ class TaifaRouter {
       GoRoute(
         path: '/merchant',
         parentNavigatorKey: _rootKey,
-        builder: (_, _) => const MerchantScreen(),
+        redirect: (_, __) => '/taifa-merchant/login',
       ),
       GoRoute(
         path: '/commerce',
@@ -557,6 +557,7 @@ class TaifaRouter {
           ),
         ],
       ),
+      ...taifaMerchantRoutes,
     ],
   );
 }

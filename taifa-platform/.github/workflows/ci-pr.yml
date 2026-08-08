@@ -1,0 +1,17 @@
+# CI — Pull request (stub)
+
+# Enable when application code is migrated. See docs/governance/DEVSECOPS.md
+
+name: ci-pr
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  structure-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify monorepo markers
+        run: test -f README.md && test -f docs/engineering/REPOSITORY_TREE.md

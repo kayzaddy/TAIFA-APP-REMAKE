@@ -1,0 +1,15 @@
+# Security scan (stub)
+
+name: security-scan
+
+on:
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 6 * * 1'
+
+jobs:
+  placeholder:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Wire gitleaks, dependency review, and container scan per DEVSECOPS.md"

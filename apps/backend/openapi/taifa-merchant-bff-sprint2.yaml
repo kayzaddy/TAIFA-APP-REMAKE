@@ -1,0 +1,52 @@
+openapi: 3.0.3
+info:
+  title: Taifa Merchant BFF — Sprint 2
+  version: 2.0.0
+  description: Merchant workspace APIs (no payment processing).
+servers:
+  - url: /api/v1/merchant-app
+security:
+  - MerchantJWT: []
+paths:
+  /dashboard:
+    get:
+      summary: Operational merchant dashboard
+  /dashboard/operational:
+    get:
+      summary: Operational dashboard (alias payload)
+  /business-profile:
+    get:
+      summary: Business profile bundle
+    patch:
+      summary: Update business profile
+  /settings:
+    get:
+      summary: Merchant settings
+    patch:
+      summary: Update settings (language, receipt, payment prefs prep)
+  /notifications:
+    get:
+      summary: Notification center
+  /notifications/preferences:
+    get:
+      summary: Notification preferences
+    patch:
+      summary: Update notification preferences
+  /notifications/{notificationId}/read:
+    post:
+      summary: Mark notification read
+  /activities:
+    get:
+      summary: Activity timeline
+  /branches/{branchId}/dashboard:
+    get:
+      summary: Branch workspace dashboard
+  /employees/{employeeId}/suspend:
+    post:
+      summary: Suspend employee
+  /devices/{deviceId}:
+    get:
+      summary: Device details and active assignment
+  /devices/{deviceId}/assign:
+    post:
+      summary: Assign device to branch/employee

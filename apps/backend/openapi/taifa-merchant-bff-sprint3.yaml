@@ -1,0 +1,29 @@
+openapi: 3.0.3
+info:
+  title: Taifa Merchant BFF — Sprint 3 Payments
+  version: 3.0.0
+  description: TNPI-backed acceptance; BFF mirrors transactions only.
+servers:
+  - url: /api/v1/merchant-app
+paths:
+  /payments/terminals:
+    post:
+      summary: Register SoftPOS terminal for device
+  /payments/softpos/sessions:
+    post:
+      summary: Start tap-to-pay session (MAP → orchestration)
+  /payments/softpos/{transactionId}/confirm:
+    post:
+      summary: Confirm NFC tap
+  /payments/qr:
+    post:
+      summary: Create static or dynamic QR
+  /payments/links:
+    post:
+      summary: Create payment link
+  /payments/transactions:
+    get:
+      summary: List/search transactions
+  /payments/transactions/{transactionId}/refund:
+    post:
+      summary: Refund or void via TNPI
