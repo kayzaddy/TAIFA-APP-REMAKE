@@ -29,6 +29,7 @@ from .models import (
     PaymentLinkStatus,
 )
 from .money import Currency, Money
+from .notifications import notify
 from .orchestrator import OrchestratorContext, default_orchestrator
 from .people import normalize_phone
 from .risk import RiskDenied, check_request_spam
@@ -295,6 +296,12 @@ class PayLinkView(APIView):
                 if locked.single_use:
                     locked.status = PaymentLinkStatus.COMPLETED
                 locked.save(update_fields=["total_paid_minor", "payment_count", "status", "updated_at"])
+            notify(
+                owner=link.owner,
+                title=f"{link.emoji or '💸'} Payment received",
+                body=f"You received {amount.format()} from {_display_name_for(payer)}",
+                data={"type": "payment_link_paid", "payment_link_id": str(link.id)},
+            )
         return Response(
             TransactionSerializer(txn).data,
             status=status.HTTP_200_OK if outcome.replayed else status.HTTP_201_CREATED,
@@ -353,6 +360,13 @@ class MoneyRequestListCreateView(APIView):
             currency=d["currency"],
             note=d.get("note", ""),
             emoji=d.get("emoji", ""),
+        )
+        amount_display = Money(d["amount_minor"], Currency.from_code(d["currency"])).format()
+        notify(
+            owner=payer,
+            title=f"{d.get('emoji', '') or '💰'} Money request",
+            body=f"{_display_name_for(requester)} requested {amount_display}",
+            data={"type": "money_request", "money_request_id": str(req.id)},
         )
         return Response(MoneyRequestSerializer(req).data, status=status.HTTP_201_CREATED)
 
@@ -432,6 +446,12 @@ class MoneyRequestActionView(APIView):
                     from .bill_views import refresh_bill_status
 
                     refresh_bill_status(req.bill)
+                notify(
+                    owner=req.requester,
+                    title="✅ Request paid",
+                    body=f"{_display_name_for(owner)} paid your request for {amount.format()}",
+                    data={"type": "money_request_paid", "money_request_id": str(req.id)},
+                )
             else:
                 return Response({"detail": "Insufficient balance.", "transaction": TransactionSerializer(txn).data}, status=422)
             return Response(MoneyRequestSerializer(req).data)

@@ -12,7 +12,7 @@ from django.conf import settings
 from django.db.models import Sum
 from django.utils import timezone
 
-from .models import Transaction, TransactionDirection, TransactionStatus
+from .models import SpendingCapPeriod, Transaction, TransactionDirection, TransactionStatus
 from .money import Money
 
 
@@ -49,6 +49,19 @@ class RiskContext:
     ip: str | None = None
     msisdn: str = ""
     counterparty: str = ""
+
+
+def spending_cap_period_start(period: str, now):
+    """Calendar-aligned period start (not a rolling window — see
+    `SpendingCap`'s docstring for why this differs from RISK_DAILY_DEBIT_LIMIT)."""
+    day_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    if period == SpendingCapPeriod.DAILY:
+        return day_start
+    if period == SpendingCapPeriod.WEEKLY:
+        return day_start - timedelta(days=day_start.weekday())  # Monday
+    if period == SpendingCapPeriod.MONTHLY:
+        return day_start.replace(day=1)
+    raise ValueError(f"Unknown period: {period}")
 
 
 class RiskEngine:
@@ -120,6 +133,39 @@ class RiskEngine:
                     rules_fired=("daily_debit_limit",),
                 )
             fired.append("daily_debit_limit_ok")
+
+        if ctx.operation in {"transfer", "withdrawal"}:
+            from .models import SpendingCap
+
+            cap = SpendingCap.objects.filter(
+                owner=ctx.owner, currency=ctx.amount.currency.code
+            ).first()
+            if cap:
+                start = spending_cap_period_start(cap.period, timezone.now())
+                spent = (
+                    Transaction.objects.filter(
+                        owner=ctx.owner,
+                        direction=TransactionDirection.DEBIT,
+                        status__in=[
+                            TransactionStatus.SUCCEEDED,
+                            TransactionStatus.PROCESSING,
+                            TransactionStatus.APPROVED,
+                            TransactionStatus.PENDING,
+                        ],
+                        created_at__gte=start,
+                        currency=ctx.amount.currency.code,
+                    ).aggregate(s=Sum("amount_minor"))["s"]
+                    or 0
+                )
+                if spent + ctx.amount.minor_units > cap.limit_minor:
+                    return RiskDecision(
+                        RiskDecisionKind.DENY,
+                        code="SPENDING_CAP_EXCEEDED",
+                        message=f"This would exceed your {cap.period} spending cap "
+                        f"({cap.limit_minor} minor units).",
+                        rules_fired=("spending_cap",),
+                    )
+                fired.append("spending_cap_ok")
 
         daily_credit = int(getattr(settings, "RISK_DAILY_CREDIT_LIMIT_MINOR", 0) or 0)
         if daily_credit > 0 and ctx.operation in {"topup"}:

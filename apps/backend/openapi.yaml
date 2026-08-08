@@ -4825,6 +4825,33 @@ paths:
       responses:
         '200':
           description: No response body
+  /api/v1/payments/analytics/spending:
+    get:
+      operationId: api_v1_payments_analytics_spending_retrieve
+      description: |-
+        GET /api/v1/payments/analytics/spending — only `succeeded` transactions
+        count (pending/failed never moved money). Only one currency at a time,
+        matching how the rest of the wallet API treats currency (WalletView
+        itself is hardcoded to TZS) — pass `currency` to look at another.
+      summary: Monthly spending breakdown (in/out totals + by transaction type)
+      parameters:
+      - in: query
+        name: currency
+        schema:
+          type: string
+        description: Default TZS
+      - in: query
+        name: months
+        schema:
+          type: integer
+        description: 1-24, default 6
+      tags:
+      - payments
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          description: No response body
   /api/v1/payments/bills:
     get:
       operationId: api_v1_payments_bills_list
@@ -5093,6 +5120,46 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaymentLink'
           description: ''
+  /api/v1/payments/notifications:
+    get:
+      operationId: api_v1_payments_notifications_list
+      summary: My notification inbox (money requests, bill shares, link payments,
+        ...)
+      tags:
+      - social-payments
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PushNotification'
+          description: ''
+  /api/v1/payments/notifications/{notification_id}/read:
+    post:
+      operationId: api_v1_payments_notifications_read_create
+      summary: Mark a notification as read
+      parameters:
+      - in: path
+        name: notification_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - social-payments
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PushNotification'
+          description: ''
   /api/v1/payments/pay/{slug}:
     get:
       operationId: api_v1_payments_pay_retrieve
@@ -5352,6 +5419,79 @@ paths:
               schema:
                 $ref: '#/components/schemas/MoneyRequest'
           description: ''
+  /api/v1/payments/spending-cap:
+    get:
+      operationId: api_v1_payments_spending_cap_retrieve
+      description: |-
+        /api/v1/payments/spending-cap
+
+        GET returns the current cap plus how much of it is used this period
+        (204 if no cap is set). POST upserts (period/limit/currency). DELETE
+        removes the cap entirely (uncapped).
+      summary: View (GET), set (POST), or clear (DELETE) my spending cap
+      tags:
+      - payments
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpendingCap'
+          description: ''
+        '204':
+          description: No response body
+    post:
+      operationId: api_v1_payments_spending_cap_create
+      description: |-
+        /api/v1/payments/spending-cap
+
+        GET returns the current cap plus how much of it is used this period
+        (204 if no cap is set). POST upserts (period/limit/currency). DELETE
+        removes the cap entirely (uncapped).
+      summary: View (GET), set (POST), or clear (DELETE) my spending cap
+      tags:
+      - payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpendingCapSet'
+        required: true
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpendingCap'
+          description: ''
+        '204':
+          description: No response body
+    delete:
+      operationId: api_v1_payments_spending_cap_destroy
+      description: |-
+        /api/v1/payments/spending-cap
+
+        GET returns the current cap plus how much of it is used this period
+        (204 if no cap is set). POST upserts (period/limit/currency). DELETE
+        removes the cap entirely (uncapped).
+      summary: View (GET), set (POST), or clear (DELETE) my spending cap
+      tags:
+      - payments
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpendingCap'
+          description: ''
+        '204':
+          description: No response body
   /api/v1/payments/topups:
     post:
       operationId: api_v1_payments_topups_create
@@ -5440,6 +5580,75 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Transaction'
+          description: ''
+  /api/v1/payments/transactions:
+    get:
+      operationId: api_v1_payments_transactions_list
+      description: |-
+        GET /api/v1/payments/transactions — filtered, paginated transaction
+        history for the authenticated device's owner. `WalletView` stays a fast
+        fixed-50 summary; this is for building a real history/search screen.
+      summary: Search/filter my transactions (paginated)
+      parameters:
+      - in: query
+        name: direction
+        schema:
+          type: string
+        description: credit or debit
+      - in: query
+        name: from_date
+        schema:
+          type: string
+        description: ISO 8601 datetime, inclusive
+      - in: query
+        name: max_amount_minor
+        schema:
+          type: integer
+      - in: query
+        name: min_amount_minor
+        schema:
+          type: integer
+      - in: query
+        name: page
+        schema:
+          type: integer
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+        description: Max 100
+      - in: query
+        name: q
+        schema:
+          type: string
+        description: Free-text search on counterparty/note
+      - in: query
+        name: status
+        schema:
+          type: string
+        description: Filter by status
+      - in: query
+        name: to_date
+        schema:
+          type: string
+        description: ISO 8601 datetime, inclusive
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by transaction type
+      tags:
+      - payments
+      security:
+      - DeviceToken: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
           description: ''
   /api/v1/payments/transactions/{txn_id}:
     get:
@@ -12012,16 +12221,6 @@ components:
       description: |-
         * `active` - Active
         * `cancelled` - Cancelled
-    IntervalEnum:
-      enum:
-      - daily
-      - weekly
-      - monthly
-      type: string
-      description: |-
-        * `daily` - Daily
-        * `weekly` - Weekly
-        * `monthly` - Monthly
     JobAssignment:
       type: object
       properties:
@@ -13232,6 +13431,47 @@ components:
       - principal
       - reputation_score_e4
       - verification_status
+    PushNotification:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 128
+        body:
+          type: string
+          maxLength: 255
+        data: {}
+        status:
+          $ref: '#/components/schemas/PushNotificationStatusEnum'
+        read:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        sent_at:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+      - body
+      - created_at
+      - id
+      - title
+    PushNotificationStatusEnum:
+      enum:
+      - queued
+      - sent
+      - failed
+      type: string
+      description: |-
+        * `queued` - Queued
+        * `sent` - Sent
+        * `failed` - Failed
     QueueEntry:
       type: object
       properties:
@@ -13346,7 +13586,7 @@ components:
           type: string
           maxLength: 16
         interval:
-          $ref: '#/components/schemas/IntervalEnum'
+          $ref: '#/components/schemas/SpendingCapPeriodEnum'
         status:
           $ref: '#/components/schemas/RecurringPaymentStatusEnum'
         next_run_at:
@@ -13398,7 +13638,7 @@ components:
           - $ref: '#/components/schemas/CurrencyEnum'
           default: TZS
         interval:
-          $ref: '#/components/schemas/IntervalEnum'
+          $ref: '#/components/schemas/SpendingCapPeriodEnum'
         note:
           type: string
           default: ''
@@ -13589,6 +13829,54 @@ components:
       - latitude
       - longitude
       - owner
+    SpendingCap:
+      type: object
+      properties:
+        period:
+          type: string
+        limit_minor:
+          type: integer
+        currency:
+          type: string
+        spent_minor:
+          type: integer
+        remaining_minor:
+          type: integer
+        period_start:
+          type: string
+          format: date-time
+      required:
+      - currency
+      - limit_minor
+      - period
+      - period_start
+      - remaining_minor
+      - spent_minor
+    SpendingCapPeriodEnum:
+      enum:
+      - daily
+      - weekly
+      - monthly
+      type: string
+      description: |-
+        * `daily` - Daily
+        * `weekly` - Weekly
+        * `monthly` - Monthly
+    SpendingCapSet:
+      type: object
+      properties:
+        period:
+          $ref: '#/components/schemas/SpendingCapPeriodEnum'
+        limit_minor:
+          type: integer
+          minimum: 1
+        currency:
+          allOf:
+          - $ref: '#/components/schemas/CurrencyEnum'
+          default: TZS
+      required:
+      - limit_minor
+      - period
     SplitParticipant:
       type: object
       properties:

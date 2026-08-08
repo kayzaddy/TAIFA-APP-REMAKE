@@ -1,12 +1,33 @@
 from django.urls import path
 
-from . import bill_views, p2p_views, people_views, recurring_views, views
+from . import (
+    analytics,
+    bill_views,
+    notification_views,
+    p2p_views,
+    people_views,
+    recurring_views,
+    spending_cap_views,
+    transaction_search,
+    views,
+)
 
 app_name = "payments"
 
 urlpatterns = [
     path("wallet", views.WalletView.as_view(), name="wallet"),
     path("wallet/qr", p2p_views.ReceiveQrView.as_view(), name="wallet-qr"),
+    path("transactions", transaction_search.TransactionSearchView.as_view(), name="transaction-search"),
+    path(
+        "analytics/spending", analytics.SpendingAnalyticsView.as_view(), name="analytics-spending"
+    ),
+    path("spending-cap", spending_cap_views.SpendingCapView.as_view(), name="spending-cap"),
+    path("notifications", notification_views.NotificationListView.as_view(), name="notifications"),
+    path(
+        "notifications/<uuid:notification_id>/read",
+        notification_views.NotificationMarkReadView.as_view(),
+        name="notification-read",
+    ),
     path("bills", bill_views.BillSplitListCreateView.as_view(), name="bills"),
     path("bills/<uuid:bill_id>", bill_views.BillSplitDetailView.as_view(), name="bill-detail"),
     path("bills/<uuid:bill_id>/cancel", bill_views.BillSplitCancelView.as_view(), name="bill-cancel"),

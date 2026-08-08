@@ -46,6 +46,13 @@ def run_due_recurring_payments_task():
     }
 
 
+@shared_task(name="payments.send_push_notification", bind=True, max_retries=3, default_retry_delay=5)
+def send_push_notification_task(self, *, owner: str, title: str, body: str, data: dict | None = None):
+    from .notifications import default_notifier
+
+    default_notifier().send(owner=owner, title=title, body=body, data=data or {})
+
+
 @shared_task(name="payments.ops_heartbeat")
 def ops_heartbeat_task():
     """Periodic ops heartbeat — proves beat + worker path is alive."""

@@ -23,6 +23,8 @@ from .models import (
     MoneyRequest,
     MoneyRequestStatus,
 )
+from .money import Currency, Money
+from .notifications import notify
 from .p2p_views import MoneyRequestSerializer, _display_name_for
 from .people import normalize_phone
 from .risk import check_request_spam
@@ -189,6 +191,19 @@ class BillSplitListCreateView(APIView):
                     bill=bill,
                 )
         bill.refresh_from_db()
+
+        # Notify after commit, not inside the atomic block: in real (non-eager)
+        # Celery this enqueues outside the DB transaction, so it must only
+        # fire once the shares are actually durable.
+        organizer_name = _display_name_for(organizer)
+        for (payer, _), amount_minor in zip(resolved, amounts):
+            notify(
+                owner=payer,
+                title=f"{d.get('emoji', '') or '🧾'} Bill split",
+                body=f"{organizer_name} split '{d['title']}' — you owe "
+                f"{Money(amount_minor, Currency.from_code(d['currency'])).format()}",
+                data={"type": "bill_split", "bill_id": str(bill.id)},
+            )
         return Response(BillSplitSerializer(bill).data, status=status.HTTP_201_CREATED)
 
 

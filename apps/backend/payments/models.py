@@ -561,6 +561,64 @@ class RecurringPayment(models.Model):
         return f"RecurringPayment {self.amount_minor} {self.currency} {self.owner}→{self.payee} [{self.interval}, {self.status}]"
 
 
+class PushNotificationStatus(models.TextChoices):
+    QUEUED = "queued"
+    SENT = "sent"
+    FAILED = "failed"
+
+
+class PushNotification(models.Model):
+    """A notification queued for a wallet owner (fanned out to their
+    registered devices at send time — see `payments.notifications`).
+
+    No real FCM/APNS credentials are configured yet, so the default
+    `LoggingPushNotifier` just persists rows here (mirrors how
+    `OfflineMpesaGateway` stands in for the real Daraja adapter). Swap in a
+    real sender behind the same `PushNotifier` interface when ready."""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    owner = models.CharField(max_length=128, db_index=True)
+    title = models.CharField(max_length=128)
+    body = models.CharField(max_length=255)
+    data = models.JSONField(default=dict, blank=True)
+    status = models.CharField(
+        max_length=16, choices=PushNotificationStatus.choices, default=PushNotificationStatus.QUEUED
+    )
+    read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    sent_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        indexes = [models.Index(fields=["owner", "-created_at"])]
+
+    def __str__(self) -> str:
+        return f"PushNotification {self.owner}: {self.title}"
+
+
+class SpendingCapPeriod(models.TextChoices):
+    DAILY = "daily"
+    WEEKLY = "weekly"
+    MONTHLY = "monthly"
+
+
+class SpendingCap(models.Model):
+    """A self-imposed budget ceiling on outgoing money (transfers,
+    withdrawals — not top-ups). Calendar-aligned (resets on the day/ISO
+    week/month boundary), unlike the platform-wide RISK_DAILY_DEBIT_LIMIT_MINOR
+    setting which is a rolling 24h window. Enforced in `payments.risk`."""
+
+    owner = models.CharField(max_length=128, primary_key=True)
+    period = models.CharField(max_length=8, choices=SpendingCapPeriod.choices)
+    limit_minor = models.BigIntegerField()
+    currency = models.CharField(max_length=8, choices=CURRENCY_CHOICES, default="TZS")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return f"SpendingCap {self.owner}: {self.limit_minor} {self.currency} / {self.period}"
+
+
 class ReconciliationExceptionCode(models.TextChoices):
     MISSING_SETTLEMENT = "missing_settlement"
     DUPLICATE_SETTLEMENT = "duplicate_settlement"

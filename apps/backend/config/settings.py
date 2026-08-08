@@ -220,6 +220,7 @@ SPECTACULAR_SETTINGS = {
         "MobilitySafetyStatusEnum": "trips.models.SafetyIncidentStatus.choices",
         "PaymentLinkStatusEnum": "payments.models.PaymentLinkStatus.choices",
         "MoneyRequestStatusEnum": "payments.models.MoneyRequestStatus.choices",
+        "SpendingCapPeriodEnum": "payments.models.SpendingCapPeriod.choices",
     },
     "TAGS": [
         {"name": "auth", "description": "Device registration + bound tokens"},
