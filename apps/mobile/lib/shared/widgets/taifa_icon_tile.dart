@@ -40,18 +40,28 @@ class TaifaIconTile extends StatelessWidget {
     super.key,
     required this.icon,
     this.hue = TaifaIconHue.gold,
-    this.size = 40,
-    this.iconSize = TaifaIconSize.md,
+    this.color,
+    this.size = 48,
+    this.iconSize = TaifaIconSize.lg,
   });
 
   final IconData icon;
   final TaifaIconHue hue;
+
+  /// Overrides [hue] with an exact brand colour, for callers that already
+  /// carry a specific tint (e.g. the home journey rail's per-shortcut
+  /// colour) rather than one of the four semantic hues. The "deep" shade
+  /// used for gradients/glyphs is derived by mixing toward black.
+  final Color? color;
   final double size;
   final double iconSize;
 
   @override
   Widget build(BuildContext context) {
     final palette = context.taifa;
+    final base = color ?? hue.tint;
+    final deep = color != null ? Color.lerp(color, Colors.black, 0.32)! : hue.tintDeep;
+
     return Container(
       width: size,
       height: size,
@@ -60,20 +70,36 @@ class TaifaIconTile extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
+          // Punchier stop than the old flat tint: the badge should read as
+          // a small lit surface, not a translucent smear.
           colors: [
-            hue.tint.withValues(alpha: palette.isDark ? 0.22 : 0.16),
-            hue.tintDeep.withValues(alpha: palette.isDark ? 0.38 : 0.24),
+            base.withValues(alpha: palette.isDark ? 0.32 : 0.22),
+            deep.withValues(alpha: palette.isDark ? 0.55 : 0.34),
           ],
         ),
-        borderRadius: BorderRadius.circular(TaifaRadii.md),
-        border: Border.all(color: hue.tint.withValues(alpha: 0.20)),
+        // Radius scales with size so a 44px chip and a 52px chip both read
+        // as the same "squircle", rather than the bigger one looking boxier.
+        borderRadius: BorderRadius.circular(size * 0.32),
+        border: Border.all(color: base.withValues(alpha: 0.30)),
+        boxShadow: [
+          // A tinted glow (not a generic black drop shadow) is what makes a
+          // duotone badge feel lit rather than pasted on — it picks up the
+          // hue instead of muddying it, and it's the one part of this look
+          // that a screenshot on a black background *needs* to read as
+          // "polished" rather than "flat".
+          BoxShadow(
+            color: base.withValues(alpha: palette.isDark ? 0.28 : 0.18),
+            blurRadius: size * 0.42,
+            offset: Offset(0, size * 0.10),
+          ),
+        ],
       ),
       child: Icon(
         icon,
         size: iconSize,
         // Deepen the glyph in light mode so it clears the 3:1 non-text
         // contrast bar against the tinted fill.
-        color: palette.isDark ? hue.tint : hue.tintDeep,
+        color: palette.isDark ? base : deep,
       ),
     );
   }
@@ -118,7 +144,7 @@ class TaifaFeatureTile extends StatelessWidget {
               Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  TaifaIconTile(icon: icon, hue: hue, size: 44, iconSize: TaifaIconSize.lg),
+                  TaifaIconTile(icon: icon, hue: hue, size: 52, iconSize: TaifaIconSize.xl),
                   if (count > 0)
                     Positioned(
                       right: -4,

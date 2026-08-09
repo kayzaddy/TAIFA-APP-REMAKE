@@ -111,6 +111,7 @@ class WalletScreen extends ConsumerWidget {
                     child: QuickActionButton(
                       icon: TaifaIcons.sendMoney,
                       label: 'Send',
+                      hue: TaifaIconHue.gold,
                       onTap: () => context.go('/wallet/send'),
                     ),
                   ),
@@ -119,6 +120,7 @@ class WalletScreen extends ConsumerWidget {
                     child: QuickActionButton(
                       icon: TaifaIcons.topUp,
                       label: 'Top Up',
+                      hue: TaifaIconHue.emerald,
                       onTap: () => context.go('/wallet/topup'),
                     ),
                   ),
@@ -127,6 +129,7 @@ class WalletScreen extends ConsumerWidget {
                     child: QuickActionButton(
                       icon: TaifaIcons.scanQr,
                       label: 'My QR',
+                      hue: TaifaIconHue.ocean,
                       onTap: () => context.go('/wallet/qr'),
                     ),
                   ),
@@ -135,6 +138,7 @@ class WalletScreen extends ConsumerWidget {
                     child: QuickActionButton(
                       icon: TaifaIcons.splitBill,
                       label: 'Split Bill',
+                      hue: TaifaIconHue.gold,
                       onTap: () => context.go('/wallet/bills'),
                     ),
                   ),

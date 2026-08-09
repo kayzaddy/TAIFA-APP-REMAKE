@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/theme/taifa_dimens.dart';
+import '../../../../app/theme/taifa_icons.dart';
+import '../../../../shared/widgets/taifa_icon_tile.dart';
 import '../../application/super_app_providers.dart';
 
 class HomeJourneyRail extends ConsumerWidget {
@@ -19,7 +21,9 @@ class HomeJourneyRail extends ConsumerWidget {
         Text('For you', style: text.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
         const SizedBox(height: TaifaSpacing.sm),
         SizedBox(
-          height: 108,
+          // +8px over the old 108 to give the upgraded badge (was a bare,
+          // unbadged 24px glyph) room without cramping the two text lines.
+          height: 116,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: items.length,
@@ -39,7 +43,7 @@ class HomeJourneyRail extends ConsumerWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(item.icon, color: item.tint),
+                          TaifaIconTile(icon: item.icon, color: item.tint, size: 40, iconSize: TaifaIconSize.lg),
                           const Spacer(),
                           Text(
                             item.title,

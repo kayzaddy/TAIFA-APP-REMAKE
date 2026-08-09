@@ -34,32 +34,31 @@ class ServiceTile extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: 44,
-              height: 44,
+              width: 50,
+              height: 50,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    tint.withValues(alpha: 0.20),
-                    tint.withValues(alpha: 0.05),
+                    tint.withValues(alpha: palette.isDark ? 0.30 : 0.24),
+                    tint.withValues(alpha: palette.isDark ? 0.10 : 0.06),
                   ],
                 ),
-                borderRadius: BorderRadius.circular(TaifaRadii.lg),
-                border: Border.all(
-                  color: palette.borderStrong.withValues(alpha: 0.15),
-                ),
-                boxShadow: palette.isDark
-                    ? null
-                    : [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.04),
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
+                borderRadius: BorderRadius.circular(TaifaRadii.xl),
+                border: Border.all(color: tint.withValues(alpha: 0.26)),
+                // A tint-coloured glow in both themes, not just a flat black
+                // shadow in light mode only — this is what turns "a square
+                // with a small icon" into something that reads as lit.
+                boxShadow: [
+                  BoxShadow(
+                    color: tint.withValues(alpha: palette.isDark ? 0.22 : 0.14),
+                    blurRadius: 16,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
               ),
-              child: Icon(icon, size: 20, color: tint),
+              child: Icon(icon, size: 26, color: tint),
             ),
             const SizedBox(height: TaifaSpacing.xs),
             Text(

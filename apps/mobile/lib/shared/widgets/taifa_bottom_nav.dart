@@ -99,20 +99,29 @@ class _NavItem extends StatelessWidget {
           children: [
             AnimatedContainer(
               duration: TaifaMotion.fast,
-              width: 34,
-              height: 30,
+              width: 42,
+              height: 36,
               decoration: BoxDecoration(
                 gradient: active
                     ? LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          TaifaColors.gold500.withValues(alpha: 0.20),
-                          TaifaColors.emerald600.withValues(alpha: 0.15),
+                          TaifaColors.gold500.withValues(alpha: 0.24),
+                          TaifaColors.emerald600.withValues(alpha: 0.18),
                         ],
                       )
                     : null,
-                borderRadius: BorderRadius.circular(TaifaRadii.xs),
+                borderRadius: BorderRadius.circular(TaifaRadii.sm),
+                boxShadow: active
+                    ? [
+                        BoxShadow(
+                          color: activeColor.withValues(alpha: 0.22),
+                          blurRadius: 14,
+                          offset: const Offset(0, 3),
+                        ),
+                      ]
+                    : null,
               ),
               // Lucide is a single-weight family, so the selected state is
               // carried by the gold pill, the colour, a slightly larger glyph
@@ -125,7 +134,7 @@ class _NavItem extends StatelessWidget {
                 curve: TaifaMotion.standard,
                 child: Icon(
                   destination.icon,
-                  size: TaifaIconSize.md,
+                  size: TaifaIconSize.lg,
                   color: color,
                 ),
               ),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../app/theme/taifa_colors.dart';
 import '../../app/theme/taifa_dimens.dart';
+import '../../app/theme/taifa_icons.dart';
 import '../../app/theme/taifa_theme.dart';
+import 'taifa_icon_tile.dart';
 
 /// One of the four primary wallet actions (Send · Scan QR · Top Up · Bills).
 /// Matches the mockup `.qa` tile.
@@ -11,11 +12,17 @@ class QuickActionButton extends StatelessWidget {
     super.key,
     required this.icon,
     required this.label,
+    this.hue = TaifaIconHue.gold,
     this.onTap,
   });
 
   final IconData icon;
   final String label;
+
+  /// Which of the four semantic hues the badge takes — gold for things you
+  /// *do*, emerald for money arriving, ocean for scan/info. Defaults to gold
+  /// since most quick actions are "do something" rather than "money in".
+  final TaifaIconHue hue;
   final VoidCallback? onTap;
 
   @override
@@ -46,29 +53,19 @@ class QuickActionButton extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    TaifaColors.emerald600.withValues(alpha: 0.20),
-                    TaifaColors.emerald700.withValues(alpha: 0.40),
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(TaifaRadii.sm),
-              ),
-              child: Icon(icon, size: 16, color: palette.accent),
-            ),
+            // Was a flat 32px single-hue square with a 16px glyph (a 50%
+            // fill ratio reads as a small icon lost in a box); the shared
+            // tile brings it to the same size and duotone-glow language as
+            // every other icon badge in the app, and 44px happens to also
+            // clear the touch-target minimum this row previously missed.
+            TaifaIconTile(icon: icon, hue: hue, size: 44, iconSize: TaifaIconSize.lg),
             const SizedBox(height: TaifaSpacing.xs),
             Text(
               label,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 9,
-                fontWeight: FontWeight.w500,
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
                 height: 1.2,
                 color: palette.textSecondary,
               ),
