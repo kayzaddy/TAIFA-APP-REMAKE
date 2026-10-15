@@ -40,7 +40,7 @@ opentelemetry-sdk==1.29.0
 opentelemetry-exporter-otlp-proto-http==1.29.0
 opentelemetry-instrumentation-django==0.50b0
 opentelemetry-instrumentation-requests==0.50b0
-opentelemetry-instrumentation-celery==0.50b0
+opentelemetry-instrumentation-celery==0.65b0
 
 # Server (production) — gunicorn managing uvicorn ASGI workers so HTTP and
 # WebSockets (Channels: real-time trip/driver tracking) share one process model.
