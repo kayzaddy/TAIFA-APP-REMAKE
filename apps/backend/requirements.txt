@@ -24,7 +24,7 @@ requests==2.33.0
 
 # Async processing (webhooks, retries, reconciliation)
 celery==5.4.0
-redis==5.2.1
+redis==8.1.0
 
 # Real-time trip/driver tracking
 channels==4.3.2
