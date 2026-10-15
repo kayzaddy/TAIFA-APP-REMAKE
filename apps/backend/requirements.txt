@@ -9,7 +9,7 @@ django-cors-headers==4.6.0
 drf-spectacular==0.28.0
 
 # Error tracking / performance monitoring (activated only when SENTRY_DSN is set)
-sentry-sdk==2.20.0
+sentry-sdk==2.66.1
 
 # Database
 psycopg[binary]==3.2.4
